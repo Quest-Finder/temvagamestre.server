@@ -25,7 +25,7 @@ jobs:
   create-docker-image-and-send-to-gcp:
     # verifica se a referencia da Branch é a main
     # se estiver fazendo em outra branch deve escrever o nome da branch
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/dev'
     # Runs on é o OS da VM aqui sera executado em Linux Ubunto
     runs-on: ubuntu-latest
     outputs:
