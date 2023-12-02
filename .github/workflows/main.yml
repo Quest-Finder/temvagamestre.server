@@ -4,7 +4,7 @@ name: Execução do CI/CD GCP
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# No 'on' deve ser escolhido gatilho que irá ativar o workflow, no nosso caso é um push pra main
+# No 'on' deve ser escolhido gatilho que irá ativar o workflow, no nosso caso é um push pra dev
 on:
   push:
     branches: 
@@ -23,7 +23,7 @@ jobs:
 
   # aqui damos o nome ao nosso Job
   create-docker-image-and-send-to-gcp:
-    # verifica se a referencia da Branch é a main
+    # verifica se a referencia da Branch é a dev
     # se estiver fazendo em outra branch deve escrever o nome da branch
     if: github.ref == 'refs/heads/dev'
     # Runs on é o OS da VM aqui sera executado em Linux Ubunto
@@ -56,12 +56,12 @@ jobs:
           # run roda comandos de terminal
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
-          docker build -t us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/main:latest .
-          docker push us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/main:latest
+          docker build -t us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/dev:latest .
+          docker push us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/dev:latest
       
 
   deploy-to-gcp-cloud-run:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/dev'
     # needs significa que só rodara se o especificado tiver
     needs: create-docker-image-and-send-to-gcp
     runs-on: ubuntu-latest
@@ -81,6 +81,6 @@ jobs:
         
         with:
           service: ${{ env.SERVICE }}
-          image: us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/main:latest
+          image: us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/dev:latest
           region: ${{ env.REGION }}
           
