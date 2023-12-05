@@ -14,7 +14,10 @@
     ]
   },
   "ignorePatterns": [
-    "jest.config.ts", "jest-unit-config.ts", "jest-integration-config.ts"
+    "jest.config.ts",
+    "jest-unit-config.ts",
+    "jest-integration-config.ts",
+    "commitlint.config.js"
   ],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "off",
