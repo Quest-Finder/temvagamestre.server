@@ -13,6 +13,9 @@
       "./tsconfig.json"
     ]
   },
+  "ignorePatterns": [
+    "jest.config.ts", "jest-unit-config.ts", "jest-integration-config.ts"
+  ],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/no-extraneous-class": "off",
