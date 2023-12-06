@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id      String  @id(map: "pk_address") @db.VarChar(50)
+  country String  @db.VarChar(15)
+  city    String? @db.VarChar(30)
+  state   String? @db.VarChar(15)
+
+  user User[]
+
+  @@map("adress")
+}
+
+model Badge {
+  id          String @id(map: "pk_badge") @db.VarChar(50)
+  name        String @db.VarChar(15)
+  type        String @db.VarChar(10)
+  description String @db.VarChar(150)
+  criteria    String @db.VarChar(50)
+  icon        String @db.VarChar(30)
+
+  userBadge UserBadge[]
+
+  @@map("badge")
+}
+
+model DayPeriod {
+  id        String  @id(map: "pk_day_period") @db.VarChar(50)
+  night     Boolean @default(false)
+  morning   Boolean @default(false)
+  afternoon Boolean @default(false)
+
+  preference Preference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("day_period")
+}
+
+model PlayersRange {
+  id         String @id(map: "pk_players_range") @db.VarChar(50)
+  minPlayers Int    @map("min_players")
+  maxPlayers Int    @map("max_players")
+
+  preference Preference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("players_range")
+}
+
+model Preference {
+  id         String @id(map: "pk_preference") @unique @db.VarChar(50)
+  activeType String @map("active_type") @db.VarChar(22)
+  frequency  String @db.VarChar(22)
+  gamePlace  String @map("game_place") @db.VarChar(22)
+
+  dayPeriod    DayPeriod?
+  playersRange PlayersRange?
+
+  user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "user_fk")
+
+  @@map("preference")
+}
+
+model SocialMedia {
+  id   String @id(map: "pk_social_media") @db.VarChar(50)
+  name String @db.VarChar(20)
+
+  userSocialMedia UserSocialMedia[]
+
+  @@map("social_media")
+}
+
+model User {
+  id          String   @id(map: "pk_user") @unique() @db.VarChar(50)
+  addressId   String   @map("address_id") @db.VarChar(50)
+  firstName   String   @map("first_name") @db.VarChar(25)
+  lastName    String   @map("last_name") @db.VarChar(50)
+  nickname    String   @db.VarChar(25)
+  phone       String?  @db.VarChar(20)
+  dateOfBirth DateTime @map("date_of_birth") @db.Date
+
+  preference      Preference?
+  userConfig      UserConfig?
+  userBadge       UserBadge[]
+  userSocialMedia UserSocialMedia[]
+
+  address Address? @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("user")
+}
+
+model UserBadge {
+  userId  String @map("user_id") @db.VarChar(50)
+  badgeId String @map("badge_id") @db.VarChar(50)
+
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_badge_user_badge")
+  user  User  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_user_badge")
+
+  @@id([userId, badgeId], map: "pk_user_badge")
+  @@map("user_badge")
+}
+
+model UserConfig {
+  id           String   @id(map: "pk_user_config") @db.VarChar(50)
+  allowMessage Boolean? @default(false) @map("allow_message")
+
+  user User @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("user_config")
+}
+
+model UserSocialMedia {
+  userId        String @map("user_id") @db.VarChar(50)
+  socialMediaId String @map("social_media_id") @db.VarChar(20)
+  link          String @db.VarChar(100)
+
+  socialMedia SocialMedia @relation(fields: [socialMediaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user        User        @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([userId, socialMediaId], map: "pk_user_social_media")
+  @@map("user_social_media")
+}
+
+enum active_type {
+  player
+  game_master
+}
