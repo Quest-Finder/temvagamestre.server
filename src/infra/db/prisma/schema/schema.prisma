@@ -52,14 +52,24 @@ model PlayersRange {
   @@map("players_range")
 }
 
+model GamePlace {
+  id       String  @id(map: "pk_game_place") @unique(map: "uq_game_place_id") @db.VarChar(50)
+  online   Boolean @default(false)
+  inPerson Boolean @default(false) @map("in_person")
+
+  preference Preference @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_preference_game_place")
+
+  @@map("game_place")
+}
+
 model Preference {
   id         String     @id(map: "pk_preference") @unique(map: "uq_preference_id") @db.VarChar(50)
   frequency  Frequency
-  gamePlace  GamePlace  @map("game_place")
   activeType ActiveType @map("active_type")
 
   dayPeriod    DayPeriod?
   playersRange PlayersRange?
+  gamePlace    GamePlace?
 
   user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_preference")
 
@@ -133,13 +143,6 @@ enum ActiveType {
   gameMaster @map("game_master")
 
   @@map("active_tipe")
-}
-
-enum GamePlace {
-  online
-  inPerson @map("in_person")
-
-  @@map("game_place")
 }
 
 enum Frequency {
