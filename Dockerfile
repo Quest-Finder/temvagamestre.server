@@ -8,12 +8,12 @@ WORKDIR /home/node/app
 
 COPY --chown=node:node . .
 
-RUN yarn install
+RUN npm install
 
-RUN yarn build
+RUN npm run build
 
 ENV NODE_ENV=development
 
 EXPOSE 3000
 
-CMD ["yarn", "start:prod"]  
+CMD ["npm", "run" , "start:prod"]  
