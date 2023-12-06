@@ -63,5 +63,8 @@
       "eslint 'src/**' --cache --fix",
       "npm run test:staged"
     ]
+  },
+  "prisma": {
+    "schema": "./src/infra/db/prisma/schema/schema.prisma"
   }
 }

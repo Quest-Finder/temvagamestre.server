@@ -45,7 +45,8 @@ CREATE TABLE "players_range" (
     "min_players" INTEGER NOT NULL,
     "max_players" INTEGER NOT NULL,
 
-    CONSTRAINT "pk_players_range" PRIMARY KEY ("id")
+    CONSTRAINT "pk_players_range" PRIMARY KEY ("id"),
+    CONSTRAINT "check_min_max_players" CHECK ("min_players" <= "max_players")
 );
 
 -- CreateTable
@@ -56,7 +57,6 @@ CREATE TABLE "preference" (
     "active_type" "active_tipe" NOT NULL,
 
     CONSTRAINT "pk_preference" PRIMARY KEY ("id")
-    CONSTRAINT "check_min_max_players" CHECK ("min_players" <= "max_players")
 );
 
 -- CreateTable
