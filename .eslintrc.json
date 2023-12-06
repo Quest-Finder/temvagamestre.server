@@ -17,7 +17,10 @@
     "jest.config.ts",
     "jest-unit-config.ts",
     "jest-integration-config.ts",
-    "commitlint.config.js"
+    "commitlint.config.js",
+    "src/**/*.sql",
+    "src/**/*.toml",
+    "src/**/*.prisma"
   ],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "off",
