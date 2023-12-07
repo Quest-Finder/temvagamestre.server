@@ -66,7 +66,21 @@ model RpgStyle {
   id   String @id(map: "pk_rpg_style") @unique(map: "uq_rpg_style_id") @db.VarChar(50)
   name String @db.VarChar(35)
 
+  preferenceRpgStyle PreferenceRpgStyle[]
+
   @@map("rpg_style")
+}
+
+model PreferenceRpgStyle {
+  preferenceId String @map("preference_id") @db.VarChar(50)
+  rpgStyleId   String @map("rpg_style_id") @db.VarChar(50)
+
+  preference Preference @relation(fields: [preferenceId], references: [id], onDelete: Cascade, map: "fk_preference_preference_rpg_style")
+  rpgStyle   RpgStyle   @relation(fields: [rpgStyleId], references: [id], onDelete: Cascade, map: "fk_rpg_style_preference_rpg_style")
+
+  @@id([preferenceId, rpgStyleId], map: "pk_preference_rpg_style")
+  @@unique([preferenceId, rpgStyleId], map: "uq_preference_rpg_style_preference_id_rpg_style_id")
+  @@map("preference_rpg_style")
 }
 
 model Preference {
@@ -74,9 +88,10 @@ model Preference {
   frequency  Frequency
   activeType ActiveType @map("active_type")
 
-  dayPeriod    DayPeriod?
-  playersRange PlayersRange?
-  gamePlace    GamePlace?
+  dayPeriod          DayPeriod?
+  playersRange       PlayersRange?
+  gamePlace          GamePlace?
+  preferenceRpgStyle PreferenceRpgStyle[]
 
   user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_preference")
 
