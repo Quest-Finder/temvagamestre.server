@@ -58,4 +58,13 @@ describe('AddUserUseCase', () => {
     const result = await sut.perform(makeFakeAddUserData())
     expect(result.value).toEqual(new EmailInUseError('any_email@mail.com'))
   })
+
+  it('Should throw if FindUserByEmailRepo throws', async () => {
+    const { sut, findUserByEmailRepoStub } = makeSut()
+    jest.spyOn(findUserByEmailRepoStub, 'execute').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const promise = sut.perform(makeFakeAddUserData())
+    await expect(promise).rejects.toThrow()
+  })
 })
