@@ -1,13 +1,14 @@
 import type { AddUserData, AddUserResponse, AddUser } from '@/domain/contracts/user'
-import type { FindUserByEmailRepo } from '@/usecases/contracts/db/user'
+import type { AddUserRepo, FindUserByEmailRepo } from '@/usecases/contracts/db/user'
 import type { IdBuilder } from '@/usecases/contracts/id'
 import { EmailInUseError } from '@/domain/errors'
-import { left } from '@/shared/either'
+import { left, right } from '@/shared/either'
 
 export class AddUserUseCase implements AddUser {
   constructor (
     private readonly findUserByEmailRepo: FindUserByEmailRepo,
-    private readonly idBuilder: IdBuilder
+    private readonly idBuilder: IdBuilder,
+    private readonly addUserRepo: AddUserRepo
   ) {}
 
   async perform (data: AddUserData): Promise<AddUserResponse> {
@@ -15,7 +16,8 @@ export class AddUserUseCase implements AddUser {
     if (userOrNull) {
       return left(new EmailInUseError(data.email))
     }
-    this.idBuilder.build()
-    return '' as any
+    const id = this.idBuilder.build()
+    await this.addUserRepo.execute({ id, ...data })
+    return right({ userId: id })
   }
 }
