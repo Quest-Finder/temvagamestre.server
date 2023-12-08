@@ -1,6 +1,7 @@
 import type { AddUserData } from '@/domain/contracts/user'
 import type { UserModel } from '@/domain/models'
 import type { FindUserByEmailRepo } from '@/usecases/contracts/db/user'
+import type { IdBuilder } from '@/usecases/contracts/id'
 import { AddUserUseCase } from './add-user-usecase'
 import { EmailInUseError } from '@/domain/errors'
 
@@ -31,15 +32,24 @@ const makeFindUserByEmailRepo = (): FindUserByEmailRepo => {
   return new FindUserByEmailRepoStub()
 }
 
+const makeIdBuilder = (): IdBuilder => {
+  class IdBuilderStub implements IdBuilder {
+    build (): string { return 'any_id' }
+  }
+  return new IdBuilderStub()
+}
+
 interface SutTypes {
   sut: AddUserUseCase
   findUserByEmailRepoStub: FindUserByEmailRepo
+  idBuilderStub: IdBuilder
 }
 
 const makeSut = (): SutTypes => {
   const findUserByEmailRepoStub = makeFindUserByEmailRepo()
-  const sut = new AddUserUseCase(findUserByEmailRepoStub)
-  return { sut, findUserByEmailRepoStub }
+  const idBuilderStub = makeIdBuilder()
+  const sut = new AddUserUseCase(findUserByEmailRepoStub, idBuilderStub)
+  return { sut, findUserByEmailRepoStub, idBuilderStub }
 }
 
 describe('AddUserUseCase', () => {
@@ -47,6 +57,7 @@ describe('AddUserUseCase', () => {
     const { sut, findUserByEmailRepoStub } = makeSut()
     const executeSpy = jest.spyOn(findUserByEmailRepoStub, 'execute')
     await sut.perform(makeFakeAddUserData())
+    expect(executeSpy).toHaveBeenCalledTimes(1)
     expect(executeSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 
@@ -64,6 +75,23 @@ describe('AddUserUseCase', () => {
     jest.spyOn(findUserByEmailRepoStub, 'execute').mockReturnValueOnce(
       Promise.reject(new Error())
     )
+    const promise = sut.perform(makeFakeAddUserData())
+    await expect(promise).rejects.toThrow()
+  })
+
+  it('Should call IdBuilder', async () => {
+    const { sut, idBuilderStub } = makeSut()
+    const buildSpy = jest.spyOn(idBuilderStub, 'build')
+    await sut.perform(makeFakeAddUserData())
+    expect(buildSpy).toHaveBeenCalled()
+    expect(buildSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('Should throw if IdBuilder throws', async () => {
+    const { sut, idBuilderStub } = makeSut()
+    jest.spyOn(idBuilderStub, 'build').mockImplementation(() => {
+      throw new Error()
+    })
     const promise = sut.perform(makeFakeAddUserData())
     await expect(promise).rejects.toThrow()
   })
