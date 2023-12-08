@@ -17,9 +17,9 @@ class Left<L, A> {
 }
 
 class Right<L, A> {
-  readonly value: A | undefined
+  readonly value: A
 
-  constructor (value?: A) {
+  constructor (value: A) {
     this.value = value
   }
 
@@ -36,6 +36,6 @@ export const left = <L extends Error, A>(l: L): Either<L, A> => {
   return new Left<L, A>(l)
 }
 
-export const right = <L extends Error, A>(a?: A): Either<L, A> => {
+export const right = <L extends Error, A>(a: A): Either<L, A> => {
   return new Right<L, A>(a)
 }
