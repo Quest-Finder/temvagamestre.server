@@ -1,9 +1,10 @@
 import type { AddUserData } from '@/domain/contracts/user'
 import type { UserModel } from '@/domain/models'
-import type { FindUserByEmailRepo } from '@/usecases/contracts/db/user'
+import type { AddUserRepo, FindUserByEmailRepo } from '@/usecases/contracts/db/user'
 import type { IdBuilder } from '@/usecases/contracts/id'
 import { AddUserUseCase } from './add-user-usecase'
 import { EmailInUseError } from '@/domain/errors'
+import MockDate from 'mockdate'
 
 const makeFakeAddUserData = (): AddUserData => ({
   firstName: 'any_first_name',
@@ -13,13 +14,10 @@ const makeFakeAddUserData = (): AddUserData => ({
 })
 
 const makeFakeUserModel = (): UserModel => ({
-  id: 'any_id',
+  id: 'any_user_id',
   firstName: 'any_first_name',
   lastName: 'any_last_name',
   email: 'any_email@mail.com',
-  nickName: 'any_nick_name',
-  phone: 'any_phone',
-  adressId: 'any_adress_id',
   dateOfBirth: new Date()
 })
 
@@ -34,25 +32,42 @@ const makeFindUserByEmailRepo = (): FindUserByEmailRepo => {
 
 const makeIdBuilder = (): IdBuilder => {
   class IdBuilderStub implements IdBuilder {
-    build (): string { return 'any_id' }
+    build (): string { return 'any_user_id' }
   }
   return new IdBuilderStub()
+}
+
+const makeAddUserRepo = (): AddUserRepo => {
+  class AddUserRepoStub implements AddUserRepo {
+    async execute (data: UserModel): Promise<void> {
+      await Promise.resolve()
+    }
+  }
+  return new AddUserRepoStub()
 }
 
 interface SutTypes {
   sut: AddUserUseCase
   findUserByEmailRepoStub: FindUserByEmailRepo
   idBuilderStub: IdBuilder
+  addUserRepoStub: AddUserRepo
 }
 
 const makeSut = (): SutTypes => {
   const findUserByEmailRepoStub = makeFindUserByEmailRepo()
   const idBuilderStub = makeIdBuilder()
-  const sut = new AddUserUseCase(findUserByEmailRepoStub, idBuilderStub)
-  return { sut, findUserByEmailRepoStub, idBuilderStub }
+  const addUserRepoStub = makeAddUserRepo()
+  const sut = new AddUserUseCase(
+    findUserByEmailRepoStub, idBuilderStub, addUserRepoStub
+  )
+  return { sut, findUserByEmailRepoStub, idBuilderStub, addUserRepoStub }
 }
 
 describe('AddUserUseCase', () => {
+  beforeAll(() => { MockDate.set(new Date()) })
+
+  afterAll(() => { MockDate.reset() })
+
   it('Should call FindUserByEmailRepo with correct email', async () => {
     const { sut, findUserByEmailRepoStub } = makeSut()
     const executeSpy = jest.spyOn(findUserByEmailRepoStub, 'execute')
@@ -94,5 +109,28 @@ describe('AddUserUseCase', () => {
     })
     const promise = sut.perform(makeFakeAddUserData())
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should call AddUserRepo with correct values', async () => {
+    const { sut, addUserRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(addUserRepoStub, 'execute')
+    await sut.perform(makeFakeAddUserData())
+    expect(executeSpy).toHaveBeenCalledTimes(1)
+    expect(executeSpy).toHaveBeenCalledWith(makeFakeUserModel())
+  })
+
+  it('Should throw if AddUserRepo throws', async () => {
+    const { sut, addUserRepoStub } = makeSut()
+    jest.spyOn(addUserRepoStub, 'execute').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const promise = sut.perform(makeFakeAddUserData())
+    await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return user id if AddUserRepo is a success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.perform(makeFakeAddUserData())
+    expect(result.value).toEqual({ userId: 'any_user_id' })
   })
 })
