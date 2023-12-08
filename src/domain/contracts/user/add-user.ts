@@ -9,9 +9,7 @@ export type AddUserData = {
   dateOfBirth: Date
 }
 
-export type AddUserResult = { userId: string }
-
-export type AddUserResponse = Either<EmailInUseError, AddUserResult>
+export type AddUserResponse = Either<EmailInUseError, null>
 
 export interface AddUser {
   perform: (data: AddUserData) => Promise<AddUserResponse>

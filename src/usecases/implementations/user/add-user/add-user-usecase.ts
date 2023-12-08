@@ -18,6 +18,6 @@ export class AddUserUseCase implements AddUser {
     }
     const id = this.idBuilder.build()
     await this.addUserRepo.execute({ id, ...data })
-    return right({ userId: id })
+    return right(null)
   }
 }

@@ -131,6 +131,6 @@ describe('AddUserUseCase', () => {
   it('Should return user id if AddUserRepo is a success', async () => {
     const { sut } = makeSut()
     const result = await sut.perform(makeFakeAddUserData())
-    expect(result.value).toEqual({ userId: 'any_user_id' })
+    expect(result.isRight()).toBe(true)
   })
 })
