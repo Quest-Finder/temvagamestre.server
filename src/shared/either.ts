@@ -1,4 +1,4 @@
-export type Either<L, A> = Left<L, A> | Right<L, A>
+export type Either<L extends Error, A> = Left<L, A> | Right<L, A>
 
 class Left<L, A> {
   readonly value: L
@@ -32,10 +32,10 @@ class Right<L, A> {
   }
 }
 
-export const left = <L, A>(l: L): Either<L, A> => {
+export const left = <L extends Error, A>(l: L): Either<L, A> => {
   return new Left<L, A>(l)
 }
 
-export const right = <L, A>(a?: A): Either<L, A> => {
+export const right = <L extends Error, A>(a?: A): Either<L, A> => {
   return new Right<L, A>(a)
 }
