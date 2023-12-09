@@ -1,12 +1,14 @@
 import type { AddUserData } from '@/domain/contracts/user'
-import type { UserModel } from '@/domain/models'
+import type { ExternalAuthMappingModel, UserModel } from '@/domain/models'
 import type { AddUserRepo, FindUserByEmailRepo } from '@/usecases/contracts/db/user'
 import type { IdBuilder } from '@/usecases/contracts/id'
+import type { AddExternalAuthMappingRepo } from '@/usecases/contracts/db/external-auth-mapping'
 import { AddUserUseCase } from './add-user-usecase'
 import { EmailInUseError } from '@/domain/errors'
 import MockDate from 'mockdate'
 
 const makeFakeAddUserData = (): AddUserData => ({
+  externalAuthUserId: 'any_external_auth_user_id',
   firstName: 'any_first_name',
   lastName: 'any_last_name',
   email: 'any_email@mail.com',
@@ -19,6 +21,11 @@ const makeFakeUserModel = (): UserModel => ({
   lastName: 'any_last_name',
   email: 'any_email@mail.com',
   dateOfBirth: new Date()
+})
+
+const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
+  userId: 'any_user_id',
+  externalAuthUserId: 'any_external_auth_user_id'
 })
 
 const makeFindUserByEmailRepo = (): FindUserByEmailRepo => {
@@ -46,21 +53,41 @@ const makeAddUserRepo = (): AddUserRepo => {
   return new AddUserRepoStub()
 }
 
-interface SutTypes {
+const makeAddExternalAuthMappingRepo = (): AddExternalAuthMappingRepo => {
+  class AddExternalAuthMappingRepoStub implements AddExternalAuthMappingRepo {
+    async execute (data: ExternalAuthMappingModel): Promise<void> {
+      await Promise.resolve()
+    }
+  }
+  return new AddExternalAuthMappingRepoStub()
+}
+
+type SutTypes = {
   sut: AddUserUseCase
   findUserByEmailRepoStub: FindUserByEmailRepo
   idBuilderStub: IdBuilder
   addUserRepoStub: AddUserRepo
+  addExternalAuthMappingRepoStub: AddExternalAuthMappingRepo
 }
 
 const makeSut = (): SutTypes => {
   const findUserByEmailRepoStub = makeFindUserByEmailRepo()
   const idBuilderStub = makeIdBuilder()
   const addUserRepoStub = makeAddUserRepo()
+  const addExternalAuthMappingRepoStub = makeAddExternalAuthMappingRepo()
   const sut = new AddUserUseCase(
-    findUserByEmailRepoStub, idBuilderStub, addUserRepoStub
+    findUserByEmailRepoStub,
+    idBuilderStub,
+    addUserRepoStub,
+    addExternalAuthMappingRepoStub
   )
-  return { sut, findUserByEmailRepoStub, idBuilderStub, addUserRepoStub }
+  return {
+    sut,
+    findUserByEmailRepoStub,
+    idBuilderStub,
+    addUserRepoStub,
+    addExternalAuthMappingRepoStub
+  }
 }
 
 describe('AddUserUseCase', () => {
@@ -128,7 +155,24 @@ describe('AddUserUseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  it('Should return user id if AddUserRepo is a success', async () => {
+  it('Should call AddExternalAuthMappingRepo with correct values', async () => {
+    const { sut, addExternalAuthMappingRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(addExternalAuthMappingRepoStub, 'execute')
+    await sut.perform(makeFakeAddUserData())
+    expect(executeSpy).toHaveBeenCalledTimes(1)
+    expect(executeSpy).toHaveBeenCalledWith(makeFakeExternalAuthMappingModel())
+  })
+
+  it('Should throw if AddExternalAuthMappingRepo throws', async () => {
+    const { sut, addExternalAuthMappingRepoStub } = makeSut()
+    jest.spyOn(addExternalAuthMappingRepoStub, 'execute').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const promise = sut.perform(makeFakeAddUserData())
+    await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return right result on success', async () => {
     const { sut } = makeSut()
     const result = await sut.perform(makeFakeAddUserData())
     expect(result.isRight()).toBe(true)
