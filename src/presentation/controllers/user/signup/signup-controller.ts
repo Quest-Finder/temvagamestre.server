@@ -1,9 +1,13 @@
 import type { Validation, Controller } from '@/presentation/contracts'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
-import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
+import type { AddUser } from '@/domain/contracts/user'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 
 export class SignUpController implements Controller {
-  constructor (private readonly validation: Validation) {}
+  constructor (
+    private readonly validation: Validation,
+    private readonly addUser: AddUser
+  ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -11,9 +15,13 @@ export class SignUpController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      return { statusCode: 0, body: '' }
+      const addUserResult = await this.addUser.perform(httpRequest.body)
+      if (addUserResult.isLeft()) {
+        return badRequest(addUserResult.value)
+      }
+      return noContent()
     } catch (error: any) {
-      return serverError(error)
+      return serverError()
     }
   }
 }
