@@ -1,4 +1,4 @@
-import type { HttpResponse } from '@/presentation/http/http'
+import type { HttpResponse } from '@/presentation/types/http'
 import { ServerError } from '@/presentation/errors/server-error'
 
 export const created = (data: any): HttpResponse => ({

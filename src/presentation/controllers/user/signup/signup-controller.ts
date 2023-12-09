@@ -1,5 +1,6 @@
 import type { Validation, Controller } from '@/presentation/contracts'
-import { badRequest, serverError, type HttpRequest, type HttpResponse } from '@/presentation/http'
+import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
+import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
 
 export class SignUpController implements Controller {
   constructor (private readonly validation: Validation) {}

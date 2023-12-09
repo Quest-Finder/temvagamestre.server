@@ -1,6 +1,7 @@
 import type { Validation } from '@/presentation/contracts'
+import type { HttpRequest } from '@/presentation/types/http'
 import { ServerError } from '@/presentation/errors'
-import { badRequest, serverError, type HttpRequest } from '@/presentation/http'
+import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
 import { type Either, right, left } from '@/shared/either'
 import { SignUpController } from './signup-controller'
 import MockDate from 'mockdate'
