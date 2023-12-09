@@ -18,7 +18,7 @@
     "test:verbose-unit": "jest --passWithNoTests --runInBand -c jest-unit-config.ts",
     "test:verbose-integration": "jest --passWithNoTests --runInBand -c jest-integration-config.ts",
     "test:ci": "npm test -- --coverage",
-    "test:staged": "npm test -- --findRelatedTests",
+    "test:staged": "npm test -- --onlyChanged",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "prepare": "husky install"
   },
