@@ -25,26 +25,26 @@ const zod = async () => { return await import('zod') }
 
 const makeFakeZodSchema = async (): Promise<any> => {
   const z = await zod()
-  return z.object({ value: z.string() })
-}
-
-const makeSut = async (): Promise<ZodHelper> => {
-  const schema = await makeFakeZodSchema()
-  return new ZodHelper(schema)
+  return z.object({ data: z.string() })
 }
 
 describe('ZodHelper', () => {
   it('Should return true if parse with correct values', async () => {
-    const sut = await makeSut()
-    const result = sut.check({ value: 'any_value' })
-    expect(result.isRight()).toBe(true)
+    const sut = ZodHelper.check({
+      value: { data: 'any_data' },
+      schema: await makeFakeZodSchema()
+    })
+    expect(sut.isRight()).toBe(true)
   })
 
   it('Should return an ZodError if parse throws', async () => {
-    const sut = await makeSut()
-    const mockParse = jest.fn(() => { throw new Error() });
-    (sut as any).schema.parse = mockParse
-    const result = sut.check({ value: 'any_value' })
-    expect(result.isLeft()).toBe(true)
+    const fakeSchema = await makeFakeZodSchema()
+    const mockParse = jest.fn(() => { throw new Error() })
+    jest.spyOn(fakeSchema, 'parse').mockImplementationOnce(mockParse)
+    const sut = ZodHelper.check({
+      value: { data: 'any_data' },
+      schema: fakeSchema
+    })
+    expect(sut.isLeft()).toBe(true)
   })
 })

@@ -1,12 +1,15 @@
 import { left, right, type Either } from '@/shared/either'
 import type { ZodSchema } from 'zod'
 
-export class ZodHelper {
-  constructor (private readonly schema: ZodSchema) {}
+export type ZodHelperData = {
+  value: any
+  schema: ZodSchema
+}
 
-  check (value: any): Either<Error, null> {
+export class ZodHelper {
+  static check (data: ZodHelperData): Either<Error, null> {
     try {
-      this.schema.parse(value)
+      data.schema.parse(data.value)
       return right(null)
     } catch (error: any) {
       return left(error)
