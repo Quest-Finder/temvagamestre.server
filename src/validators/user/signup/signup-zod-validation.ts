@@ -11,7 +11,10 @@ export class SignUpZodValidation implements Validation {
       lastName: z.string().min(2).max(50),
       email: z.string().email(),
       phone: z.string().min(11).max(20).optional(),
-      dateOfBirth: z.date()
+      dateOfBirth: z.string().regex(
+        /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
+        'Enter a date in the format: MM/DD/YYYY'
+      )
     })
     return ZodHelper.check({ value: input, schema })
   }
