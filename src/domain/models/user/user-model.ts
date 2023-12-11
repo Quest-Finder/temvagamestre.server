@@ -6,5 +6,5 @@ export type UserModel = {
   nickname?: string | null
   phone?: string | null
   addressId?: string | null
-  dateOfBirth: Date
+  dateOfBirth?: Date | null
 }

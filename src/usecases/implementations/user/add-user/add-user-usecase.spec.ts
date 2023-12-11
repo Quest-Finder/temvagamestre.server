@@ -5,22 +5,19 @@ import type { IdBuilder } from '@/usecases/contracts/id'
 import type { AddExternalAuthMappingRepo } from '@/usecases/contracts/db/external-auth-mapping'
 import { AddUserUseCase } from './add-user-usecase'
 import { EmailInUseError } from '@/domain/errors'
-import MockDate from 'mockdate'
 
 const makeFakeAddUserData = (): AddUserData => ({
   externalAuthUserId: 'any_external_auth_user_id',
   firstName: 'any_first_name',
   lastName: 'any_last_name',
-  email: 'any_email@mail.com',
-  dateOfBirth: new Date()
+  email: 'any_email@mail.com'
 })
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
   firstName: 'any_first_name',
   lastName: 'any_last_name',
-  email: 'any_email@mail.com',
-  dateOfBirth: new Date()
+  email: 'any_email@mail.com'
 })
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
@@ -91,10 +88,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('AddUserUseCase', () => {
-  beforeAll(() => { MockDate.set(new Date()) })
-
-  afterAll(() => { MockDate.reset() })
-
   it('Should call FindUserByEmailRepo with correct email', async () => {
     const { sut, findUserByEmailRepoStub } = makeSut()
     const executeSpy = jest.spyOn(findUserByEmailRepoStub, 'execute')

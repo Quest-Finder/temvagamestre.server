@@ -3,7 +3,6 @@ import type { PrismaClient } from '@prisma/client'
 import { AddExternalAuthMappingPrismaRepo } from './add-external-auth-mapping-prisma-repo'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { PrismockClient } from 'prismock'
-import MockDate from 'mockdate'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -11,8 +10,7 @@ const makeFakeUserModel = (): UserModel => ({
   lastName: 'any_last_name',
   firstName: 'any_first_name',
   nickname: 'any_nick_name',
-  phone: 'any_user_phone',
-  dateOfBirth: new Date()
+  phone: 'any_user_phone'
 })
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
@@ -28,7 +26,6 @@ const makeSut = (): AddExternalAuthMappingPrismaRepo => {
 
 describe('FindUserByEmailPrismaRepo', () => {
   beforeAll(async () => {
-    MockDate.set(new Date())
     prismock = new PrismockClient()
     jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(
       Promise.resolve(prismock)
@@ -41,7 +38,6 @@ describe('FindUserByEmailPrismaRepo', () => {
   })
 
   afterAll(async () => {
-    MockDate.reset()
     await prismock.$disconnect()
   })
 
@@ -66,6 +62,7 @@ describe('FindUserByEmailPrismaRepo', () => {
     expect(userAndExternalAuthMapping).toEqual({
       ...makeFakeUserModel(),
       addressId: null,
+      dateOfBirth: null,
       externalAuthMapping: makeFakeExternalAuthMappingModel()
     })
   })

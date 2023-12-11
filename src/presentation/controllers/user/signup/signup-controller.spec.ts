@@ -4,15 +4,13 @@ import type { HttpRequest } from '@/presentation/types/http'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import { left, right, type Either } from '@/shared/either'
 import { SignUpController } from './signup-controller'
-import MockDate from 'mockdate'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     externalAuthUserId: 'any_external_auth_user_id',
     firstName: 'any_first_name',
     lastName: 'any_last_name',
-    email: 'any_email@mail.com',
-    dateOfBirth: new Date()
+    email: 'any_email@mail.com'
   }
 })
 
@@ -48,10 +46,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('SignUpController', () => {
-  beforeAll(() => { MockDate.set(new Date()) })
-
-  afterAll(() => { MockDate.reset() })
-
   it('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')

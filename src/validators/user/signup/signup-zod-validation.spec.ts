@@ -3,7 +3,8 @@ import type { AddUserData } from '@/domain/contracts/user'
 import { ZodHelper, type ZodHelperData } from '@/validators/helpers/zod-helper'
 import { SignUpZodValidation } from './signup-zod-validation'
 import { right } from '@/shared/either'
-import MockDate from 'mockdate'
+
+// TEST NOT COMPLETED
 
 jest.mock('zod', () => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -38,8 +39,7 @@ export const makeFakeSignUpZodSchema = async () => {
     firstName: z.string().min(2).max(25),
     lastName: z.string().min(2).max(50),
     email: z.string().email(),
-    phone: z.string().min(11).max(20).optional(),
-    dateOfBirth: z.date()
+    phone: z.string().min(11).max(20).optional()
   })
 }
 
@@ -47,15 +47,10 @@ const makeFakeInput = (): AddUserData => ({
   externalAuthUserId: 'any_external_auth_user_id',
   firstName: 'any_first_name',
   lastName: 'any_last_name',
-  email: 'any_email@mail.com',
-  dateOfBirth: new Date()
+  email: 'any_email@mail.com'
 })
 
 describe('SignUpZodValidation', () => {
-  beforeAll(() => { MockDate.set(new Date()) })
-
-  afterAll(() => { MockDate.reset() })
-
   // TEST NOT COMPLETED
   it('Should call ZodHelper with correct values', async () => {
     const sut = new SignUpZodValidation()

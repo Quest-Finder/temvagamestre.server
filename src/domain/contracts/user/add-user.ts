@@ -7,7 +7,6 @@ export type AddUserData = {
   lastName: string
   email: string
   phone?: string
-  dateOfBirth: Date
 }
 
 export type AddUserResponse = Either<EmailInUseError, null>
