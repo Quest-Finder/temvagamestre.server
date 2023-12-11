@@ -1,8 +1,8 @@
 import type { Validation } from '@/presentation/contracts'
-import { WebhookControllerDecorator } from './web-hook-controller-decorator'
 import { type Either, right, left } from '@/shared/either'
 import type { HttpRequest } from '@/presentation/types/http'
 import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
+import { WebhookMiddleware } from './webhook-middleware'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: { value: 'any_value' },
@@ -19,17 +19,17 @@ const makeValidation = (): Validation => {
 }
 
 interface SutTypes {
-  sut: WebhookControllerDecorator
+  sut: WebhookMiddleware
   validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new WebhookControllerDecorator(validationStub)
+  const sut = new WebhookMiddleware(validationStub)
   return { sut, validationStub }
 }
 
-describe('WebhookControllerDecorator', () => {
+describe('WebhookMiddleware', () => {
   it('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')

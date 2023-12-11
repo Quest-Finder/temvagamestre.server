@@ -1,8 +1,8 @@
 import type { Controller, Validation } from '@/presentation/contracts'
-import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
+import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
 
-export class WebhookControllerDecorator implements Controller {
+export class WebhookMiddleware implements Controller {
   constructor (private readonly validation: Validation) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
