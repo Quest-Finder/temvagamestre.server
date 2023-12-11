@@ -1,6 +1,6 @@
-import type { HttpRequest, HttpResponse } from '../types/http'
-import type { Controller } from '../contracts'
-import { noContent } from '../helpers/http-helpers'
+import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
+import type { Controller } from '@/presentation/contracts'
+import { noContent } from '@/presentation/helpers/http-helpers'
 import { AdaptClerkRequestSignUpControllerDecorator } from './adapt-clerk-request-signup-controller-decorator'
 
 const makeFakeRequest = (): HttpRequest => ({

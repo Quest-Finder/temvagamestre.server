@@ -1,6 +1,6 @@
-import type { HttpRequest, HttpResponse } from '../types/http'
-import type { Controller } from '../contracts'
-import type { ClerkSignUpEventData } from '../types/external/clerk-signup-request'
+import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
+import type { Controller } from '@/presentation/contracts'
+import type { ClerkSignUpEventData } from '../types/clerk-signup-request'
 import type { AddUserData } from '@/domain/contracts/user'
 
 export class AdaptClerkRequestSignUpControllerDecorator implements Controller {
