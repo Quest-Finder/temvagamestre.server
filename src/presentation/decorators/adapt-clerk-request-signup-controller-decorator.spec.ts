@@ -82,4 +82,10 @@ describe('AdaptExternalAuthRequestSignUpControllerDecorator', () => {
       }
     })
   })
+
+  it('Should return the same response as the Controller returns', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(noContent())
+  })
 })
