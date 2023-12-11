@@ -1,6 +1,6 @@
 import type { Controller, Validation } from '@/presentation/contracts'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
-import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 
 export class WebhookMiddleware implements Controller {
   constructor (private readonly validation: Validation) {}
@@ -11,7 +11,7 @@ export class WebhookMiddleware implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      return { statusCode: 0, body: '' }
+      return noContent()
     } catch (error: any) {
       return serverError()
     }
