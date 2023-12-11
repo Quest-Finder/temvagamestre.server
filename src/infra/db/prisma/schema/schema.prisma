@@ -163,8 +163,8 @@ model UserSocialMedia {
 }
 
 model ExternalAuthMapping {
-  userId         String @unique(map: "uq_external_auth_mapping_user_id") @map("user_id") @db.VarChar(50)
-  externalAuthId String @unique(map: "uq_external_auth_mapping_external_auth_id") @map("external_auth_id") @db.VarChar(70)
+  userId             String @unique(map: "uq_external_auth_mapping_user_id") @map("user_id") @db.VarChar(50)
+  externalAuthUserId String @unique(map: "uq_external_auth_mapping_external_auth_user_id") @map("external_auth_user_id") @db.VarChar(70)
 
   user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_external_auth_mapping")
 
