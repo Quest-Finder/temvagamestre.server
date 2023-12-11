@@ -117,10 +117,11 @@ model User {
   addressId   String?  @map("address_id") @db.VarChar(50)
   dateOfBirth DateTime @map("date_of_birth") @db.Date
 
-  preference      Preference?
-  userConfig      UserConfig?
-  userBadge       UserBadge[]
-  userSocialMedia UserSocialMedia[]
+  preference          Preference?
+  userConfig          UserConfig?
+  userBadge           UserBadge[]
+  externalAuthMapping ExternalAuthMapping?
+  userSocialMedia     UserSocialMedia[]
 
   address Address? @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
 
@@ -159,6 +160,15 @@ model UserSocialMedia {
   @@id([userId, socialMediaId], map: "pk_user_social_media")
   @@unique([userId, socialMediaId], map: "uq_user_social_media_user_id_social_media_id")
   @@map("user_social_media")
+}
+
+model ExternalAuthMapping {
+  userId         String @unique(map: "uq_external_auth_mapping_user_id") @map("user_id") @db.VarChar(50)
+  externalAuthId String @unique(map: "uq_external_auth_mapping_external_auth_id") @map("external_auth_id") @db.VarChar(70)
+
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_external_auth_mapping")
+
+  @@map("external_auth_mapping")
 }
 
 enum ActiveType {
