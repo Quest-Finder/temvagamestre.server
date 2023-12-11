@@ -16,7 +16,6 @@ export class AdaptClerkRequestSignUpControllerDecorator implements Controller {
       ...(clerkRequest.data.phone_numbers.length && { phone: clerkRequest.data.phone_numbers[0] })
     }
     httpRequest.body = formatedRequest
-    await this.controller.handle(httpRequest)
-    return { statusCode: 0, body: '' }
+    return await this.controller.handle(httpRequest)
   }
 }
