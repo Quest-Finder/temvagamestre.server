@@ -1,5 +1,7 @@
 import { left, right, type Either } from '@/shared/either'
-import type { ZodSchema } from 'zod'
+import { ZodError, type ZodSchema } from 'zod'
+import { ValidationError } from '../errors/validation-error'
+import { fromZodError } from 'zod-validation-error'
 
 export type ZodHelperData = {
   value: any
@@ -12,6 +14,9 @@ export class ZodHelper {
       data.schema.parse(data.value)
       return right(null)
     } catch (error: any) {
+      if (error instanceof ZodError) {
+        return left(new ValidationError(fromZodError(error)))
+      }
       return left(error)
     }
   }
