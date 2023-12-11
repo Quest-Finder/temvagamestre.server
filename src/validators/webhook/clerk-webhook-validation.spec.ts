@@ -2,10 +2,11 @@ import type { HttpRequest } from '@/presentation/types/http'
 import { Webhook } from 'svix'
 import { InvalidSvixError } from '../errors/invalid-svix-headers-error'
 import { ClerkWebhookValidation } from './clerk-webhook-validation'
+import { VerifyWebhookError } from '../errors'
 
 jest.mock('svix', () => ({
-  Webhook: jest.fn(() => ({
-    verify: jest.fn(() => true)
+  Webhook: jest.fn().mockImplementation(() => ({
+    verify: jest.fn()
   }))
 }))
 
@@ -38,5 +39,17 @@ describe('ClerkWebhookValidation', () => {
     const sut = makeSut()
     const result = await sut.validate(makeFakeRequest())
     expect(result.isRight()).toBe(true)
+  })
+
+  it('Should return VerifyWebhookError if Svix Webhook verify throws', async () => {
+    const sut = makeSut()
+    const wh = Webhook as jest.MockedFunction<any>
+    wh.mockImplementation(() => ({
+      verify: jest.fn(() => {
+        throw new Error('Verification failed')
+      })
+    }))
+    const result = await sut.validate(makeFakeRequest())
+    expect(result.value).toEqual(new VerifyWebhookError())
   })
 })
