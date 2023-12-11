@@ -1,12 +1,21 @@
+import { AppModule } from '@/main/app.module'
+import { type INestApplication } from '@nestjs/common'
+import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import createApp from '@/main/configs/app'
 
 describe('CORS Middleware', () => {
+  let app: INestApplication
+
+  beforeEach(async () => {
+    const module = await Test.createTestingModule({
+      imports: [AppModule]
+    }).compile()
+
+    app = module.createNestApplication()
+    await app.init()
+  })
+
   it('Should enable CORS', async () => {
-    const app = await createApp()
-    app.getHttpAdapter().get('/test_cors', (req, res) => {
-      res.send()
-    })
     await request(app.getHttpServer())
       .get('/test_cors')
       .expect('access-control-allow-origin', '*')
