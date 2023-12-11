@@ -3,8 +3,8 @@ export type UserModel = {
   firstName: string
   lastName: string
   email: string
-  nickName?: string
-  phone?: string
-  adressId?: string
+  nickname?: string | null
+  phone?: string | null
+  addressId?: string | null
   dateOfBirth: Date
 }
