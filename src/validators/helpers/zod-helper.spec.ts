@@ -1,4 +1,5 @@
-import type { ZodObject, ZodRawShape } from 'zod'
+import { ZodError, type ZodObject, type ZodRawShape } from 'zod'
+import { ValidationError } from '../errors'
 import { ZodHelper } from './zod-helper'
 
 jest.mock('zod', () => {
@@ -37,7 +38,7 @@ describe('ZodHelper', () => {
     expect(sut.isRight()).toBe(true)
   })
 
-  it('Should return an ZodError if parse throws', async () => {
+  it('Should return an Error if parse throws', async () => {
     const fakeSchema = await makeFakeZodSchema()
     const mockParse = jest.fn(() => { throw new Error() })
     jest.spyOn(fakeSchema, 'parse').mockImplementationOnce(mockParse)
@@ -46,5 +47,16 @@ describe('ZodHelper', () => {
       schema: fakeSchema
     })
     expect(sut.isLeft()).toBe(true)
+  })
+
+  it('Should return an ValidationError if parse throws and erorr is instanceof ZodError', async () => {
+    const fakeSchema = await makeFakeZodSchema()
+    const mockParse = jest.fn(() => { throw new ZodError([]) })
+    jest.spyOn(fakeSchema, 'parse').mockImplementationOnce(mockParse)
+    const sut = ZodHelper.check({
+      value: { data: 'any_data' },
+      schema: fakeSchema
+    })
+    expect(sut.value).toEqual(new ValidationError('Validation error'))
   })
 })
