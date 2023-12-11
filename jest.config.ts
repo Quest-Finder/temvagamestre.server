@@ -14,7 +14,10 @@ const config: Config = {
   },
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'
-  }
+  },
+  setupFiles: [
+    '<rootDir>/src/validators/webhook/test-env/test-webhook-secret-var.ts'
+  ]
 }
 
 export default config
