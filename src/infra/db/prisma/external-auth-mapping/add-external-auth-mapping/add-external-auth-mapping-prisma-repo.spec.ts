@@ -1,6 +1,6 @@
 import type { ExternalAuthMappingModel, UserModel } from '@/domain/models'
 import type { PrismaClient } from '@prisma/client'
-import { AddExternalAuthMappingPrismaRepo } from './add-external-auth-mapping'
+import { AddExternalAuthMappingPrismaRepo } from './add-external-auth-mapping-prisma-repo'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { PrismockClient } from 'prismock'
 import MockDate from 'mockdate'
