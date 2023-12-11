@@ -1,7 +1,7 @@
 import type { Validation } from '@/presentation/contracts'
-import { type Either, right, left } from '@/shared/either'
 import type { HttpRequest } from '@/presentation/types/http'
-import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
+import { left, right, type Either } from '@/shared/either'
 import { WebhookMiddleware } from './webhook-middleware'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -55,5 +55,11 @@ describe('WebhookMiddleware', () => {
     const error = new Error()
     error.stack = 'any_stack'
     expect(httpResponse).toEqual(serverError())
+  })
+
+  it('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
