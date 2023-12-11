@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
-import { CorsMiddleware } from './middlewares'
+import { CorsMiddleware } from '@/main/middlewares'
 
 @Module({
   imports: [],
