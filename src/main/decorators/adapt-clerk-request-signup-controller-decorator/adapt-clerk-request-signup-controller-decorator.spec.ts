@@ -83,6 +83,23 @@ describe('AdaptExternalAuthRequestSignUpControllerDecorator', () => {
     })
   })
 
+  it('Should call Controller with the formatted request body and phone, if provided', async () => {
+    const { sut, controllerStub } = makeSut()
+    const handleSpy = jest.spyOn(controllerStub, 'handle')
+    const request = makeFakeRequest().body
+    request.data.phone_numbers = ['any_phone']
+    await sut.handle({ body: request })
+    expect(handleSpy).toHaveBeenCalledWith({
+      body: {
+        externalAuthUserId: 'user_29w83sxmDNGwOuEthce5gg56FcC',
+        firstName: 'any_first_name',
+        lastName: 'any_last_name',
+        email: 'example@example.org',
+        phone: 'any_phone'
+      }
+    })
+  })
+
   it('Should return the same response as the Controller returns', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
