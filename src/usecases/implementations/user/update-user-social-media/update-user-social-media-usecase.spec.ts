@@ -3,7 +3,7 @@ import { UpdateUserSocialMediaUseCase } from './update-user-social-media-usecase
 import { type UpdateUserSocialMediaData } from '@/domain/contracts/user'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 import { InvalidSocialMediaIdError } from '@/domain/errors'
-import { type AddOrUpdateUserSocialMediaByIdsRepo } from '@/usecases/contracts/db/social-media/add-or-update-user-social-media-by-ids-repo'
+import { type AddOrUpdateUserSocialMediaByIdsRepo } from '@/usecases/contracts/db/user/add-or-update-user-social-media-by-ids-repo'
 
 const makeFakeSocialMediaData = (): UpdateUserSocialMediaData => ({
   externalAuthUserId: 'any_user_id',
