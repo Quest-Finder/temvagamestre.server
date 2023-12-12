@@ -1,9 +1,9 @@
-import type { Controller } from '@/presentation/contracts'
-import type { HttpRequest } from '@/presentation/types/http'
-import type { Response, Request, NextFunction } from 'express'
+import { type Middleware } from '@/presentation/contracts'
+import { type HttpRequest } from '@/presentation/types/http'
+import type { NextFunction, Request, Response } from 'express'
 
 export class NestMiddlewareAdapter {
-  constructor (private readonly controller: Controller) {}
+  constructor (private readonly middleware: Middleware) {}
 
   async adapt (req: Request, res: Response, next: NextFunction): Promise<void> {
     const httpRequest: HttpRequest = {
@@ -11,7 +11,7 @@ export class NestMiddlewareAdapter {
       headers: req.headers,
       params: req.params
     }
-    const httpResponse = await this.controller.handle(httpRequest)
+    const httpResponse = await this.middleware.handle(httpRequest)
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       next()
     } else {
