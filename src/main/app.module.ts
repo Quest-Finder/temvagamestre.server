@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
 import { CorsMiddleware } from '@/main/middlewares'
+import { SignUpModule } from './routes/user/signup/signup.module'
 
 @Module({
-  imports: [],
+  imports: [SignUpModule],
   controllers: [],
   providers: []
 })
