@@ -1,1 +1,1 @@
-export * from './invalid-social-media-id'
+export * from './invalid-social-media-id-error'

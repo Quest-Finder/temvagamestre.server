@@ -1,5 +1,5 @@
 import { type Either } from '@/shared/either'
-import { type InvalidSocialMediaId } from '../errors'
+import { type InvalidSocialMediaIdError } from '../../errors'
 
 export interface UpdateUserSocialMediaData {
   externalAuthUserId: string
@@ -7,7 +7,7 @@ export interface UpdateUserSocialMediaData {
   link: string
 }
 
-export type UpdateUserSocialMediaResponse = Either<InvalidSocialMediaId, null>
+export type UpdateUserSocialMediaResponse = Either<InvalidSocialMediaIdError, null>
 
 export interface UpdateUserSocialMedia {
   perform: (data: UpdateUserSocialMediaData) => Promise<UpdateUserSocialMediaResponse>
