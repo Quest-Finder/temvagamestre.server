@@ -3,6 +3,7 @@ import { Webhook } from 'svix'
 import { InvalidSvixError } from '../errors/invalid-svix-headers-error'
 import { SvixWebhookValidation } from './svix-webhook-validation'
 import { VerifyWebhookError } from '../errors'
+import env from '@/main/configs/env'
 
 jest.mock('svix', () => ({
   Webhook: jest.fn().mockImplementation(() => ({
@@ -32,7 +33,7 @@ describe('SvixWebhookValidation', () => {
   it('Should call Svix Webhook with correct secret', async () => {
     const sut = makeSut()
     await sut.validate(makeFakeRequest())
-    expect(Webhook).toHaveBeenCalledWith('any_secret')
+    expect(Webhook).toHaveBeenCalledWith(env.webhookSecret)
   })
 
   it('Should return right resutl if Svix Webhook verify is a success', async () => {
