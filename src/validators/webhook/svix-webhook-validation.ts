@@ -9,7 +9,7 @@ export class SvixWebhookValidation implements Validation {
   async validate (input: any): Promise<Either<Error, null>> {
     try {
       const headers = input.headers as SvixHeaders
-      const payload = input.body
+      const payload = JSON.stringify(input.body)
       if (!headers?.['svix-id'] || !headers['svix-signature'] || !headers['svix-timestamp']) {
         return left(new InvalidSvixError())
       }
