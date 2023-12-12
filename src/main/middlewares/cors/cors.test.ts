@@ -6,13 +6,17 @@ import request from 'supertest'
 describe('CORS Middleware', () => {
   let app: INestApplication
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
 
     app = module.createNestApplication()
     await app.init()
+  })
+
+  afterAll(async () => {
+    await app.close()
   })
 
   it('Should enable CORS', async () => {
