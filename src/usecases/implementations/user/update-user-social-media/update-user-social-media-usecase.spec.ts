@@ -73,4 +73,11 @@ describe('UpdateUserSocialMediaUseCase', () => {
     expect(executeSpy).toHaveBeenCalledTimes(1)
     expect(executeSpy).toHaveBeenCalledWith('any_user_id', 'any_social_media_id')
   })
+
+  it('Should throw if AddOrUpdateUserSocialMediaByIdsRepo throws', async () => {
+    const { sut, addOrUpdateUserSocialMediaByIdsRepoStub } = makeSut()
+    jest.spyOn(addOrUpdateUserSocialMediaByIdsRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform(makeFakeSocialMediaData())
+    await expect(promise).rejects.toThrow()
+  })
 })
