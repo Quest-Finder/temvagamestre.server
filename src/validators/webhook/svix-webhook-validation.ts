@@ -5,7 +5,7 @@ import { Webhook } from 'svix'
 import { InvalidSvixError, VerifyWebhookError } from '../errors'
 import { type SvixHeaders } from '../types/svix-headers'
 
-export class ClerkWebhookValidation implements Validation {
+export class SvixWebhookValidation implements Validation {
   async validate (input: any): Promise<Either<Error, null>> {
     try {
       const headers = input.headers as SvixHeaders

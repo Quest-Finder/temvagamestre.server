@@ -1,7 +1,7 @@
 import type { HttpRequest } from '@/presentation/types/http'
 import { Webhook } from 'svix'
 import { InvalidSvixError } from '../errors/invalid-svix-headers-error'
-import { ClerkWebhookValidation } from './clerk-webhook-validation'
+import { SvixWebhookValidation } from './svix-webhook-validation'
 import { VerifyWebhookError } from '../errors'
 
 jest.mock('svix', () => ({
@@ -19,10 +19,10 @@ const makeFakeRequest = (): HttpRequest => ({
   body: { payload: 'any_payload' }
 })
 
-const makeSut = (): ClerkWebhookValidation => {
-  return new ClerkWebhookValidation()
+const makeSut = (): SvixWebhookValidation => {
+  return new SvixWebhookValidation()
 }
-describe('ClerkWebhookValidation', () => {
+describe('SvixWebhookValidation', () => {
   it('Should return InvalidSvixError if any field required not exist', async () => {
     const sut = makeSut()
     const result = await sut.validate({})
