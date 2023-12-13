@@ -3,7 +3,7 @@ import { UpdateUserSocialMediaController } from './update-user-social-media-cont
 import { type Either, right, left } from '@/shared/either'
 import { type UpdateUserSocialMedia, type UpdateUserSocialMediaData, type UpdateUserSocialMediaResponse } from '@/domain/contracts/user'
 import { type HttpRequest } from '@/presentation/types/http'
-import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -94,5 +94,11 @@ describe('UpdateUserSocialMediaController', () => {
     jest.spyOn(updateUserSocialMediaStub, 'perform').mockReturnValueOnce(Promise.resolve(Promise.reject(new Error())))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
+  })
+
+  it('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
