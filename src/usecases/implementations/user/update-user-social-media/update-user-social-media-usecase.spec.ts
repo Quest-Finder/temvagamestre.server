@@ -6,7 +6,7 @@ import { InvalidSocialMediaIdError } from '@/domain/errors'
 import { type AddOrUpdateUserSocialMediaByIdsRepo } from '@/usecases/contracts/db/user/add-or-update-user-social-media-by-ids-repo'
 
 const makeFakeSocialMediaData = (): UpdateUserSocialMediaData => ({
-  externalAuthUserId: 'any_user_id',
+  userId: 'any_user_id',
   socialMediaId: 'any_social_media_id',
   link: 'any_link'
 })

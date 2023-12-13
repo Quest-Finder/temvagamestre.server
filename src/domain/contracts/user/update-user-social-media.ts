@@ -2,7 +2,7 @@ import { type Either } from '@/shared/either'
 import { type InvalidSocialMediaIdError } from '../../errors'
 
 export interface UpdateUserSocialMediaData {
-  externalAuthUserId: string
+  userId: string
   socialMediaId: string
   link: string
 }
