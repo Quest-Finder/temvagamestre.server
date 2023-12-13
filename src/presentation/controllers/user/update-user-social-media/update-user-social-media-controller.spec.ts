@@ -74,4 +74,11 @@ describe('UpdateUserSocialMediaController', () => {
     error.stack = 'any_stack'
     expect(httpResponse).toEqual(serverError())
   })
+
+  it('Should call UpdateUserSocialMedia with correct values', async () => {
+    const { sut, updateUserSocialMediaStub } = makeSut()
+    const performSpy = jest.spyOn(updateUserSocialMediaStub, 'perform')
+    await sut.handle(makeFakeRequest())
+    expect(performSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
 })
