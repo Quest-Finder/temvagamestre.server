@@ -51,6 +51,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('UpdateUserSocialMediaController', () => {
+  it('Should call Validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    await sut.handle(makeFakeRequest())
+    expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+
   it('Should return 400 if Validation fails', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(Promise.resolve(left(new Error('any_message'))))
