@@ -3,7 +3,7 @@ import { UpdateUserSocialMediaController } from './update-user-social-media-cont
 import { type Either, right, left } from '@/shared/either'
 import { type UpdateUserSocialMedia, type UpdateUserSocialMediaData, type UpdateUserSocialMediaResponse } from '@/domain/contracts/user'
 import { type HttpRequest } from '@/presentation/types/http'
-import { badRequest } from '@/presentation/helpers/http-helpers'
+import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -64,5 +64,14 @@ describe('UpdateUserSocialMediaController', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error('any_message')))
+  })
+
+  it('Should return 500 if Validation throws', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(Promise.resolve(Promise.reject(new Error())))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    const error = new Error()
+    error.stack = 'any_stack'
+    expect(httpResponse).toEqual(serverError())
   })
 })
