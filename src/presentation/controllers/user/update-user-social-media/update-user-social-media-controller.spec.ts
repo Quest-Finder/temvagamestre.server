@@ -81,4 +81,11 @@ describe('UpdateUserSocialMediaController', () => {
     await sut.handle(makeFakeRequest())
     expect(performSpy).toHaveBeenCalledWith(makeFakeRequest().body)
   })
+
+  it('Should return 400 if UpdateUserSocialMedia return an Error', async () => {
+    const { sut, updateUserSocialMediaStub } = makeSut()
+    jest.spyOn(updateUserSocialMediaStub, 'perform').mockReturnValueOnce(Promise.resolve(left(new Error('any_message'))))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new Error('any_message')))
+  })
 })
