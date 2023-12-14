@@ -18,7 +18,7 @@ export class UpdateUserSocialMediaUseCase implements UpdateUserSocialMedia {
       return left(new InvalidSocialMediaIdError(data.socialMediaId))
     }
 
-    await this.addOrUpdateUserSocialMediaByIdsRepo.execute(data.userId, data.socialMediaId)
+    await this.addOrUpdateUserSocialMediaByIdsRepo.execute(data)
 
     return right(null)
   }

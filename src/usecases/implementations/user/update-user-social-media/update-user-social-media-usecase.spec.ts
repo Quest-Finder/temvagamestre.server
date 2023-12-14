@@ -18,7 +18,7 @@ const makeFakeSocialMediaModel = (): SocialMediaModel => ({
 
 const makeAddOrUpdateUserSocialMediaByIdsRepo = (): AddOrUpdateUserSocialMediaByIdsRepo => {
   class AddOrUpdateUserSocialMediaByIdsRepoStub implements AddOrUpdateUserSocialMediaByIdsRepo {
-    async execute (userId: string, socialMediaId: string): Promise<void> {}
+    async execute (data: UpdateUserSocialMediaData): Promise<void> {}
   }
   return new AddOrUpdateUserSocialMediaByIdsRepoStub()
 }
@@ -71,7 +71,11 @@ describe('UpdateUserSocialMediaUseCase', () => {
     const executeSpy = jest.spyOn(addOrUpdateUserSocialMediaByIdsRepoStub, 'execute')
     await sut.perform(makeFakeSocialMediaData())
     expect(executeSpy).toHaveBeenCalledTimes(1)
-    expect(executeSpy).toHaveBeenCalledWith('any_user_id', 'any_social_media_id')
+    expect(executeSpy).toHaveBeenCalledWith({
+      userId: 'any_user_id',
+      socialMediaId: 'any_social_media_id',
+      link: 'any_link'
+    })
   })
 
   it('Should throw if AddOrUpdateUserSocialMediaByIdsRepo throws', async () => {
