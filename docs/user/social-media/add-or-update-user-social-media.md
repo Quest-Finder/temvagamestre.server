@@ -1,4 +1,4 @@
-# Adiciar ou Atualizar Redes Sociais do Usuário
+# Adicioar ou Atualizar Redes Sociais do Usuário
 
 ## Endpoint
 
@@ -6,9 +6,9 @@
 
 ## Cabeçalhos da Requisição
 
-O cabeçalho da requisição deve conter um ID de usuário
+O cabeçalho da requisição deve conter um token de acesso:
 
-- **userId** (string): ID do usuário.
+- **accessToken** (string): Token de acesso gerado pelo **_Clerk_**
 
 ## Corpo da Requisição
 
