@@ -1,3 +1,5 @@
+import { type UpdateUserSocialMediaData } from '@/domain/contracts/user'
+
 export interface AddOrUpdateUserSocialMediaByIdsRepo {
-  execute: (userId: string, socialMediaId: string) => Promise<void>
+  execute: (data: UpdateUserSocialMediaData) => Promise<void>
 }
