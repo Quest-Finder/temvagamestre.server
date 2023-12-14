@@ -1,4 +1,4 @@
-# Adicioar ou Atualizar Redes Sociais do Usuário
+# Adicionar ou Atualizar Redes Sociais do Usuário
 
 ## Endpoint
 
