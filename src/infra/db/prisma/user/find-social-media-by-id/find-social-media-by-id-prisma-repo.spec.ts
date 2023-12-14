@@ -17,7 +17,7 @@ const makeSut = (): FindSocialMediaByIdPrismaRepo => {
 
 describe('FindSocialMediaByIdPrismaRepo', () => {
   beforeEach(async () => {
-    await prismock.user.deleteMany()
+    await prismock.socialMedia.deleteMany()
   })
 
   beforeAll(async () => {
