@@ -1,13 +1,14 @@
-import { type User, type PrismaClient, type UserSocialMedia } from '@prisma/client'
+import { type User, type PrismaClient } from '@prisma/client'
 import { AddOrUpdateUserSocialMediaByIdsPrismaRepo } from './add-or-update-user-social-media-by-ids-prisma-repo'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 import { PrismockClient } from 'prismock'
 import { PrismaHelper } from '../../helpers/prisma-helper'
 import MockDate from 'mockdate'
+import { type UserSocialMediaModel } from '@/domain/models/user/user-social-media-model'
 
 let prismock: PrismaClient
 
-const makeFakeUserSocialMedia = (): UserSocialMedia => ({
+const makeFakeUserSocialMedia = (): UserSocialMediaModel => ({
   userId: 'any_user_id',
   socialMediaId: 'any_social_media_id',
   link: 'any_link'

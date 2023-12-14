@@ -15,7 +15,13 @@ export class UpdateUserSocialMediaController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      const updateUserSocialMediaResult = await this.updateUserSocialMedia.perform(httpRequest.body)
+      const updateUserSocialMediaResult = await this.updateUserSocialMedia.perform(
+        {
+          userId: httpRequest.headers.userId,
+          socialMediaId: httpRequest.body.socialMediaId,
+          link: httpRequest.body.link
+        }
+      )
       if (updateUserSocialMediaResult.isLeft()) {
         return badRequest(updateUserSocialMediaResult.value)
       }

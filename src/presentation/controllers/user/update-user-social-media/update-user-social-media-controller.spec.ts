@@ -7,9 +7,11 @@ import { badRequest, noContent, serverError } from '@/presentation/helpers/http-
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    userId: 'any_user_id',
     socialMediaId: 'any_social_media_id',
     link: 'any_link'
+  },
+  headers: {
+    userId: 'any_user_id'
   }
 })
 
@@ -79,7 +81,11 @@ describe('UpdateUserSocialMediaController', () => {
     const { sut, updateUserSocialMediaStub } = makeSut()
     const performSpy = jest.spyOn(updateUserSocialMediaStub, 'perform')
     await sut.handle(makeFakeRequest())
-    expect(performSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+    expect(performSpy).toHaveBeenCalledWith({
+      userId: makeFakeRequest().headers.userId,
+      socialMediaId: makeFakeRequest().body.socialMediaId,
+      link: makeFakeRequest().body.link
+    })
   })
 
   it('Should return 400 if UpdateUserSocialMedia return an Error', async () => {
