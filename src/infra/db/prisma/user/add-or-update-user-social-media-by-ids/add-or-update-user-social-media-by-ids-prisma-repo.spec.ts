@@ -1,4 +1,4 @@
-import { type User, type PrismaClient } from '@prisma/client'
+import { type User, type PrismaClient, type UserSocialMedia } from '@prisma/client'
 import { AddOrUpdateUserSocialMediaByIdsPrismaRepo } from './add-or-update-user-social-media-by-ids-prisma-repo'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 import { PrismockClient } from 'prismock'
@@ -6,6 +6,12 @@ import { PrismaHelper } from '../../helpers/prisma-helper'
 import MockDate from 'mockdate'
 
 let prismock: PrismaClient
+
+const makeFakeUserSocialMedia = (): UserSocialMedia => ({
+  userId: 'any_user_id',
+  socialMediaId: 'any_social_media_id',
+  link: 'any_link'
+})
 
 const makeFakeUserModel = (): User => ({
   id: 'any_user_id',
@@ -61,5 +67,25 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
 
     expect(userSocialMedia).toBeTruthy()
     expect(userSocialMedia?.link).toBe('any_link')
+  })
+
+  it('Should update User social media when relation exists', async () => {
+    const sut = makeSut()
+    await prismock.user.create({ data: makeFakeUserModel() })
+    await prismock.socialMedia.create({ data: makeFakeSocialMedia() })
+    await prismock.userSocialMedia.create({ data: makeFakeUserSocialMedia() })
+    await sut.execute({ userId: 'any_user_id', socialMediaId: 'any_social_media_id', link: 'updated_link' })
+
+    const userSocialMedia = await prismock.userSocialMedia.findUnique({
+      where: {
+        userId_socialMediaId: {
+          userId: 'any_user_id',
+          socialMediaId: 'any_social_media_id'
+        }
+      }
+    })
+
+    expect(userSocialMedia).toBeTruthy()
+    expect(userSocialMedia?.link).toBe('updated_link')
   })
 })
