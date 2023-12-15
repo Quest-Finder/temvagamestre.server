@@ -108,18 +108,20 @@ model SocialMedia {
 }
 
 model User {
-  id          String   @id(map: "pk_user") @unique(map: "uq_user_id") @db.VarChar(50)
-  addressId   String   @map("address_id") @db.VarChar(50)
-  firstName   String   @map("first_name") @db.VarChar(25)
-  lastName    String   @map("last_name") @db.VarChar(50)
-  nickname    String   @db.VarChar(25)
-  phone       String?  @db.VarChar(20)
-  dateOfBirth DateTime @map("date_of_birth") @db.Date
+  id          String    @id(map: "pk_user") @unique(map: "uq_user_id") @db.VarChar(50)
+  firstName   String    @map("first_name") @db.VarChar(25)
+  lastName    String    @map("last_name") @db.VarChar(50)
+  email       String    @unique(map: "uq_user_email") @db.VarChar(256)
+  nickname    String?   @db.VarChar(25)
+  phone       String?   @db.VarChar(20)
+  addressId   String?   @map("address_id") @db.VarChar(50)
+  dateOfBirth DateTime? @map("date_of_birth") @db.Date()
 
-  preference      Preference?
-  userConfig      UserConfig?
-  userBadge       UserBadge[]
-  userSocialMedia UserSocialMedia[]
+  preference          Preference?
+  userConfig          UserConfig?
+  userBadge           UserBadge[]
+  externalAuthMapping ExternalAuthMapping?
+  userSocialMedia     UserSocialMedia[]
 
   address Address? @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
 
@@ -158,6 +160,15 @@ model UserSocialMedia {
   @@id([userId, socialMediaId], map: "pk_user_social_media")
   @@unique([userId, socialMediaId], map: "uq_user_social_media_user_id_social_media_id")
   @@map("user_social_media")
+}
+
+model ExternalAuthMapping {
+  userId             String @unique(map: "uq_external_auth_mapping_user_id") @map("user_id") @db.VarChar(50)
+  externalAuthUserId String @unique(map: "uq_external_auth_mapping_external_auth_user_id") @map("external_auth_user_id") @db.VarChar(70)
+
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_external_auth_mapping")
+
+  @@map("external_auth_mapping")
 }
 
 enum ActiveType {
