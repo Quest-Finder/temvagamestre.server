@@ -3,7 +3,7 @@ import { ZodError, type ZodSchema } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { ValidationError } from '@/validators/errors/validation-error'
 
-export interface ZodHelperData {
+export type ZodHelperData = {
   value: any
   schema: ZodSchema
 }
