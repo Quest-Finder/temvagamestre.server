@@ -84,3 +84,12 @@ jobs:
           image: us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
           region: ${{ env.REGION }}
           
+      - name: Install TypeScript and ts-node
+        run: yarn add --dev typescript ts-node
+
+      - name: Run migrations development
+        run: |
+          # Comandos migrations
+          yarn migration:create
+          yarn migration:generate
+          yarn migration:run
