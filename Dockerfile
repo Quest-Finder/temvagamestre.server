@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:18.10.0-slim
 
 USER node
 
@@ -8,12 +8,9 @@ WORKDIR /home/node/app
 
 COPY --chown=node:node . .
 
-RUN npm install
+RUN npm  install
 
-RUN npm run build
+RUN npm run  build
 
-ENV NODE_ENV=development
 
-EXPOSE 3000
-
-CMD ["npm", "run" , "start:prod"]  
+CMD ["npm ","run", "start:prod"]  
