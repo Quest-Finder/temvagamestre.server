@@ -8,7 +8,7 @@ name: Execução do CI/CD GCP
 on:
   push:
     branches: 
-     - dev
+     - workflow
 
 # Variáveis de ambiente para ser utilizado nos fluxos
 env:
@@ -25,7 +25,7 @@ jobs:
   create-docker-image-and-send-to-gcp:
     # verifica se a referencia da Branch é a dev
     # se estiver fazendo em outra branch deve escrever o nome da branch
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/workflow'
     # Runs on é o OS da VM aqui sera executado em Linux Ubunto
     runs-on: ubuntu-latest
     outputs:
@@ -46,13 +46,13 @@ jobs:
         # with são os parametros da execução
         with:
           # secrets são configurados no repositório para guardar dados sensíveis
-          project_id: ${{secrets.GOOGLE_PROJECT_ID}}
+          project_id: ${{secrets.GOOGLE_PROJECT}}
           service_account_key: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           export_default_credentials: true
 
       - name: Build and push Docker image
         env:
-          GOOGGLE_PROJECT: ${{secrets.GOOGLE_PROJECT_ID}}
+          GOOGGLE_PROJECT: ${{secrets.GOOGLE_PROJECT}}
           # run roda comandos de terminal
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
@@ -61,7 +61,7 @@ jobs:
       
 
   deploy-to-gcp-cloud-run:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/workflow'
     # needs significa que só rodara se o especificado tiver
     needs: create-docker-image-and-send-to-gcp
     runs-on: ubuntu-latest
@@ -83,7 +83,7 @@ jobs:
           service: ${{ env.SERVICE }}
           image: us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
           region: ${{ env.REGION }}
-          
+
       - name: Install TypeScript and ts-node
         run: yarn add --dev typescript ts-node
 
