@@ -12,8 +12,8 @@ on:
 
 # Variáveis de ambiente para ser utilizado nos fluxos
 env:
-  REGISTRY: sou-junior # repositorio artifact
-  SERVICE: sou-junior # cloud run
+  REGISTRY: tem-vaga-mestre-images # repositorio artifact
+  SERVICE: tem-vaga-mestre-api # cloud run
   REGION: us-central1
 
 # Jobs são os trabalhos que serão executados neste fluxo
@@ -56,8 +56,8 @@ jobs:
           # run roda comandos de terminal
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
-          docker build -t us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/dev:latest .
-          docker push us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/dev:latest
+          docker build -t us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest .
+          docker push us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
       
 
   deploy-to-gcp-cloud-run:
@@ -81,6 +81,15 @@ jobs:
         
         with:
           service: ${{ env.SERVICE }}
-          image: us-central1-docker.pkg.dev/sou-junior-406812/sou-junior/dev:latest
+          image: us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
           region: ${{ env.REGION }}
           
+      - name: Install TypeScript and ts-node
+        run: yarn add --dev typescript ts-node
+
+      - name: Run migrations development
+        run: |
+          # Comandos migrations
+          yarn migration:create
+          yarn migration:generate
+          yarn migration:run
