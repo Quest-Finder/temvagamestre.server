@@ -4,8 +4,8 @@ import env from './configs/env'
 
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create(AppModule)
-  await app.listen(env.serverPort, env.serverHost)
-  console.log(`Server running at http://${env.serverHost}:${env.serverPort}`)
+  await app.listen(env.serverPort)
+  console.log(`Server running`)
 }
 
 bootstrap()
