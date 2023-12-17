@@ -1,14 +1,14 @@
 name: Execução do CI/CD GCP
 
-# This workflow uses actions that are not certified by GitHub.
+# This dev uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# No 'on' deve ser escolhido gatilho que irá ativar o workflow, no nosso caso é um push pra dev
+# No 'on' deve ser escolhido gatilho que irá ativar o dev, no nosso caso é um push pra dev
 on:
   push:
     branches: 
-     - workflow
+     - dev
 
 # Variáveis de ambiente para ser utilizado nos fluxos
 env:
@@ -25,7 +25,7 @@ jobs:
   create-docker-image-and-send-to-gcp:
     # verifica se a referencia da Branch é a dev
     # se estiver fazendo em outra branch deve escrever o nome da branch
-    if: github.ref == 'refs/heads/workflow'
+    if: github.ref == 'refs/heads/dev'
     # Runs on é o OS da VM aqui sera executado em Linux Ubunto
     runs-on: ubuntu-latest
     outputs:
@@ -61,7 +61,7 @@ jobs:
       
 
   deploy-to-gcp-cloud-run:
-    if: github.ref == 'refs/heads/workflow'
+    if: github.ref == 'refs/heads/dev'
     # needs significa que só rodara se o especificado tiver
     needs: create-docker-image-and-send-to-gcp
     runs-on: ubuntu-latest
