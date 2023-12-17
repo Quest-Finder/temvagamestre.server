@@ -1,10 +1,10 @@
 name: Execução do CI/CD GCP
 
-# This workflow uses actions that are not certified by GitHub.
+# This dev uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# No 'on' deve ser escolhido gatilho que irá ativar o workflow, no nosso caso é um push pra dev
+# No 'on' deve ser escolhido gatilho que irá ativar o dev, no nosso caso é um push pra dev
 on:
   push:
     branches: 
@@ -46,13 +46,13 @@ jobs:
         # with são os parametros da execução
         with:
           # secrets são configurados no repositório para guardar dados sensíveis
-          project_id: ${{secrets.GOOGLE_PROJECT_ID}}
+          project_id: ${{secrets.GOOGLE_PROJECT}}
           service_account_key: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           export_default_credentials: true
 
       - name: Build and push Docker image
         env:
-          GOOGGLE_PROJECT: ${{secrets.GOOGLE_PROJECT_ID}}
+          GOOGGLE_PROJECT: ${{secrets.GOOGLE_PROJECT}}
           # run roda comandos de terminal
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
@@ -83,13 +83,5 @@ jobs:
           service: ${{ env.SERVICE }}
           image: us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
           region: ${{ env.REGION }}
-          
-      - name: Install TypeScript and ts-node
-        run: yarn add --dev typescript ts-node
 
-      - name: Run migrations development
-        run: |
-          # Comandos migrations
-          yarn migration:create
-          yarn migration:generate
-          yarn migration:run
+    
