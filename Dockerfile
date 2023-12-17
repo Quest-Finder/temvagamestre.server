@@ -1,14 +1,17 @@
 FROM node:18.10.0-slim
 
-WORKDIR /usr/app
+USER node
 
-COPY package.json package-lock.json ./
+RUN mkdir -p /home/node/app
 
-RUN npm install
+WORKDIR /home/node/app
 
-RUN npm run build
+COPY --chown=node:node . .
 
-COPY . .
+RUN npm  install
 
+RUN npm run  build
 
-CMD [ "npm", "run""start:prod" ]
+ENV NODE_ENV=production
+
+CMD ["npm","run", "start:prod"]  
