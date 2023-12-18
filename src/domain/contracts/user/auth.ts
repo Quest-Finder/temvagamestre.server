@@ -1,11 +1,11 @@
-import { type InvalidTokenError } from '@/domain/errors'
-import { type Either } from '@/shared/either'
+import type { AccessDeniedError, InvalidTokenError } from '@/domain/errors'
+import type { Either } from '@/shared/either'
 
 export type AuthenticatedUser = {
   userId: string
 }
 
-export type AuthResponse = Either<InvalidTokenError, AuthenticatedUser>
+export type AuthResponse = Either<InvalidTokenError | AccessDeniedError, AuthenticatedUser>
 
 export interface Auth {
   perform: (token: string) => Promise<AuthResponse>

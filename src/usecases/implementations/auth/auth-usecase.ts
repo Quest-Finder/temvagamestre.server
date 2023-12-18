@@ -2,7 +2,7 @@ import type { FindExternalAuthMappingByExternalAuthUserIdRepo } from '@/usecases
 import type { AuthResponse, Auth } from '@/domain/contracts/user'
 import type { Decrypter } from '@/usecases/contracts/cryptography/decrypter'
 import { left, right } from '@/shared/either'
-import { InvalidTokenError } from '@/domain/errors'
+import { AccessDeniedError, InvalidTokenError } from '@/domain/errors'
 
 export class AuthUseCase implements Auth {
   constructor (
@@ -15,7 +15,12 @@ export class AuthUseCase implements Auth {
     if (!externalAuthUserId) {
       return left(new InvalidTokenError())
     }
-    await this.findExternalAuthMappingByExternalAuthUserIdRepo.execute(externalAuthUserId)
-    return right({ userId: '' })
+    const externalAuthMappingOrNull = await this.findExternalAuthMappingByExternalAuthUserIdRepo.execute(
+      externalAuthUserId
+    )
+    if (!externalAuthMappingOrNull) {
+      return left(new AccessDeniedError())
+    }
+    return right({ userId: externalAuthMappingOrNull.userId })
   }
 }
