@@ -8,6 +8,14 @@ Este Caso de Uso irá receber um evento de Webhook enviado pelo Clerk quando um 
 
 `POST /signup/webhook`
 
+## Cabeçalhos da Requisição
+
+O cabeçalho da requisição deve conter:
+
+- **svix-id** (string): Id do Webhook.
+- **svix-timestamp** (number): Data da geração do Webhook em segundos.
+- **svix-signature** (string): Assinatura criptografada
+
 ## Corpo da Requisição
 
 O corpo da requisição deve conter os seguintes campos:
@@ -20,8 +28,6 @@ O corpo da requisição deve conter os seguintes campos:
 - **_email_address_** (string): Email do usuário.
 - **_first_name_** (string): Nome do usuário.
 - **_last_name_** (string): Sobrenome do usuário.
-- **_created_at_** (date): Data do registro do usuário.
-- **_updated_at_** (date): Data de atualização do usuário.
 
 Exemplo:
 
@@ -73,9 +79,9 @@ Exemplo:
 ## Caso de sucesso
 
 - Validar se o evento de webhook foi enviado pelo Clerk
-- Validar os campos um **_created_at_**, **_updated_at_**, **_email_address_**, **_id_**, **_first_name_**, **_last_name_**
+- Validar os campos um **_email_address_**, **_id_**, **_first_name_**, **_last_name_**
 - Gerar um ID pra o usuário
-- Criar registro na tabela **clerk_user** com **clerk_user_id** e **user_id**
+- Criar registro na tabela **external_auth_mapping** com **external_auth_user_id** e **user_id**
 
 ### Resposta
 
