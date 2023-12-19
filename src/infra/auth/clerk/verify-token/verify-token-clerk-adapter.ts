@@ -5,7 +5,10 @@ import { Clerk } from '@clerk/clerk-sdk-node'
 export class VerifyTokenClerkAdapter implements Decrypter {
   async execute (token: string): Promise<string | null> {
     const clerkClient = Clerk({ secretKey: env.clerkSecretKey })
-    const { sub } = await clerkClient.verifyToken(token)
-    return sub
+    const payload = await clerkClient.verifyToken(token)
+    if (!payload?.sub) {
+      return null
+    }
+    return payload.sub
   }
 }
