@@ -5,5 +5,6 @@ dotenv.config()
 export default {
   webhookSecret: process.env.WEBHOOK_SECRET ?? 'any_webhook_secret',
   serverPort: process.env.SERVER_PORT ?? '5050',
-  serverHost: process.env.SERVER_HOST ?? 'localhost'
+  serverHost: process.env.SERVER_HOST ?? 'localhost',
+  clerkSecretKey: process.env.CLERK_SECRET_KEY ?? 'any_secret_key'
 }
