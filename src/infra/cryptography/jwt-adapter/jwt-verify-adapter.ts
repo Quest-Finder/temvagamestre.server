@@ -6,8 +6,11 @@ export class JwtVerifyAdapter implements Decrypter {
 
   async execute (token: string): Promise<null | string> {
     try {
-      const { clerkUserId }: any = jwt.verify(token, this.secretKey)
-      return clerkUserId
+      const payload: any = jwt.verify(token, this.secretKey)
+      if (!payload.clerkUserId) {
+        return null
+      }
+      return payload.clerkUserId
     } catch (error: any) {
       const errors = ['JsonWebTokenError', 'NotBeforeError', 'TokenExpiredError', 'SyntaxError']
       for (const name of errors) {
