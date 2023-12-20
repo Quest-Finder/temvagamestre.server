@@ -68,11 +68,9 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
       }
     })
 
-    expect(userSocialMedia).toEqual({
-      userId: 'any_user_id',
-      socialMediaId: 'any_social_media_id',
-      link: 'any_link'
-    })
+    expect(userSocialMedia).toEqual(
+      makeFakeUserSocialMedia()
+    )
   })
 
   it('Should update User social media when relation exists', async () => {
@@ -80,7 +78,7 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.socialMedia.create({ data: makeFakeSocialMedia() })
     await prismock.userSocialMedia.create({ data: makeFakeUserSocialMedia() })
-    await sut.execute({ userId: 'any_user_id', socialMediaId: 'any_social_media_id', link: 'updated_link' })
+    await sut.execute({ ...makeFakeUserSocialMedia(), link: 'updated_link' })
 
     const userSocialMedia = await prismock.userSocialMedia.findUnique({
       where: {
@@ -91,11 +89,7 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
       }
     })
 
-    expect(userSocialMedia).toEqual({
-      userId: 'any_user_id',
-      socialMediaId: 'any_social_media_id',
-      link: 'updated_link'
-    })
+    expect(userSocialMedia).toEqual({ ...makeFakeUserSocialMedia(), link: 'updated_link' })
   })
 
   it('Should throw if Prisma throws', async () => {
