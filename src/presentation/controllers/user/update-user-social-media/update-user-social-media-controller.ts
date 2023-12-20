@@ -1,7 +1,7 @@
 import { type UpdateUserSocialMedia } from '@/domain/contracts/user'
-import { type Validation, type Controller } from '@/presentation/contracts'
+import type { Validation, Controller } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
-import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
+import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
 export class UpdateUserSocialMediaController implements Controller {
   constructor (

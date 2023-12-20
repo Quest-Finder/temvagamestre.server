@@ -1,4 +1,4 @@
-import { type UpdateUserSocialMediaData, type UpdateUserSocialMedia, type UpdateUserSocialMediaResponse } from '@/domain/contracts/user'
+import type { UpdateUserSocialMediaData, UpdateUserSocialMedia, UpdateUserSocialMediaResponse } from '@/domain/contracts/user'
 import { InvalidSocialMediaIdError } from '@/domain/errors'
 import { left, right } from '@/shared/either'
 
