@@ -68,8 +68,11 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
       }
     })
 
-    expect(userSocialMedia).toBeTruthy()
-    expect(userSocialMedia?.link).toBe('any_link')
+    expect(userSocialMedia).toEqual({
+      userId: 'any_user_id',
+      socialMediaId: 'any_social_media_id',
+      link: 'any_link'
+    })
   })
 
   it('Should update User social media when relation exists', async () => {
@@ -88,7 +91,10 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
       }
     })
 
-    expect(userSocialMedia).toBeTruthy()
-    expect(userSocialMedia?.link).toBe('updated_link')
+    expect(userSocialMedia).toEqual({
+      userId: 'any_user_id',
+      socialMediaId: 'any_social_media_id',
+      link: 'updated_link'
+    })
   })
 })
