@@ -13,6 +13,7 @@ export class NestMiddlewareAdapter {
     }
     const httpResponse = await this.middleware.handle(httpRequest)
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
+      Object.assign(req.headers, httpResponse.body)
       next()
     } else {
       res.status(httpResponse.statusCode).json({
