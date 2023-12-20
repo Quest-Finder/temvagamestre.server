@@ -84,4 +84,10 @@ describe('UpdateUserSocialMediaUseCase', () => {
     const promise = sut.perform(makeFakeSocialMediaData())
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return right result on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.perform(makeFakeSocialMediaData())
+    expect(result.isRight()).toBe(true)
+  })
 })
