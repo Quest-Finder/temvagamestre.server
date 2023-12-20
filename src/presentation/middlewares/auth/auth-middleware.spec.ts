@@ -8,7 +8,7 @@ import { left, right, type Either } from '@/shared/either'
 import { AuthMiddleware } from './auth-middleware'
 
 const makeFakeRequest = (): HttpRequest => ({
-  headers: { accessToken: 'any_token' }
+  headers: { 'x-access-token': 'any_token' }
 })
 
 const makeValidation = (): Validation => {
@@ -43,7 +43,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Auth Middleware', () => {
-  it('Should return 401 if access token not provided in headers', async () => {
+  it('Should return 401 if x-access-token not provided in headers', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(unauthorized(new AccessTokenNotInformedError()))
