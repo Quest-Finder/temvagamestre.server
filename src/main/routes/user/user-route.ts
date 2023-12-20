@@ -10,7 +10,6 @@ export class UserRoute {
     const adaptNest = adaptRoute(
       makeUpdateUserSocialMediaFactory()
     )
-
     await adaptNest.adapt(req, res)
   }
 }
