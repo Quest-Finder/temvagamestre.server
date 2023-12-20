@@ -32,7 +32,7 @@ const makeFindSocialMediaByIdRepo = (): FindSocialMediaByIdRepo => {
   return new FindSocialMediaByIdRepoStud()
 }
 
-interface SutTypes {
+type SutTypes = {
   sut: UpdateUserSocialMediaUseCase
   findSocialMediaByIdRepoStub: FindSocialMediaByIdRepo
   addOrUpdateUserSocialMediaByIdsRepoStub: AddOrUpdateUserSocialMediaByIdsRepo
