@@ -34,4 +34,13 @@ describe('AddSocialMediaPrismaRepo', () => {
     const socialMedia = await prismock.socialMedia.findUnique({ where: { id: 'any_social_media_id' } })
     expect(socialMedia).toEqual(makeFakeSocialMediaModel())
   })
+
+  it('Should throw if prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.socialMedia, 'create').mockRejectedValue(
+      new Error('any_error_message')
+    )
+    const promise = sut.execute(makeFakeSocialMediaModel())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
