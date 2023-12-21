@@ -1,3 +1,0 @@
-describe('AddSocialMediaUseCase', () => {
-  it('', async () => {})
-})
