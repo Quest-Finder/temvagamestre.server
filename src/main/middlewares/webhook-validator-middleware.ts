@@ -1,7 +1,7 @@
 import type { NestMiddleware } from '@nestjs/common'
 import type { NextFunction, Response, Request } from 'express'
 import { adaptMiddleware } from '@/main/factories/adapters'
-import { makeWebhookValidatorMiddleware } from '@/main/factories/middlewares/webhook-validator-middleware-factory'
+import { makeWebhookValidatorMiddleware } from '@/main/factories/middlewares'
 
 export class WebhookValidatorMiddleware implements NestMiddleware {
   async use (req: Request, res: Response, next: NextFunction): Promise<void> {

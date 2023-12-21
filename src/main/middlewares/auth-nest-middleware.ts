@@ -1,5 +1,5 @@
 import { adaptMiddleware } from '@/main/factories/adapters'
-import { makeAuthMiddleware } from '@/main/factories/middlewares/auth-middleware-factory'
+import { makeAuthMiddleware } from '@/main/factories/middlewares'
 import type { NestMiddleware } from '@nestjs/common'
 import type { NextFunction, Request, Response } from 'express'
 
