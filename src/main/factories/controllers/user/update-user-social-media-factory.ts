@@ -3,7 +3,7 @@ import { UpdateUserSocialMediaController } from '@/presentation/controllers/user
 import { makeUpdateUserSocialMediaUseCase } from '@/main/factories/usecases/user/update-user-social-media-usecase-factory'
 import { UpdateUserSocialMediaValidation } from '@/validators/user/update-user-social-media-zod-validation'
 
-export const makeUpdateUserSocialMedia = (): Controller => {
+export const makeUpdateUserSocialMediaController = (): Controller => {
   const validation = new UpdateUserSocialMediaValidation()
   return new UpdateUserSocialMediaController(
     validation,
