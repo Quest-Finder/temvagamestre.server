@@ -2,13 +2,13 @@
 
 ## Endpoint
 
-`POST /user/cofig`
+`POST /user/config`
 
 ## Cabeçalhos da Requisição
 
-O cabeçalho da requisição deve conter um ID de usuário
+O cabeçalho da requisição deve conter um token de acesso:
 
-- **userId** (string): ID do usuário.
+- **accessToken** (string): Token de acesso gerado pelo **_Clerk_**
 
 ## Corpo da Requisição
 
@@ -43,5 +43,8 @@ Exemplo:
   - Se o usuário não tiver um **_phone_** registrado.
   - Se o tipo do dado informado não for válido.
   - Se o client informar mais dados do que os requeridos.
+- Código de status: **401 Unauthorized**
+  - Se o cabeçalho de autorização estiver ausente ou inválido.
+  - Se o token de autenticação for inválido ou expirado.
 - Código de status: **500 Internal Server Error**
   - Em caso de erro interno no servidor.
