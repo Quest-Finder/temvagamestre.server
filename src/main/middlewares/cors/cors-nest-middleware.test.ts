@@ -3,7 +3,7 @@ import { type INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-describe('CORS Middleware', () => {
+describe('CorsNestMiddleware', () => {
   let app: INestApplication
 
   beforeAll(async () => {
