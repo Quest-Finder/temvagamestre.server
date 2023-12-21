@@ -12,19 +12,19 @@ Todos os endpoints que necessitam de autenticação.
 
 O cabeçalho da requisição deve conter:
 
-- **accessToken** (string): Token de acesso gerado pelo **_Clerk_**
+- **x-access-token** (string): Token de acesso gerado pelo **_Clerk_**
 
 Exemplo:
 
 ```json
 {
-  "accessToken": "clerk_jwt_token"
+  "x-access-token": "clerk_jwt_token"
 }
 ```
 
 ## Caso de sucesso
 
-- Valida se o **accessToken** é um token válido utilizando o **_Clerk_**
+- Valida se o **x-access-token** é um token válido utilizando o **_Clerk_**
 - Descriptografa o token
 - Busca o usuário pelo id de usuário gerado pelo **_Clerk_**
 - Adicionar no **headers** o **userId** referente ao id do usuário na tabela **_user_**
@@ -50,7 +50,7 @@ Após o middleware ser executado, o cabeçalho de requisição será modificado 
 
 ### Headers:
 
-- **accessToken** (string): Token de autenticação do usuário.
+- **x-access-token** (string): Token de autenticação do usuário.
 - **userId** (string): Id do usuário.
 
 ## Casos de Exceção
