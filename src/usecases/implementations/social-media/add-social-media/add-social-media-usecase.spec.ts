@@ -79,4 +79,11 @@ describe('AddSocialMediaUseCase', () => {
     const promise = sut.perform()
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should throw if AddSocialMediaRepo throws', async () => {
+    const { sut, addSocialMediaRepo } = makeSut()
+    jest.spyOn(addSocialMediaRepo, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform()
+    await expect(promise).rejects.toThrow()
+  })
 })
