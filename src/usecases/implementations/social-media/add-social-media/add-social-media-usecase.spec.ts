@@ -64,4 +64,12 @@ describe('AddSocialMediaUseCase', () => {
     expect(executeSpy).toHaveBeenCalledTimes(SocialMedias.getSocialMedias().length)
     expect(executeSpy).toHaveBeenCalledWith(SocialMedias.getSocialMedias()[0])
   })
+
+  it('Should call AddSocialMediaRepo with correct values', async () => {
+    const { sut, addSocialMediaRepo } = makeSut()
+    const executeSpy = jest.spyOn(addSocialMediaRepo, 'execute')
+    await sut.perform()
+    expect(executeSpy).toHaveBeenCalledTimes(SocialMedias.getSocialMedias().length)
+    expect(executeSpy).toHaveBeenCalledWith(makeSocialMediaModel())
+  })
 })
