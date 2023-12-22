@@ -72,4 +72,11 @@ describe('AddSocialMediaUseCase', () => {
     expect(executeSpy).toHaveBeenCalledTimes(SocialMedias.getSocialMedias().length)
     expect(executeSpy).toHaveBeenCalledWith(makeSocialMediaModel())
   })
+
+  it('Should throw if FindSocialMediaByNameRepo throws', async () => {
+    const { sut, findSocialMediaByNameRepo } = makeSut()
+    jest.spyOn(findSocialMediaByNameRepo, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform()
+    await expect(promise).rejects.toThrow()
+  })
 })
