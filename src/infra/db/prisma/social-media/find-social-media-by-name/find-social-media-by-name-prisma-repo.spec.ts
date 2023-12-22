@@ -40,4 +40,12 @@ describe('FindSocialMediaByNamePrismaRepo', () => {
     const socialMedia = await sut.execute('invalid_social_media_name')
     expect(socialMedia).toBe(null)
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.socialMedia, 'findFirst').mockRejectedValue(new Error('any_error_message'))
+
+    const promise = sut.execute('any_social_media_name')
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
