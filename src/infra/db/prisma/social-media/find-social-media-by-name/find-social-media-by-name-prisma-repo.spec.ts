@@ -34,4 +34,10 @@ describe('FindSocialMediaByNamePrismaRepo', () => {
     const socialMedia = await sut.execute('any_social_media_name')
     expect(socialMedia).toEqual(makeFakeSocialMediaModel())
   })
+
+  it('Should return null if prisma findFirst() not found a social media', async () => {
+    const sut = makeSut()
+    const socialMedia = await sut.execute('invalid_social_media_name')
+    expect(socialMedia).toBe(null)
+  })
 })
