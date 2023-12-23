@@ -12,7 +12,7 @@ export class FindManySocialMediasController implements Controller {
     try {
       const findManySocialMediasResult = await this.findManySocialMedias.perform()
 
-      return ok(findManySocialMediasResult)
+      return ok(findManySocialMediasResult.value)
     } catch (error) {
       return serverError()
     }
