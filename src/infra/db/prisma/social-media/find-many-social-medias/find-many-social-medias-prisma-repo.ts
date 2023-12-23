@@ -1,6 +1,6 @@
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
-import { PrismaHelper } from '../../helpers/prisma-helper'
 import { type FindManySocialMediasRepo } from '@/usecases/contracts/db/social-media'
+import { PrismaHelper } from '../../helpers/prisma-helper'
 
 export class FindManySocialMediasPrismaRepo implements FindManySocialMediasRepo {
   async execute (): Promise<SocialMediaModel[] | []> {
