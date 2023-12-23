@@ -1,7 +1,7 @@
 import { left, right, type Either } from '@/shared/either'
 import { ZodError, type ZodSchema } from 'zod'
-import { ValidationError } from '../errors/validation-error'
 import { fromZodError } from 'zod-validation-error'
+import { ValidationError } from '@/validators/errors/validation-error'
 
 export type ZodHelperData = {
   value: any

@@ -1,5 +1,5 @@
 import type { Controller } from '@/presentation/contracts'
-import type { HttpRequest } from '@/presentation/types/http'
+import { type HttpRequest } from '@/presentation/types/http'
 import type { Response, Request } from 'express'
 
 export class NestRouteAdapter {
