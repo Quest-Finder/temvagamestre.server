@@ -16,7 +16,6 @@ export class AddSocialMediaUseCase implements AddSocialMedia {
 
     for (const socialMedia of socialMedias) {
       const existingSocialMedia = await this.findSocialMediaByNameRepo.execute(socialMedia)
-
       if (!existingSocialMedia) {
         const id = this.idBuilder.build()
 
