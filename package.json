@@ -20,8 +20,8 @@
     "test:ci": "npm test -- --coverage",
     "test:staged": "npm test -- --onlyChanged",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "prepare": "husky install",
-    "seed:addSocialMedia": "ts-node -r tsconfig-paths/register src/main/seeds/add-social-media-seed.ts"
+    "prepare": "husky install"
+    
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^4.13.1",
