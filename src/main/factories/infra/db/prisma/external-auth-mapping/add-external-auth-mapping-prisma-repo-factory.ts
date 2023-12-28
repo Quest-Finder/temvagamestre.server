@@ -1,6 +1,0 @@
-import { AddExternalAuthMappingPrismaRepo } from '@/infra/db/prisma/external-auth-mapping/add-external-auth-mapping/add-external-auth-mapping-prisma-repo'
-import { type AddExternalAuthMappingRepo } from '@/usecases/contracts/db/external-auth-mapping'
-
-export const makeAddExternalAuthMappingPrismaRepo = (): AddExternalAuthMappingRepo => {
-  return new AddExternalAuthMappingPrismaRepo()
-}
