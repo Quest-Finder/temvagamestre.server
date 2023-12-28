@@ -44,7 +44,7 @@ describe('FindUserByEmailPrismaRepo', () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     const user = await sut.execute('any_email@mail.com')
-    expect(user).toEqual({ ...makeFakeUserModel(), addressId: null })
+    expect(user).toEqual(makeFakeUserModel())
   })
 
   it('Should return null if prisma findUnique() not found an User', async () => {

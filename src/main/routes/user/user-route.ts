@@ -10,7 +10,6 @@ export class UserRoute {
     const adaptNest = adaptRoute(
       makeUpdateUserSocialMediaController()
     )
-
     await adaptNest.adapt(req, res)
   }
 }

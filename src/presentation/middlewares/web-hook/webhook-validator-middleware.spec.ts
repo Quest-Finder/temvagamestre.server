@@ -1,8 +1,8 @@
-import type { Validation } from '@/presentation/contracts'
-import type { HttpRequest } from '@/presentation/types/http'
-import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
-import { left, right, type Either } from '@/shared/either'
-import { WebhookMiddleware } from './webhook-middleware'
+import type { Validation } from '../../contracts'
+import type { HttpRequest } from '../../types/http'
+import { badRequest, noContent, serverError } from '../../helpers/http-helpers'
+import { left, right, type Either } from '../../../shared/either'
+import { WebhookValidatorMiddleware } from './webhook-validator-middleware'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: { value: 'any_value' },
@@ -19,17 +19,17 @@ const makeValidation = (): Validation => {
 }
 
 type SutTypes = {
-  sut: WebhookMiddleware
+  sut: WebhookValidatorMiddleware
   validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new WebhookMiddleware(validationStub)
+  const sut = new WebhookValidatorMiddleware(validationStub)
   return { sut, validationStub }
 }
 
-describe('WebhookMiddleware', () => {
+describe('WebhookValidatorMiddleware', () => {
   it('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')

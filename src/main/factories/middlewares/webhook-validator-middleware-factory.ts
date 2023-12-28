@@ -1,8 +1,8 @@
 import { type Middleware } from '@/presentation/contracts'
-import { WebhookMiddleware } from '@/presentation/middlewares/web-hook/webhook-middleware'
+import { WebhookValidatorMiddleware } from '@/presentation/middlewares'
 import { SvixWebhookValidation } from '@/validators/webhook/svix-webhook-validation'
 
-export const makeWebhookMiddleware = (): Middleware => {
+export const makeWebhookValidatorMiddleware = (): Middleware => {
   const validation = new SvixWebhookValidation()
-  return new WebhookMiddleware(validation)
+  return new WebhookValidatorMiddleware(validation)
 }

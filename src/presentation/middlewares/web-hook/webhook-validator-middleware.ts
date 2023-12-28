@@ -2,7 +2,7 @@ import type { Middleware, Validation } from '@/presentation/contracts'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 
-export class WebhookMiddleware implements Middleware {
+export class WebhookValidatorMiddleware implements Middleware {
   constructor (private readonly validation: Validation) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

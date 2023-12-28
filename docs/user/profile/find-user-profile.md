@@ -12,13 +12,13 @@ Este endpoint busca as informações do próprio usuário logado.
 
 O cabeçalho da requisição deve conter um token de acesso:
 
-- **accessToken** (string): Token de acesso gerado pelo **_Clerk_**
+- **x-access-token** (string): Token de acesso gerado pelo **_Clerk_**
 
 Exemplo:
 
 ```json
 {
-  "accessToken": "clerk_jwt_token"
+  "x-access-token": "clerk_jwt_token"
 }
 ```
 
