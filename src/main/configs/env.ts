@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 export default {
-  webhookSecret: process.env.WEBHOOK_SECRET || "any_webhook_secret",
-};
+  webhookSecret: process.env.WEBHOOK_SECRET ?? 'any_webhook_secret'
+}

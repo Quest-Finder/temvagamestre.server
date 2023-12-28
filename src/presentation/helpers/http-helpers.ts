@@ -1,7 +1,6 @@
 import type { HttpResponse } from '@/presentation/types/http'
 import { ServerError } from '@/presentation/errors'
 
-
 export const noContent = (): HttpResponse => ({
   statusCode: 204,
   body: null
