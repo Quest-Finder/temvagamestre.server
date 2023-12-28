@@ -1,0 +1,32 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "standard-with-typescript"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": [
+      "./tsconfig.json"
+    ]
+  },
+  "ignorePatterns": [
+    "jest.config.ts",
+    "jest-unit-config.ts",
+    "jest-integration-config.ts",
+    "commitlint.config.js",
+    "src/**/*.sql",
+    "src/**/*.toml",
+    "src/**/*.prisma"
+  ],
+  "rules": {
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-extraneous-class": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off",
+    "@typescript-eslint/consistent-type-definitions": "off"
+  }
+}
