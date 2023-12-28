@@ -95,7 +95,7 @@ describe('UpdateUserSocialMediaController', () => {
     expect(httpResponse).toEqual(badRequest(new Error('any_message')))
   })
 
-  it('Should return 5000 if UpdateUserSocialMedia thros', async () => {
+  it('Should return 500 if UpdateUserSocialMedia throws', async () => {
     const { sut, updateUserSocialMediaStub } = makeSut()
     jest.spyOn(updateUserSocialMediaStub, 'perform').mockReturnValueOnce(Promise.resolve(Promise.reject(new Error())))
     const httpResponse = await sut.handle(makeFakeRequest())
