@@ -9,31 +9,30 @@ dotenv.config({
   path: resolve(__dirname, '.env.test')
 })
 
+const baseUrl = 'postgresql://postgres:admin@localhost:5432/test?schema='
 class CustomEnvironment extends NodeEnvironment {
-  private static schema: string | null = null
-  private static connectionString: string | undefined = undefined
+  private readonly schema: string | null = null
+  private readonly connectionString: string | undefined = undefined
 
   constructor (config: JestEnvironmentConfig, context: EnvironmentContext) {
     super(config, context)
-    if (!CustomEnvironment.schema) {
-      const randomString = Math.random().toString().substring(2, 10)
-      CustomEnvironment.schema = `code_schema_${randomString}`
-      CustomEnvironment.connectionString = `${process.env.DATABASE_URL}?schema=${CustomEnvironment.schema}`
-    }
+    const randomString = Math.random().toString().substring(2, 10)
+    this.schema = `code_schema_${randomString}`
+    this.connectionString = `${baseUrl}${this.schema}`
   }
 
   async setup (): Promise<void> {
-    process.env.DATABASE_URL = CustomEnvironment.connectionString
-    this.global.process.env.DATABASE_URL = CustomEnvironment.connectionString
-    execSync('npx prisma db push')
+    process.env.DATABASE_URL = this.connectionString
+    this.global.process.env.DATABASE_URL = this.connectionString
+    execSync('npx prisma migrate deploy')
   }
 
   async teardown (): Promise<void> {
     const client = new Client({
-      connectionString: CustomEnvironment.connectionString
+      connectionString: this.connectionString
     })
     await client.connect()
-    await client.query(`DROP SCHEMA IF EXISTS "${CustomEnvironment.schema}" CASCADE`)
+    await client.query(`DROP SCHEMA IF EXISTS "${this.schema}" CASCADE`)
     await client.end()
   }
 }
