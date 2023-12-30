@@ -3,7 +3,7 @@ import { AddSocialMediaUseCase } from './add-social-media-usecase'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 import { type FindSocialMediaByNameRepo } from '@/usecases/contracts/db/social-media/find-social-media-by-name-repo'
 import { type IdBuilder } from '@/usecases/contracts/id'
-import { SocialMedias } from '@/domain/contracts/social-media/social-medias'
+import { SocialMedias } from '@/domain/process/social-media/social-medias'
 
 const makeSocialMediaModel = (): SocialMediaModel => ({
   name: 'facebook',

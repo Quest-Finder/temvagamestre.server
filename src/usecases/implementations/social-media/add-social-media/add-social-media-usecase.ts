@@ -1,5 +1,5 @@
 import type { AddSocialMedia } from '@/domain/contracts/social-media'
-import { SocialMedias } from '@/domain/contracts/social-media/social-medias'
+import { SocialMedias } from '@/domain/process/social-media/social-medias'
 import { type AddSocialMediaRepo } from '@/usecases/contracts/db/social-media'
 import { type FindSocialMediaByNameRepo } from '@/usecases/contracts/db/social-media/find-social-media-by-name-repo'
 import { type IdBuilder } from '@/usecases/contracts/id'
