@@ -4,7 +4,7 @@
 
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import type { PrismaClient } from '@prisma/client'
-import { addSocialMediaSeed } from './add-social-media-seed'
+import addSocialMediaSeed from './add-social-media-seed'
 
 let prisma: PrismaClient
 
@@ -23,7 +23,7 @@ describe('addSocialMediaSeed', () => {
   })
 
   it('Should add all Social Medias', async () => {
-    await addSocialMediaSeed()
+    await addSocialMediaSeed
     const socialMedias = await prisma.socialMedia.findMany()
     expect(socialMedias.length).toBe(4)
   })

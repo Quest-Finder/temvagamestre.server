@@ -1,9 +1,9 @@
 import { makeAddSocialMediaUsecase } from '@/main/factories/usecases/social-media/add-social-media-usecase-factory'
 
-export const addSocialMediaSeed = async (): Promise<void> => {
-  void makeAddSocialMediaUsecase()
-    .perform()
-    .then(() => { console.log('Add Social Medias success!') })
+const addSocialMediaSeed = async (): Promise<void> => {
+  await makeAddSocialMediaUsecase().perform()
 }
 
-addSocialMediaSeed().catch(console.error)
+export default addSocialMediaSeed()
+  .then(() => { console.log('Social Media added successfully!') })
+  .catch(console.error)
