@@ -46,4 +46,27 @@ describe('UpdateUserConfigsUseCase', () => {
     })
     expect(result.value).toEqual(new PhoneNotCreatedError())
   })
+
+  it('Should throw if FindUserByIdRepo throws', async () => {
+    class FindUserByIdRepoStub implements FindUserByIdRepo {
+      async execute (id: string): Promise<UserModel | null> {
+        return {
+          id: 'any_user_id',
+          email: 'any_email@mail.com',
+          firstName: 'any_first_name',
+          lastName: 'any_last_name'
+        }
+      }
+    }
+    const findUserByIdRepoStub = new FindUserByIdRepoStub()
+    const sut = new UpdateUserConfigsUseCase(findUserByIdRepoStub)
+    jest.spyOn(findUserByIdRepoStub, 'execute').mockReturnValueOnce(
+      Promise.reject(new Error('any_message'))
+    )
+    const promise = sut.perform({
+      userId: 'any_user_id',
+      allowMessage: true
+    })
+    await expect(promise).rejects.toThrow(new Error('any_message'))
+  })
 })
