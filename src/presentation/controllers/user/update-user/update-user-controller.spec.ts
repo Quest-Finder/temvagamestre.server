@@ -80,7 +80,7 @@ describe('UpdateUserController', () => {
     const performSpy = jest.spyOn(updateUserStub, 'perform')
     await sut.handle(makeFakeRequest())
     expect(performSpy).toHaveBeenCalledWith({
-      userId: 'any_user_id',
+      id: 'any_user_id',
       ...makeFakeRequest().body
     })
   })

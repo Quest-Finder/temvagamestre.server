@@ -16,7 +16,7 @@ export class UpdateUserController implements Controller {
         return badRequest(validationResult.value)
       }
       await this.updateUser.perform({
-        userId: httpRequest.headers.userId,
+        id: httpRequest.headers.userId,
         ...httpRequest.body
       })
       return noContent()
