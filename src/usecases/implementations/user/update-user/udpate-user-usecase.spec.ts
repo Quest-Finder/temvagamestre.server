@@ -11,6 +11,7 @@ jest.mock('@/util/format-date-string-to-date-time/format-date-string-to-date-tim
 }))
 
 const makeFakeUpdateUserData = (): UpdateUserData => ({
+  userId: 'any_user_id',
   firstName: 'any_first_name',
   lastName: 'any_last_name',
   phone: 'any_phone',
@@ -19,6 +20,7 @@ const makeFakeUpdateUserData = (): UpdateUserData => ({
 })
 
 const makeFakeUpdateUserRepoData = (): UpdateUserRepoData => ({
+  userId: 'any_user_id',
   firstName: 'any_first_name',
   lastName: 'any_last_name',
   phone: 'any_phone',

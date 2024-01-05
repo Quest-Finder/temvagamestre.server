@@ -1,4 +1,5 @@
 export type UpdateUserData = {
+  userId: string
   firstName?: string
   lastName?: string
   nickname?: string
