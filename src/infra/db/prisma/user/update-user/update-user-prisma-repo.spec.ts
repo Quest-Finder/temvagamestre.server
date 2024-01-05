@@ -60,4 +60,13 @@ describe('UpdateUserPrismaRepo', () => {
       ...makeFakeUpdateUserRepoData()
     })
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.user, 'update').mockRejectedValue(
+      new Error('any_error_message')
+    )
+    const promise = sut.execute(makeFakeUpdateUserRepoData())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
