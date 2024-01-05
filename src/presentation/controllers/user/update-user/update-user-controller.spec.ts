@@ -3,8 +3,12 @@ import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest } from '@/presentation/types/http'
 import { left, right, type Either } from '@/shared/either'
 import { UpdateUserController } from './update-user-controller'
+import type { UpdateUserData, UpdateUser } from '@/domain/contracts/user'
 
 const makeFakeRequest = (): HttpRequest => ({
+  headers: {
+    userId: 'any_user_id'
+  },
   body: {
     firstName: 'any_first_name',
     lastName: 'any_last_name',
@@ -23,15 +27,26 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const makeFakeUpdateUser = (): UpdateUser => {
+  class UpdateUserStub implements UpdateUser {
+    async perform (data: UpdateUserData): Promise<void> {
+      await Promise.resolve()
+    }
+  }
+  return new UpdateUserStub()
+}
+
 type SutTypes = {
   sut: UpdateUserController
   validationStub: Validation
+  updateUserStub: UpdateUser
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new UpdateUserController(validationStub)
-  return { sut, validationStub }
+  const updateUserStub = makeFakeUpdateUser()
+  const sut = new UpdateUserController(validationStub, updateUserStub)
+  return { sut, validationStub, updateUserStub }
 }
 
 describe('UpdateUserController', () => {
@@ -57,8 +72,25 @@ describe('UpdateUserController', () => {
       Promise.reject(new Error())
     )
     const httpResponse = await sut.handle(makeFakeRequest())
-    const error = new Error()
-    error.stack = 'any_stack'
+    expect(httpResponse).toEqual(serverError())
+  })
+
+  it('Should call UpdateUser with correct values', async () => {
+    const { sut, updateUserStub } = makeSut()
+    const performSpy = jest.spyOn(updateUserStub, 'perform')
+    await sut.handle(makeFakeRequest())
+    expect(performSpy).toHaveBeenCalledWith({
+      userId: 'any_user_id',
+      ...makeFakeRequest().body
+    })
+  })
+
+  it('Should return 500 if UpdateUser throws', async () => {
+    const { sut, updateUserStub } = makeSut()
+    jest.spyOn(updateUserStub, 'perform').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
   })
 })
