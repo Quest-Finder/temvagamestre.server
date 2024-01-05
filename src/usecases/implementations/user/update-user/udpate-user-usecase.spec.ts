@@ -30,4 +30,11 @@ describe('UpdateUserUseCase', () => {
     await sut.perform(makeFakeUpdateUserData())
     expect(formatDateStringToDateTime).toHaveBeenCalledWith('12-31-2000')
   })
+
+  it('Should not call formatDateStringToDateTime() if dateOfBirth not provided', async () => {
+    const { sut } = makeSut()
+    const { dateOfBirth, ...data } = makeFakeUpdateUserData()
+    await sut.perform(data)
+    expect(formatDateStringToDateTime).not.toHaveBeenCalled()
+  })
 })
