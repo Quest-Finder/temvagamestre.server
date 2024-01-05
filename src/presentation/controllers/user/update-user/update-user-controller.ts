@@ -1,6 +1,6 @@
 import type { UpdateUser } from '@/domain/contracts/user'
 import type { Controller, Validation } from '@/presentation/contracts'
-import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
 export class UpdateUserController implements Controller {
@@ -19,7 +19,7 @@ export class UpdateUserController implements Controller {
         userId: httpRequest.headers.userId,
         ...httpRequest.body
       })
-      return { statusCode: 0, body: '' }
+      return noContent()
     } catch (error: any) {
       return serverError()
     }
