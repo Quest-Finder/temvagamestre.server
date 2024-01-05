@@ -70,9 +70,7 @@ describe('User Routes', () => {
   describe('POST /user/social-media', () => {
     it('Should return 204 on success', async () => {
       await prisma.socialMedia.create({ data: makeFakeSocialMediaModel() })
-      await prisma.user.create({ data: makeFakeUserModel() })
-      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+      const token = await makeFakeToken()
       await request(app.getHttpServer())
         .post('/user/social-media')
         .set({ 'x-access-token': token })
