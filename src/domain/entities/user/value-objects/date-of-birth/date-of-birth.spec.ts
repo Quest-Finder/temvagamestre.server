@@ -27,6 +27,11 @@ describe('DateOfBirth ValueObject', () => {
     expect(sut.value).toEqual(new InvalidDateOfBirthError('13-10-2000'))
   })
 
+  it('Should return InvalidDateOfBirthError if dateOfBirth if February contains more than 29 days', () => {
+    const sut = DateOfBirth.create('02-30-2000')
+    expect(sut.value).toEqual(new InvalidDateOfBirthError('02-30-2000'))
+  })
+
   it('Should return InvalidDateOfBirthError if February has 29 days in a non-leap year', () => {
     const sut = DateOfBirth.create('02-29-2001')
     expect(sut.value).toEqual(new InvalidDateOfBirthError('02-29-2001'))
