@@ -1,10 +1,15 @@
 import type { Validation } from '@/presentation/contracts'
-import type { Either } from '@/shared/either'
+import { left, type Either } from '@/shared/either'
+import { SomeFieldBeMandatoryError } from '@/validators/errors'
 import { ZodHelper } from '@/validators/helpers/zod-helper'
 import { z } from 'zod'
 
 export class UpdateUserZodValidation implements Validation {
   async validate (input: any): Promise<Either<Error, null>> {
+    const mandatoryFields = ['firstName', 'lastName', 'nickname', 'phone', 'dateOfBirth']
+    if (mandatoryFields.every(field => !input[field])) {
+      return left(new SomeFieldBeMandatoryError(mandatoryFields.join(', ')))
+    }
     const schema = z.object({
       firstName: z.string().min(2).max(25).optional(),
       lastName: z.string().min(2).max(50).optional(),
