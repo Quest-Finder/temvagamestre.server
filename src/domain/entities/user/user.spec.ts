@@ -32,13 +32,13 @@ describe('User Entity', () => {
   it('Should call Name with correct value firstName', () => {
     const createSpy = jest.spyOn(Name, 'create')
     User.update(makeFakeUpdateUserEntityData())
-    expect(createSpy).toHaveBeenCalledWith('any_first_name')
+    expect(createSpy).toHaveBeenCalledWith('any_first_name', 'firstName')
   })
 
   it('Should call Name with correct value lastName', () => {
     const createSpy = jest.spyOn(Name, 'create')
     User.update(makeFakeUpdateUserEntityData())
-    expect(createSpy).toHaveBeenCalledWith('any_last_name')
+    expect(createSpy).toHaveBeenCalledWith('any_last_name', 'lastName')
   })
 
   it('Should return InvalidNameError if Name return InvalidNameError', () => {
