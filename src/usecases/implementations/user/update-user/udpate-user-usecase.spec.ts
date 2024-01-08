@@ -81,6 +81,15 @@ describe('UpdateUserUseCase', () => {
     expect(result.value).toEqual(new Error('any_message'))
   })
 
+  it('Should throw if User throws', async () => {
+    const { sut } = makeSut()
+    jest.spyOn(User, 'update').mockImplementationOnce(() => {
+      throw new Error('any_message')
+    })
+    const promise = sut.perform(makeFakeUpdateUserData())
+    await expect(promise).rejects.toThrow(new Error('any_message'))
+  })
+
   it('Should call formatDateStringToDateTime() with dateOfBirth', async () => {
     const { sut } = makeSut()
     await sut.perform(makeFakeUpdateUserData())
