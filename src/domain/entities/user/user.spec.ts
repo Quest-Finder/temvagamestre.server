@@ -5,13 +5,13 @@ import { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
 
 jest.mock('@/domain/entities/user/value-objects/name/first-name/first-name', () => ({
   FirstName: {
-    create: jest.fn(() => { return right({ name: 'any_first_name' }) })
+    create: jest.fn(() => { return right({ firstName: 'any_first_name' }) })
   }
 }))
 
 jest.mock('@/domain/entities/user/value-objects/name/last-name/last-name', () => ({
   LastName: {
-    create: jest.fn(() => { return right({ name: 'any_last_name' }) })
+    create: jest.fn(() => { return right({ lastName: 'any_last_name' }) })
   }
 }))
 
@@ -89,5 +89,15 @@ describe('User Entity', () => {
     )
     const sut = User.update(makeFakeUpdateUserEntityData())
     expect(sut.value).toEqual(new InvalidDateOfBirthError('any_date'))
+  })
+
+  it('Should return valid result on success', () => {
+    const sut = User.update(makeFakeUpdateUserEntityData())
+    expect(sut.value).toEqual({
+      firstName: { firstName: 'any_first_name' },
+      lastName: { lastName: 'any_last_name' },
+      phone: { phone: 'any_phone' },
+      dateOfBirth: { dateOfBirth: 'any_date' }
+    })
   })
 })
