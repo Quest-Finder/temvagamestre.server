@@ -2,7 +2,7 @@ import { type Either, left, right } from '@/shared/either'
 import { InvalidNameError } from '../../errors'
 
 export class Name {
-  private constructor (private readonly name: string) {
+  private constructor (readonly name: string) {
     Object.freeze(this)
   }
 
