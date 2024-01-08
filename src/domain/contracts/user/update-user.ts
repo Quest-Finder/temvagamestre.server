@@ -1,3 +1,6 @@
+import { type UserEntityErrors } from '@/domain/entities/user/user-types'
+import { type Either } from '@/shared/either'
+
 export type UpdateUserData = {
   id: string
   firstName?: string
@@ -7,6 +10,8 @@ export type UpdateUserData = {
   dateOfBirth?: string
 }
 
+export type UpdateUserResponse = Either<UserEntityErrors, null>
+
 export interface UpdateUser {
-  perform: (data: UpdateUserData) => Promise<void>
+  perform: (data: UpdateUserData) => Promise<UpdateUserResponse>
 }

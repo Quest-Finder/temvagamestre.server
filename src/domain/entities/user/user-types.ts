@@ -9,7 +9,7 @@ export type UpdateUserEntityData = {
   dateOfBirth?: string
 }
 
-type UserEntityErrors = InvalidDateOfBirthError | InvalidFirstNameError | InvalidLastNameError | InvalidPhoneError
+export type UserEntityErrors = InvalidDateOfBirthError | InvalidFirstNameError | InvalidLastNameError | InvalidPhoneError
 
 type UpdateUserEntityValueObjects = {
   firstName?: FirstName
