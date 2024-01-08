@@ -1,8 +1,8 @@
 import { left, right } from '@/shared/either'
 import { InvalidDateOfBirthError, InvalidFirstNameError, InvalidLastNameError, InvalidPhoneError } from './errors'
 import { User } from './user'
-import { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
 import { type UpdateUserEntityData } from './user-types'
+import { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
 
 jest.mock('@/domain/entities/user/value-objects/name/first-name/first-name', () => ({
   FirstName: {
@@ -95,10 +95,10 @@ describe('User Entity', () => {
   it('Should return valid result on success', () => {
     const sut = User.update(makeFakeUpdateUserEntityData())
     expect(sut.value).toEqual({
-      firstName: { firstName: 'any_first_name' },
-      lastName: { lastName: 'any_last_name' },
-      phone: { phone: 'any_phone' },
-      dateOfBirth: { dateOfBirth: 'any_date' }
+      firstName: 'any_first_name',
+      lastName: 'any_last_name',
+      phone: 'any_phone',
+      dateOfBirth: 'any_date'
     })
   })
 })

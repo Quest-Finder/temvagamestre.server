@@ -2,7 +2,7 @@ import { left, right, type Either } from '@/shared/either'
 import { InvalidPhoneError } from '../../errors'
 
 export class Phone {
-  private constructor (private readonly phone: string) {
+  private constructor (readonly phone: string) {
     Object.freeze(this)
   }
 

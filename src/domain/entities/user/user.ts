@@ -14,10 +14,10 @@ export class User {
       if (result.isLeft()) return left(result.value)
     }
     return right({
-      ...(results.firstName && { firstName: results.firstName.value as FirstName }),
-      ...(results.lastName && { lastName: results.lastName.value as LastName }),
-      ...(results.phone && { phone: results.phone.value as Phone }),
-      ...(results.dateOfBirth && { dateOfBirth: results.dateOfBirth.value as DateOfBirth })
+      ...(results.firstName && results.firstName.value as FirstName),
+      ...(results.lastName && results.lastName.value as LastName),
+      ...(results.phone && results.phone.value as Phone),
+      ...(results.dateOfBirth && results.dateOfBirth.value as DateOfBirth)
     })
   }
 }

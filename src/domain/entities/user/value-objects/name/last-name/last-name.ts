@@ -3,7 +3,7 @@ import { left, right, type Either } from '@/shared/either'
 import { Name } from '../name'
 
 export class LastName {
-  private constructor (private readonly lastName: string) {
+  private constructor (readonly lastName: string) {
     Object.freeze(this)
   }
 

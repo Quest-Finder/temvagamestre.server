@@ -11,14 +11,9 @@ export type UpdateUserEntityData = {
 
 export type UserEntityErrors = InvalidDateOfBirthError | InvalidFirstNameError | InvalidLastNameError | InvalidPhoneError
 
-type UpdateUserEntityValueObjects = {
-  firstName?: FirstName
-  lastName?: LastName
-  phone?: Phone
-  dateOfBirth?: DateOfBirth
-}
+type UpdateUserValueResponse = UpdateUserEntityData
 
-export type UpdateUserEntityResponse = Either<UserEntityErrors, UpdateUserEntityValueObjects>
+export type UpdateUserEntityResponse = Either<UserEntityErrors, UpdateUserValueResponse>
 
 export type UpdateUserEntityValueObjectsResults = {
   firstName?: Either<InvalidFirstNameError, FirstName>

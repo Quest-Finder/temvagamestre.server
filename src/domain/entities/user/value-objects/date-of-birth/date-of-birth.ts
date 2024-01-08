@@ -2,7 +2,7 @@ import { left, right, type Either } from '@/shared/either'
 import { InvalidDateOfBirthError } from '../../errors'
 
 export class DateOfBirth {
-  private constructor (private readonly dateOfBirth: string) {
+  private constructor (readonly dateOfBirth: string) {
     Object.freeze(this)
   }
 
