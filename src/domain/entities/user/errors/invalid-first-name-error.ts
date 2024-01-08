@@ -1,6 +1,6 @@
 export class InvalidFirstNameError extends Error {
-  constructor (name: string) {
-    super(`The firstName '${name}' is invalid`)
+  constructor (firstName: string) {
+    super(`The firstName '${firstName}' is invalid`)
     this.name = 'InvalidFirstNameError'
   }
 }
