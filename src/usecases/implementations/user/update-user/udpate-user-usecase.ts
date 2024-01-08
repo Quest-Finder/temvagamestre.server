@@ -1,7 +1,7 @@
-import type { UpdateUserData, UpdateUser, UpdateUserResponse } from '@/domain/contracts/user'
+import type { UpdateUser, UpdateUserData, UpdateUserResponse } from '@/domain/contracts/user'
 import { User } from '@/domain/entities/user/user'
-import { right } from '@/shared/either'
-import type { UpdateUserRepoData, UpdateUserRepo } from '@/usecases/contracts/db/user'
+import { left, right } from '@/shared/either'
+import type { UpdateUserRepo, UpdateUserRepoData } from '@/usecases/contracts/db/user'
 import { formatDateStringToDateTime } from '@/util'
 
 export class UpdateUserUseCase implements UpdateUser {
@@ -9,7 +9,10 @@ export class UpdateUserUseCase implements UpdateUser {
 
   async perform (data: UpdateUserData): Promise<UpdateUserResponse> {
     const { id, nickname, ...dataToUserEntity } = data
-    User.update(dataToUserEntity)
+    const userResult = User.update(dataToUserEntity)
+    if (userResult.isLeft()) {
+      return left(userResult.value)
+    }
     const { dateOfBirth, ...dataToRepo } = data
     const dataRepo: UpdateUserRepoData = dataToRepo
     if (dateOfBirth) {
