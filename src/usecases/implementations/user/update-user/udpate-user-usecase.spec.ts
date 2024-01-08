@@ -1,13 +1,28 @@
 import { type UpdateUserData } from '@/domain/contracts/user'
 import { UpdateUserUseCase } from './udpate-user-usecase'
 import { formatDateStringToDateTime } from '@/util'
-import { type UpdateUserRepo, type UpdateUserRepoData } from '@/usecases/contracts/db/user'
+import type { UpdateUserRepo, UpdateUserRepoData } from '@/usecases/contracts/db/user'
+import { right } from '@/shared/either'
+import { User } from '@/domain/entities/user/user'
 
 jest.mock('@/util/format-date-string-to-date-time/format-date-string-to-date-time', () => ({
   ...jest.requireActual('@/util/format-date-string-to-date-time/format-date-string-to-date-time'),
   formatDateStringToDateTime: jest.fn().mockReturnValue(
     new Date('2000-12-31T00:00:00')
   )
+}))
+
+jest.mock('@/domain/entities/user/user', () => ({
+  User: {
+    update: jest.fn(() => {
+      return right({
+        firstName: { firstName: 'any_first_name' },
+        lastName: { lastName: 'any_last_name' },
+        phone: { phone: 'any_phone' },
+        dateOfBirth: { dateOfBirth: '12-31-2000' }
+      })
+    })
+  }
 }))
 
 const makeFakeUpdateUserData = (): UpdateUserData => ({
@@ -49,6 +64,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('UpdateUserUseCase', () => {
+  it('Should call User with correct values', async () => {
+    const { sut } = makeSut()
+    const updateSpy = jest.spyOn(User, 'update')
+    await sut.perform(makeFakeUpdateUserData())
+    const { id, nickname, ...data } = makeFakeUpdateUserData()
+    expect(updateSpy).toHaveBeenCalledWith(data)
+  })
+
   it('Should call formatDateStringToDateTime() with dateOfBirth', async () => {
     const { sut } = makeSut()
     await sut.perform(makeFakeUpdateUserData())
