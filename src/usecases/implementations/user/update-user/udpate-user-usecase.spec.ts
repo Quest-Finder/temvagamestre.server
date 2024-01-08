@@ -2,7 +2,7 @@ import { type UpdateUserData } from '@/domain/contracts/user'
 import { UpdateUserUseCase } from './udpate-user-usecase'
 import { formatDateStringToDateTime } from '@/util'
 import type { UpdateUserRepo, UpdateUserRepoData } from '@/usecases/contracts/db/user'
-import { right } from '@/shared/either'
+import { left, right } from '@/shared/either'
 import { User } from '@/domain/entities/user/user'
 
 jest.mock('@/util/format-date-string-to-date-time/format-date-string-to-date-time', () => ({
@@ -70,6 +70,15 @@ describe('UpdateUserUseCase', () => {
     await sut.perform(makeFakeUpdateUserData())
     const { id, nickname, ...data } = makeFakeUpdateUserData()
     expect(updateSpy).toHaveBeenCalledWith(data)
+  })
+
+  it('Should return an error if User returns any error', async () => {
+    const { sut } = makeSut()
+    jest.spyOn(User, 'update').mockReturnValueOnce(
+      left(new Error('any_message'))
+    )
+    const result = await sut.perform(makeFakeUpdateUserData())
+    expect(result.value).toEqual(new Error('any_message'))
   })
 
   it('Should call formatDateStringToDateTime() with dateOfBirth', async () => {
