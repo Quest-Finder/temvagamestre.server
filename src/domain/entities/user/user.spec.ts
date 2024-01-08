@@ -1,7 +1,8 @@
 import { left, right } from '@/shared/either'
 import { InvalidDateOfBirthError, InvalidFirstNameError, InvalidLastNameError, InvalidPhoneError } from './errors'
-import { User, type UpdateUserEntityData } from './user'
+import { User } from './user'
 import { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
+import { type UpdateUserEntityData } from './user-types'
 
 jest.mock('@/domain/entities/user/value-objects/name/first-name/first-name', () => ({
   FirstName: {

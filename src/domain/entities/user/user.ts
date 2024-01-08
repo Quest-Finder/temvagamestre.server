@@ -1,35 +1,10 @@
-import { left, type Either, right } from '@/shared/either'
-import type { InvalidDateOfBirthError, InvalidFirstNameError, InvalidLastNameError, InvalidPhoneError } from './errors'
+import { left, right } from '@/shared/either'
+import type { UpdateUserEntityData, UpdateUserEntityResponse, UpdateUserEntityValueObjectsResults } from './user-types'
 import { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
 
-export type UpdateUserEntityData = {
-  firstName?: string
-  lastName?: string
-  phone?: string
-  dateOfBirth?: string
-}
-
-type UserErrors = InvalidDateOfBirthError | InvalidFirstNameError | InvalidLastNameError | InvalidPhoneError
-
-type UpdateUserValueObjects = {
-  firstName?: FirstName
-  lastName?: LastName
-  phone?: Phone
-  dateOfBirth?: DateOfBirth
-}
-
-export type UpdateUserResponse = Either<UserErrors, UpdateUserValueObjects>
-
-type ValueObjectsResults = {
-  firstName?: Either<InvalidFirstNameError, FirstName>
-  lastName?: Either<InvalidLastNameError, LastName>
-  phone?: Either<InvalidPhoneError, Phone>
-  dateOfBirth?: Either<InvalidDateOfBirthError, DateOfBirth>
-}
-
 export class User {
-  static update (data: UpdateUserEntityData): UpdateUserResponse {
-    const results: ValueObjectsResults = {
+  static update (data: UpdateUserEntityData): UpdateUserEntityResponse {
+    const results: UpdateUserEntityValueObjectsResults = {
       ...(data.firstName && { firstName: FirstName.create(data.firstName) }),
       ...(data.lastName && { lastName: LastName.create(data.lastName) }),
       ...(data.phone && { phone: Phone.create(data.phone) }),
