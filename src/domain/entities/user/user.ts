@@ -1,6 +1,6 @@
 import { left, type Either } from '@/shared/either'
-import type { InvalidDateOfBirthError, InvalidNameError, InvalidPhoneError } from './errors'
-import { Name, DateOfBirth, Phone } from './value-objects'
+import type { InvalidDateOfBirthError, InvalidFirstNameError, InvalidLastNameError, InvalidPhoneError } from './errors'
+import { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
 
 export type UpdateUserEntityData = {
   firstName?: string
@@ -9,14 +9,14 @@ export type UpdateUserEntityData = {
   dateOfBirth?: string
 }
 
-type UserErrors = InvalidDateOfBirthError | InvalidNameError | InvalidPhoneError
+type UserErrors = InvalidDateOfBirthError | InvalidFirstNameError | InvalidLastNameError | InvalidPhoneError
 
 export type UserResponse = Either<UserErrors, User>
 
 export class User {
   private constructor (
-    private readonly firstName: Name,
-    private readonly lastName: Name,
+    private readonly firstName: FirstName,
+    private readonly lastName: LastName,
     private readonly phone: Phone,
     private readonly dateOfBirth: DateOfBirth
   ) {
@@ -24,9 +24,9 @@ export class User {
   }
 
   static update (data: UpdateUserEntityData): UserResponse {
-    const results: Array<Either<UserErrors, Name | Phone | DateOfBirth>> = []
-    if (data.firstName) results.push(Name.create(data.firstName))
-    if (data.lastName) results.push(Name.create(data.lastName))
+    const results: Array<Either<UserErrors, FirstName | LastName | Phone | DateOfBirth>> = []
+    if (data.firstName) results.push(FirstName.create(data.firstName))
+    if (data.lastName) results.push(LastName.create(data.lastName))
     if (data.phone) results.push(Phone.create(data.phone))
     if (data.dateOfBirth) results.push(DateOfBirth.create(data.dateOfBirth))
     for (const result of results) {
