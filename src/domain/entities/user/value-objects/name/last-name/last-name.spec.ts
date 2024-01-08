@@ -1,5 +1,5 @@
 import { left, right } from '@/shared/either'
-import { LastName } from './first-name'
+import { LastName } from './last-name'
 import { Name } from '../name'
 import { InvalidLastNameError } from '../../../errors'
 
