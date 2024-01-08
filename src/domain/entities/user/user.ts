@@ -25,8 +25,8 @@ export class User {
 
   static update (data: UpdateUserEntityData): UserResponse {
     const results: Array<Either<UserErrors, Name | Phone | DateOfBirth>> = []
-    if (data.firstName) results.push(Name.create(data.firstName, 'firstName'))
-    if (data.lastName) results.push(Name.create(data.lastName, 'lastName'))
+    if (data.firstName) results.push(Name.create(data.firstName))
+    if (data.lastName) results.push(Name.create(data.lastName))
     if (data.phone) results.push(Phone.create(data.phone))
     if (data.dateOfBirth) results.push(DateOfBirth.create(data.dateOfBirth))
     for (const result of results) {
