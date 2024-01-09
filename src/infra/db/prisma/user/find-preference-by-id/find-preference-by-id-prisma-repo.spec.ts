@@ -1,9 +1,9 @@
-import { FindPreferenceIdPrismaRepo } from './find-preference-by-id-prisma-repo'
 import { PrismockClient } from 'prismock'
 import { PrismaHelper } from '../../helpers/prisma-helper'
 import { type PreferenceModel, type UserModel } from '@/domain/models'
 import { type PrismaClient } from '@prisma/client'
 import MockDate from 'mockdate'
+import { FindPreferenceByIdPrismaRepo } from './find-preference-by-id-prisma-repo'
 
 let prismock: PrismaClient
 
@@ -24,8 +24,8 @@ const makeFakePreference = (): PreferenceModel => ({
   activeType: 'player'
 })
 
-const makeSut = (): FindPreferenceIdPrismaRepo => {
-  return new FindPreferenceIdPrismaRepo()
+const makeSut = (): FindPreferenceByIdPrismaRepo => {
+  return new FindPreferenceByIdPrismaRepo()
 }
 
 describe('FindPreferenceByIdPrismaRepo', () => {
