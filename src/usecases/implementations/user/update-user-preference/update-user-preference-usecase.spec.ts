@@ -65,4 +65,11 @@ describe('UpdateUserPreferenceUsecase', () => {
     const result = await sut.perform(makeFakeUpdateUserPreferenceData())
     expect(result.value).toEqual(new NonExistentUserPreferencesError('any_user_id'))
   })
+
+  it('Should call UpdateUserPreferenceRepo with correct values', async () => {
+    const { sut, updateUserPreferenceRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(updateUserPreferenceRepoStub, 'execute')
+    await sut.perform(makeFakeUpdateUserPreferenceData())
+    expect(executeSpy).toHaveBeenCalledWith(makeFakeUpdateUserPreferenceData())
+  })
 })
