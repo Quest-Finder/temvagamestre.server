@@ -2,7 +2,7 @@
 
 ## Endpoint
 
-`POST /user/preference`
+`PUT /user/preference`
 
 ## Cabeçalhos da Requisição
 
