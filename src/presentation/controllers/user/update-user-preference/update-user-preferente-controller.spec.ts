@@ -1,8 +1,9 @@
 import { type UpdateUserPreferenceResponse, type UpdateUserPreference, type UpdateUserPreferenceData } from '@/domain/contracts/user'
 import { type Validation } from '@/presentation/contracts'
 import { type HttpRequest } from '@/presentation/types/http'
-import { type Either, right } from '@/shared/either'
+import { type Either, right, left } from '@/shared/either'
 import { UpdateUserPreferenceController } from './update-user-preference-controller'
+import { badRequest } from '@/presentation/helpers/http-helpers'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
@@ -55,5 +56,14 @@ describe('UpdateUserPreferenceController', () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(makeFakeRequest())
     expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+
+  it('Should return 400 if Validation fails', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(
+      Promise.resolve(left(new Error('any_message')))
+    )
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new Error('any_message')))
   })
 })
