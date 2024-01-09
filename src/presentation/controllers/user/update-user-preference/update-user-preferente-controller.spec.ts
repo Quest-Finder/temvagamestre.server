@@ -85,4 +85,13 @@ describe('UpdateUserPreferenceController', () => {
       ...makeFakeRequest().body
     })
   })
+
+  it('Should return 500 if UpdateUserPreference throws', async () => {
+    const { sut, updateUserPreferenceStub } = makeSut()
+    jest.spyOn(updateUserPreferenceStub, 'perform').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
+  })
 })
