@@ -7,4 +7,10 @@ describe('UpdateUserPreferenceZodValidation', () => {
     const result = await sut.validate({})
     expect(result.value).toEqual(new SomeFieldBeMandatoryError('activeType, frequency'))
   })
+
+  it('Should return right result if any field is provided', async () => {
+    const sut = new UpdateUserPreferenceZodValidation()
+    const result = await sut.validate({ activeType: 'player' })
+    expect(result.isRight()).toBe(true)
+  })
 })
