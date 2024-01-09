@@ -2,6 +2,7 @@ import { type FindPreferenceByIdRepo, type UpdateUserPreferenceRepo } from '@/us
 import { UpdateUserPreferenceUseCase } from './update-user-preference-usecase'
 import { type UpdateUserPreferenceData } from '@/domain/contracts/user'
 import { type PreferenceModel } from '@/domain/models'
+import { NonExistentUserPreferencesError } from '@/domain/errors'
 
 const makeFakePreferenceModel = (): PreferenceModel => ({
   id: 'any_user_id',
@@ -56,5 +57,12 @@ describe('UpdateUserPreferenceUsecase', () => {
     const executeSpy = jest.spyOn(findPreferenceByIdRepoStub, 'execute')
     await sut.perform(makeFakeUpdateUserPreferenceData())
     expect(executeSpy).toHaveBeenCalledWith('any_user_id')
+  })
+
+  it('Should return NonExistentUserPreferencesError if FindPreferenceByIdRepo returns null', async () => {
+    const { sut, findPreferenceByIdRepoStub } = makeSut()
+    jest.spyOn(findPreferenceByIdRepoStub, 'execute').mockReturnValueOnce(Promise.resolve(null))
+    const result = await sut.perform(makeFakeUpdateUserPreferenceData())
+    expect(result.value).toEqual(new NonExistentUserPreferencesError('any_user_id'))
   })
 })
