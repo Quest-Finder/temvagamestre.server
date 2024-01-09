@@ -1,5 +1,4 @@
-export enum Frequency {
-  daily,
-  weekly,
-  monthly,
-}
+export type Frequency =
+  'daily' |
+  'weekly' |
+  'monthly'

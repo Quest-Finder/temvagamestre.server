@@ -1,8 +1,9 @@
 import { FindPreferenceIdPrismaRepo } from './find-preference-by-id-prisma-repo'
-import { ActiveType, Frequency, type Preference, type PrismaClient } from '@prisma/client'
 import { PrismockClient } from 'prismock'
 import { PrismaHelper } from '../../helpers/prisma-helper'
-import { type UserModel } from '@/domain/models'
+import { type PreferenceModel, type UserModel } from '@/domain/models'
+import { type PrismaClient } from '@prisma/client'
+import MockDate from 'mockdate'
 
 let prismock: PrismaClient
 
@@ -17,10 +18,10 @@ const makeFakeUserModel = (): UserModel => ({
   email: 'any_email'
 })
 
-const makeFakePreference = (): Preference => ({
+const makeFakePreference = (): PreferenceModel => ({
   id: 'any_user_id',
-  frequency: Frequency.daily,
-  activeType: ActiveType.player
+  frequency: 'daily',
+  activeType: 'player'
 })
 
 const makeSut = (): FindPreferenceIdPrismaRepo => {
@@ -34,6 +35,7 @@ describe('FindPreferenceByIdPrismaRepo', () => {
   })
 
   beforeAll(async () => {
+    MockDate.set(new Date())
     prismock = new PrismockClient()
     jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(Promise.resolve(prismock))
   })

@@ -1,4 +1,3 @@
-export enum ActiveType {
-  player,
-  gameMaster
-}
+export type ActiveType =
+  'player' |
+  'gameMaster'

@@ -3,6 +3,7 @@ import { type ActiveType, type Frequency } from '@/domain/models'
 import { type Either } from '@/shared/either'
 
 export interface UpdateUserPreferenceData {
+  id: string
   frequency?: Frequency
   activeType?: ActiveType
 }
