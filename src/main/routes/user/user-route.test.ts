@@ -2,7 +2,7 @@
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
  */
 
-import type { ExternalAuthMappingModel, SocialMediaModel, UserModel } from '@/domain/models'
+import type { ExternalAuthMappingModel, PreferenceModel, SocialMediaModel, UserModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { AppModule } from '@/main/app.module'
 import env from '@/main/configs/env'
@@ -11,6 +11,12 @@ import { Test } from '@nestjs/testing'
 import type { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
+
+const makeFakePreferenceModel = (): PreferenceModel => ({
+  id: 'any_user_id',
+  frequency: 'daily',
+  activeType: 'gameMaster'
+})
 
 const makeFakeSocialMediaModel = (): SocialMediaModel => ({
   id: 'any_social_media_id',
@@ -75,5 +81,20 @@ describe('User Routes', () => {
         })
         .expect(204)
     })
+  })
+
+  describe('PUT /user/preference', async () => {
+    await prisma.user.create({ data: makeFakeUserModel() })
+    await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+    const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+    await prisma.preference.create({ data: makeFakePreferenceModel() })
+
+    await request(app.getHttpServer())
+      .put('/user/preference')
+      .set({ 'x-access-token': token })
+      .send({
+        activeType: 'gameMaster'
+      })
+      .expect(204)
   })
 })
