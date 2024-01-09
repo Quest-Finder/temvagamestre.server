@@ -1,3 +1,6 @@
 export * from './social-media/social-media-model'
 export * from './user/user-model'
 export * from './external-auth-mapping/external-auth-mapping'
+export * from './frequency/frequency-enum'
+export * from './active-type.ts/active-type-enum'
+export * from './preference/preference-model'
