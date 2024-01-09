@@ -55,4 +55,11 @@ describe('FindPreferenceByIdPrismaRepo', () => {
     const preference = await sut.execute('invalid_user_id')
     expect(preference).toBe(null)
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.preference, 'findUnique').mockRejectedValue(new Error('any_error_message'))
+    const promise = sut.execute('any_user_id')
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
