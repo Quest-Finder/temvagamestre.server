@@ -63,4 +63,13 @@ describe('UpdateUserPreferencesPrismaRepo', () => {
       activeType: 'player'
     })
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.preference, 'update').mockRejectedValue(
+      new Error('any_error_message')
+    )
+    const promise = sut.execute(makeFakeUpdateUserPreferenceData())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
