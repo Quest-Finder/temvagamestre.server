@@ -72,4 +72,11 @@ describe('UpdateUserPreferenceUsecase', () => {
     await sut.perform(makeFakeUpdateUserPreferenceData())
     expect(executeSpy).toHaveBeenCalledWith(makeFakeUpdateUserPreferenceData())
   })
+
+  it('Should throw if UpdateUserPreferenceRepo throws', async () => {
+    const { sut, updateUserPreferenceRepoStub } = makeSut()
+    jest.spyOn(updateUserPreferenceRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform(makeFakeUpdateUserPreferenceData())
+    await expect(promise).rejects.toThrow()
+  })
 })
