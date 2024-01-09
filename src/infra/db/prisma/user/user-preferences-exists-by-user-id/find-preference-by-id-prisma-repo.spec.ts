@@ -49,4 +49,10 @@ describe('FindPreferenceByIdPrismaRepo', () => {
     const preference = await sut.execute('any_user_id')
     expect(preference).toEqual({ ...makeFakePreference() })
   })
+
+  it('Should return null if prisma findUnique() dit not found a preference', async () => {
+    const sut = makeSut()
+    const preference = await sut.execute('invalid_user_id')
+    expect(preference).toBe(null)
+  })
 })
