@@ -53,4 +53,11 @@ describe('AddUserPreferencePrismaRepo', () => {
     const preference = await prismock.preference.findUnique({ where: { id: 'any_user_id' } })
     expect(preference).toEqual(makeFakePreferenceModel())
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.preference, 'create').mockRejectedValue(new Error('any_error_message'))
+    const promise = sut.execute(makeFakePreferenceModel())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
