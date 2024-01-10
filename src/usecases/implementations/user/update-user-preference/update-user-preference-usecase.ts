@@ -1,5 +1,5 @@
 import { type UpdateUserPreferenceResponse, type UpdateUserPreference, type UpdateUserPreferenceData } from '@/domain/contracts/user'
-import { NonExistentUserPreferencesError } from '@/domain/errors'
+import { NonExistentUserPreferenceError } from '@/domain/errors'
 import { left, right } from '@/shared/either'
 import { type UpdateUserPreferenceRepo, type FindPreferenceByIdRepo } from '@/usecases/contracts/db/user'
 
@@ -14,7 +14,7 @@ export class UpdateUserPreferenceUseCase implements UpdateUserPreference {
     const userPreferenceExists = await this.findPreferenceByIdRepo.execute(id)
 
     if (!userPreferenceExists) {
-      return left(new NonExistentUserPreferencesError(id))
+      return left(new NonExistentUserPreferenceError(id))
     }
 
     await this.updateUserPreferenceRepo.execute(data)
