@@ -13,7 +13,7 @@ const makeFakePreferenceModel = (): PreferenceModel => ({
 const makeFindPreferenceByIdRepo = (): FindPreferenceByIdRepo => {
   class FindPreferenceByIdRepoStub implements FindPreferenceByIdRepo {
     async execute (id: string): Promise<PreferenceModel | null> {
-      return await Promise.resolve(makeFakePreferenceModel())
+      return await Promise.resolve(null)
     }
   }
 
@@ -61,4 +61,18 @@ describe('AddUserPreferenceUsecase', () => {
     const result = await sut.perform(makeFakePreferenceModel())
     expect(result.value).toEqual(new ExistentUserPreferenceError('any_user_id'))
   })
+
+  it('Should call AddUserPreferenceRepo with correct values', async () => {
+    const { sut, addUserPreferenceRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(addUserPreferenceRepoStub, 'execute')
+    await sut.perform(makeFakePreferenceModel())
+    expect(executeSpy).toHaveBeenCalledWith(makeFakePreferenceModel())
+  })
+
+  // it('Should throw if AddUserPreferenceRepo throws', async () => {
+  //   const { sut, addUserPreferenceRepoStub } = makeSut()
+  //   jest.spyOn(addUserPreferenceRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+  //   const promise = sut.perform(makeFakePreferenceModel())
+  //   await expect(promise).rejects.toThrow()
+  // })
 })
