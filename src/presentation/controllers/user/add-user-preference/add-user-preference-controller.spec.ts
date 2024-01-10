@@ -75,4 +75,14 @@ describe('AddUserPreferenceController', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
   })
+
+  it('Should call AddUserPreference with correct values', async () => {
+    const { sut, addUserPreferenceStub } = makeSut()
+    const performSpy = jest.spyOn(addUserPreferenceStub, 'perform')
+    await sut.handle(makeFakeRequest())
+    expect(performSpy).toHaveBeenCalledWith({
+      id: 'any_user_id',
+      ...makeFakeRequest().body
+    })
+  })
 })
