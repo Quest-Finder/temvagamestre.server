@@ -75,4 +75,10 @@ describe('AddUserPreferenceUsecase', () => {
     const promise = sut.perform(makeFakePreferenceModel())
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return right result on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.perform(makeFakePreferenceModel())
+    expect(result.isRight()).toBe(true)
+  })
 })
