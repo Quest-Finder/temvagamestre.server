@@ -2,6 +2,7 @@ import { type AddUserPreferenceData } from '@/domain/contracts/user/add-user-pre
 import { type PreferenceModel } from '@/domain/models'
 import { type AddUserPreferenceRepo, type FindPreferenceByIdRepo } from '@/usecases/contracts/db/user'
 import { AddUserPreferenceUsecase } from './add-user-preference-usecase'
+import { ExistentUserPreferenceError } from '@/domain/errors'
 
 const makeFakePreferenceModel = (): PreferenceModel => ({
   id: 'any_user_id',
@@ -52,5 +53,12 @@ describe('AddUserPreferenceUsecase', () => {
     const executeSpy = jest.spyOn(findPreferenceByIdRepoStub, 'execute')
     await sut.perform(makeFakePreferenceModel())
     expect(executeSpy).toHaveBeenCalledWith('any_user_id')
+  })
+
+  it('Should return ExistentUserPreferencesError if FindPreferenceByIdRepo returns a preference', async () => {
+    const { sut, findPreferenceByIdRepoStub } = makeSut()
+    jest.spyOn(findPreferenceByIdRepoStub, 'execute').mockReturnValueOnce(Promise.resolve(makeFakePreferenceModel()))
+    const result = await sut.perform(makeFakePreferenceModel())
+    expect(result.value).toEqual(new ExistentUserPreferenceError('any_user_id'))
   })
 })
