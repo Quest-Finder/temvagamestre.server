@@ -83,6 +83,22 @@ describe('User Routes', () => {
     })
   })
 
+  describe('POST /user/preference', () => {
+    it('Should return 204 on success', async () => {
+      await prisma.user.create({ data: makeFakeUserModel() })
+      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+      await request(app.getHttpServer())
+        .post('/user/preference')
+        .set({ 'x-access-token': token })
+        .send({
+          frequency: 'daily',
+          activeType: 'gameMaster'
+        })
+        .expect(204)
+    })
+  })
+
   describe('PUT /user/preference', async () => {
     await prisma.user.create({ data: makeFakeUserModel() })
     await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
