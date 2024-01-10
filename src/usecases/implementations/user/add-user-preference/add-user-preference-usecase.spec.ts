@@ -69,10 +69,10 @@ describe('AddUserPreferenceUsecase', () => {
     expect(executeSpy).toHaveBeenCalledWith(makeFakePreferenceModel())
   })
 
-  // it('Should throw if AddUserPreferenceRepo throws', async () => {
-  //   const { sut, addUserPreferenceRepoStub } = makeSut()
-  //   jest.spyOn(addUserPreferenceRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
-  //   const promise = sut.perform(makeFakePreferenceModel())
-  //   await expect(promise).rejects.toThrow()
-  // })
+  it('Should throw if AddUserPreferenceRepo throws', async () => {
+    const { sut, addUserPreferenceRepoStub } = makeSut()
+    jest.spyOn(addUserPreferenceRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform(makeFakePreferenceModel())
+    await expect(promise).rejects.toThrow()
+  })
 })
