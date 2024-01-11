@@ -87,4 +87,13 @@ describe('UpdateUserConfigsUseCase', () => {
       allowMessage: true
     })
   })
+
+  it('Should throw if AddOrUpdateUserConfigsRepo throws', async () => {
+    const { sut, addOrUpdateUserConfigsRepoStub } = makeSut()
+    jest.spyOn(addOrUpdateUserConfigsRepoStub, 'execute').mockReturnValueOnce(
+      Promise.reject(new Error('any_message'))
+    )
+    const promise = sut.perform(makeFakeUpdateUserConfigsData())
+    await expect(promise).rejects.toThrow(new Error('any_message'))
+  })
 })
