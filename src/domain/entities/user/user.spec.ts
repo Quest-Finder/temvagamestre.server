@@ -101,4 +101,14 @@ describe('User Entity', () => {
       dateOfBirth: 'any_date'
     })
   })
+
+  it('Should return valid result on success (2)', () => {
+    const { firstName, ...data } = makeFakeUpdateUserEntityData()
+    const sut = User.update(data)
+    expect(sut.value).toEqual({
+      lastName: 'any_last_name',
+      phone: 'any_phone',
+      dateOfBirth: 'any_date'
+    })
+  })
 })
