@@ -3,7 +3,7 @@ import { badRequest, noContent, serverError } from '@/presentation/helpers/http-
 import type { HttpRequest } from '@/presentation/types/http'
 import { left, right, type Either } from '@/shared/either'
 import { UpdateUserController } from './update-user-controller'
-import type { UpdateUserData, UpdateUser } from '@/domain/contracts/user'
+import type { UpdateUserData, UpdateUser, UpdateUserResponse } from '@/domain/contracts/user'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
@@ -29,8 +29,8 @@ const makeValidation = (): Validation => {
 
 const makeFakeUpdateUser = (): UpdateUser => {
   class UpdateUserStub implements UpdateUser {
-    async perform (data: UpdateUserData): Promise<void> {
-      await Promise.resolve()
+    async perform (data: UpdateUserData): Promise<UpdateUserResponse> {
+      return await Promise.resolve(right(null))
     }
   }
   return new UpdateUserStub()
@@ -83,6 +83,15 @@ describe('UpdateUserController', () => {
       id: 'any_user_id',
       ...makeFakeRequest().body
     })
+  })
+
+  it('Should return 400 if UpdateUser fails', async () => {
+    const { sut, updateUserStub } = makeSut()
+    jest.spyOn(updateUserStub, 'perform').mockReturnValueOnce(
+      Promise.resolve(left(new Error('any_message')))
+    )
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new Error('any_message')))
   })
 
   it('Should return 500 if UpdateUser throws', async () => {
