@@ -15,10 +15,12 @@ export class UpdateUserController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      await this.updateUser.perform({
-        id: httpRequest.headers.userId,
-        ...httpRequest.body
+      const updateUserResult = await this.updateUser.perform({
+        id: httpRequest.headers.userId, ...httpRequest.body
       })
+      if (updateUserResult.isLeft()) {
+        return badRequest(updateUserResult.value)
+      }
       return noContent()
     } catch (error: any) {
       return serverError()
