@@ -1,8 +1,9 @@
-import { type UserModel } from '@/domain/models'
+import { type UpdateUserConfigsData } from '@/domain/contracts/user'
+import { PhoneNotCreatedError } from '@/domain/errors'
+import { type UserConfigModel, type UserModel } from '@/domain/models'
 import { type FindUserByIdRepo } from '@/usecases/contracts/db/user'
 import { UpdateUserConfigsUseCase } from './update-user-configs-usecase'
-import { PhoneNotCreatedError } from '@/domain/errors'
-import { type UpdateUserConfigsData } from '@/domain/contracts/user'
+import { type AddOrUpdateUserConfigsRepo } from '@/usecases/contracts/db/user-configs'
 
 const makeFakeUpdateUserConfigsData = (): UpdateUserConfigsData => ({
   userId: 'any_user_id',
@@ -28,15 +29,26 @@ const makeFindUserByIdRepo = (): FindUserByIdRepo => {
   return new FindUserByIdRepoStub()
 }
 
+const makeAddOrUpdateUserConfigsRepo = (): AddOrUpdateUserConfigsRepo => {
+  class AddOrUpdateUserConfigsRepoStub implements AddOrUpdateUserConfigsRepo {
+    async execute (data: UserConfigModel): Promise<void> {
+      await Promise.resolve()
+    }
+  }
+  return new AddOrUpdateUserConfigsRepoStub()
+}
+
 type SutTypes = {
   sut: UpdateUserConfigsUseCase
   findUserByIdRepoStub: FindUserByIdRepo
+  addOrUpdateUserConfigsRepoStub: AddOrUpdateUserConfigsRepo
 }
 
 const makeSut = (): SutTypes => {
   const findUserByIdRepoStub = makeFindUserByIdRepo()
-  const sut = new UpdateUserConfigsUseCase(findUserByIdRepoStub)
-  return { sut, findUserByIdRepoStub }
+  const addOrUpdateUserConfigsRepoStub = makeAddOrUpdateUserConfigsRepo()
+  const sut = new UpdateUserConfigsUseCase(findUserByIdRepoStub, addOrUpdateUserConfigsRepoStub)
+  return { sut, findUserByIdRepoStub, addOrUpdateUserConfigsRepoStub }
 }
 
 describe('UpdateUserConfigsUseCase', () => {
@@ -64,5 +76,15 @@ describe('UpdateUserConfigsUseCase', () => {
     )
     const promise = sut.perform(makeFakeUpdateUserConfigsData())
     await expect(promise).rejects.toThrow(new Error('any_message'))
+  })
+
+  it('Should call AddOrUpdateUserConfigsRepo with correct values', async () => {
+    const { sut, addOrUpdateUserConfigsRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(addOrUpdateUserConfigsRepoStub, 'execute')
+    await sut.perform(makeFakeUpdateUserConfigsData())
+    expect(executeSpy).toHaveBeenCalledWith({
+      id: 'any_user_id',
+      allowMessage: true
+    })
   })
 })
