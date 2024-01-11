@@ -13,15 +13,12 @@ export class User {
     for (const result of Object.values(results)) {
       if (result.isLeft()) return left(result.value)
     }
-    const firstName = results.firstName?.value as FirstName
-    const lastName = results.lastName?.value as LastName
-    const phone = results.phone?.value as Phone
-    const dateOfBirth = results.dateOfBirth?.value as DateOfBirth
-    return right({
-      ...(firstName && { firstName: firstName.firstName }),
-      ...(lastName && { lastName: lastName.lastName }),
-      ...(phone && { phone: phone.phone }),
-      ...(dateOfBirth && { dateOfBirth: dateOfBirth.dateOfBirth })
-    })
+    const values = Object.values(results)
+    const userValues = values.map(result => result?.value)
+    return right(Object.fromEntries(
+      userValues.map(
+        (value, index) => [Object.keys(results)[index], value[Object.keys(value)[0]]]
+      )
+    ))
   }
 }
