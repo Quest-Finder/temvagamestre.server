@@ -4,6 +4,7 @@ import { formatDateStringToDateTime } from '@/util'
 import type { UpdateUserRepo, UpdateUserRepoData } from '@/usecases/contracts/db/user'
 import { left, right } from '@/shared/either'
 import { User } from '@/domain/entities/user/user'
+import { type UpdateUserEntityData } from '@/domain/entities/user'
 
 jest.mock('@/util/format-date-string-to-date-time/format-date-string-to-date-time', () => ({
   ...jest.requireActual('@/util/format-date-string-to-date-time/format-date-string-to-date-time'),
@@ -14,13 +15,8 @@ jest.mock('@/util/format-date-string-to-date-time/format-date-string-to-date-tim
 
 jest.mock('@/domain/entities/user/user', () => ({
   User: {
-    update: jest.fn(() => {
-      return right({
-        firstName: { firstName: 'any_first_name' },
-        lastName: { lastName: 'any_last_name' },
-        phone: { phone: 'any_phone' },
-        dateOfBirth: { dateOfBirth: '12-31-2000' }
-      })
+    update: jest.fn((data: UpdateUserEntityData) => {
+      return right(data)
     })
   }
 }))

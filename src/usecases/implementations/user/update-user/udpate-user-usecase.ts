@@ -8,20 +8,22 @@ export class UpdateUserUseCase implements UpdateUser {
   constructor (private readonly updateUserRepo: UpdateUserRepo) {}
 
   async perform (data: UpdateUserData): Promise<UpdateUserResponse> {
-    const dataToUserEntity: UpdateUserEntityData = {
-      ...(data.dateOfBirth && { dateOfBirth: data.dateOfBirth }),
-      ...(data.firstName && { firstName: data.firstName }),
-      ...(data.lastName && { lastName: data.lastName }),
-      ...(data.phone && { phone: data.phone })
-    }
+    const dataToUserEntity: UpdateUserEntityData = !data.nickname
+      ? Object.fromEntries(Object.entries(data).map(([key, value]) => (value ? [key, value] : [])))
+      : (({ id, nickname, ...allDatas }) => allDatas)(data)
     const userResult = User.update(dataToUserEntity)
     if (userResult.isLeft()) {
       return left(userResult.value)
     }
-    const { dateOfBirth, ...dataToRepo } = data
-    const dataRepo: UpdateUserRepoData = dataToRepo
-    if (dateOfBirth) {
-      dataRepo.dateOfBirth = formatDateStringToDateTime(dateOfBirth)
+    const dateOfBirth = userResult.value.dateOfBirth
+      ? formatDateStringToDateTime(userResult.value.dateOfBirth)
+      : undefined
+    const dataRepo: UpdateUserRepoData = {
+      id: data.id,
+      ...(data.nickname && { nickname: data.nickname }),
+      ...(dateOfBirth && { dateOfBirth }),
+      ...(Object.keys(data).filter(key => ['firstName', 'lastName', 'phone'].includes(key))
+        .reduce((acc, key) => ({ ...acc, [key]: userResult.value[key] }), {}))
     }
     await this.updateUserRepo.execute(dataRepo)
     return right(null)
