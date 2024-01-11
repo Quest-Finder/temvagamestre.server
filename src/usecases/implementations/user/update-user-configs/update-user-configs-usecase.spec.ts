@@ -20,10 +20,10 @@ const makeFakeUserModel = (): UserModel => ({
 const makeFindUserByIdRepo = (): FindUserByIdRepo => {
   class FindUserByIdRepoStub implements FindUserByIdRepo {
     async execute (id: string): Promise<UserModel | null> {
-      return {
+      return await Promise.resolve({
         ...makeFakeUserModel(),
         phone: 'any_phone'
-      }
+      })
     }
   }
   return new FindUserByIdRepoStub()

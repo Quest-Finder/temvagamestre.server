@@ -12,11 +12,12 @@ export class UpdateUserConfigsUseCase implements UpdateUserConfigs {
   ) {}
 
   async perform (data: UpdateUserConfigsData): Promise<UpdateUserConfigsResponse> {
-    const user = await this.findUserByIdRepo.execute(data.userId) as UserModel
+    const { userId: id, allowMessage } = data
+    const user = await this.findUserByIdRepo.execute(id) as UserModel
     if (!user.phone) {
       return left(new PhoneNotCreatedError())
     }
-    await this.addOrUpdateUserConfigsRepo.execute({ id: data.userId, allowMessage: data.allowMessage })
+    await this.addOrUpdateUserConfigsRepo.execute({ id, allowMessage })
     return right(null)
   }
 }
