@@ -79,6 +79,15 @@ describe('UpdateUserUseCase', () => {
     })
   })
 
+  it('Should call User with correct values if nickname not provided', async () => {
+    const { sut } = makeSut()
+    const updateSpy = jest.spyOn(User, 'update')
+    const { nickname, ...data } = makeFakeUpdateUserData()
+    await sut.perform(data)
+    const { id, ...dataWithoutId } = data
+    expect(updateSpy).toHaveBeenCalledWith(dataWithoutId)
+  })
+
   it('Should return an error if User returns any error', async () => {
     const { sut } = makeSut()
     jest.spyOn(User, 'update').mockReturnValueOnce(
