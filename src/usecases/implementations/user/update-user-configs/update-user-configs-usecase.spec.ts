@@ -96,4 +96,10 @@ describe('UpdateUserConfigsUseCase', () => {
     const promise = sut.perform(makeFakeUpdateUserConfigsData())
     await expect(promise).rejects.toThrow(new Error('any_message'))
   })
+
+  it('Should return right result on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.perform(makeFakeUpdateUserConfigsData())
+    expect(result.isRight()).toBe(true)
+  })
 })
