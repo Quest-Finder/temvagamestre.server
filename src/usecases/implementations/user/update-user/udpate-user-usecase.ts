@@ -4,13 +4,16 @@ import { left, right } from '@/shared/either'
 import type { UpdateUserRepo, UpdateUserRepoData } from '@/usecases/contracts/db/user'
 import { formatDateStringToDateTime } from '@/util'
 
+const userDataKeys = ['firstName', 'lastName', 'phone']
+
 export class UpdateUserUseCase implements UpdateUser {
   constructor (private readonly updateUserRepo: UpdateUserRepo) {}
 
   async perform (data: UpdateUserData): Promise<UpdateUserResponse> {
-    const dataToUserEntity: UpdateUserEntityData = !data.nickname
-      ? Object.fromEntries(Object.entries(data).map(([key, value]) => (value ? [key, value] : [])))
-      : (({ id, nickname, ...allDatas }) => allDatas)(data)
+    const { id, ...updatedData } = data
+    const dataToUserEntity: UpdateUserEntityData = !updatedData.nickname
+      ? Object.fromEntries(Object.entries(updatedData))
+      : (({ nickname, ...allDatas }) => allDatas)(updatedData)
     const userResult = User.update(dataToUserEntity)
     if (userResult.isLeft()) {
       return left(userResult.value)
@@ -22,8 +25,9 @@ export class UpdateUserUseCase implements UpdateUser {
       id: data.id,
       ...(data.nickname && { nickname: data.nickname }),
       ...(dateOfBirth && { dateOfBirth }),
-      ...(Object.keys(data).filter(key => ['firstName', 'lastName', 'phone'].includes(key))
-        .reduce((acc, key) => ({ ...acc, [key]: userResult.value[key] }), {}))
+      ...userDataKeys.reduce((acc, key) => (
+        updatedData[key] ? { ...acc, [key]: updatedData[key] } : acc
+      ), {})
     }
     await this.updateUserRepo.execute(dataRepo)
     return right(null)
