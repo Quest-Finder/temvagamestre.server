@@ -89,8 +89,8 @@ describe('User Routes', () => {
         .patch('/user')
         .set({ 'x-access-token': token })
         .send({
-          firstName: 'any_first_name',
-          lastName: 'any_last_name',
+          firstName: 'first name',
+          lastName: 'last name',
           phone: '11991887766',
           dateOfBirth: '12-31-2000',
           nickname: 'any_nickname'
