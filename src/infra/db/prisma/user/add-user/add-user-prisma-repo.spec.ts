@@ -21,7 +21,7 @@ const makeSut = (): AddUserPrismaRepo => {
   return new AddUserPrismaRepo()
 }
 
-describe('FindUserByEmailPrismaRepo', () => {
+describe('AddUserPrismaRepo', () => {
   beforeAll(async () => {
     MockDate.set(new Date())
     prismock = new PrismockClient()
@@ -44,5 +44,14 @@ describe('FindUserByEmailPrismaRepo', () => {
     await sut.execute(makeFakeUserModel())
     const user = await prismock.user.findUnique({ where: { id: 'any_user_id' } })
     expect(user).toEqual({ ...makeFakeUserModel(), addressId: null })
+  })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.user, 'create').mockRejectedValue(
+      new Error('any_error_message')
+    )
+    const promise = sut.execute(makeFakeUserModel())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })
 })

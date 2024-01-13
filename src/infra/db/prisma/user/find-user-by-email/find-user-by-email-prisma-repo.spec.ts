@@ -52,4 +52,13 @@ describe('FindUserByEmailPrismaRepo', () => {
     const user = await sut.execute('invalid_email@mail.com')
     expect(user).toBe(null)
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.user, 'findUnique').mockRejectedValue(
+      new Error('any_error_message')
+    )
+    const promise = sut.execute('invalid_email@mail.com')
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
