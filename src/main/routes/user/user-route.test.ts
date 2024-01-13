@@ -36,6 +36,13 @@ const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
   externalAuthUserId: 'any_external_auth_user_id'
 })
 
+const makeFakeToken = async (): Promise<string> => {
+  await prisma.user.create({ data: makeFakeUserModel() })
+  await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+  const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+  return token
+}
+
 let prisma: PrismaClient
 let app: INestApplication
 
@@ -52,10 +59,10 @@ describe('User Routes', () => {
 
     app = module.createNestApplication()
     await app.init()
-    await prisma.user.deleteMany()
-    await prisma.externalAuthMapping.deleteMany()
     await prisma.userSocialMedia.deleteMany()
     await prisma.socialMedia.deleteMany()
+    await prisma.externalAuthMapping.deleteMany()
+    await prisma.user.deleteMany()
   })
 
   afterEach(async () => {
@@ -69,9 +76,7 @@ describe('User Routes', () => {
   describe('POST /user/social-media', () => {
     it('Should return 204 on success', async () => {
       await prisma.socialMedia.create({ data: makeFakeSocialMediaModel() })
-      await prisma.user.create({ data: makeFakeUserModel() })
-      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+      const token = await makeFakeToken()
       await request(app.getHttpServer())
         .post('/user/social-media')
         .set({ 'x-access-token': token })
@@ -94,6 +99,23 @@ describe('User Routes', () => {
         .send({
           frequency: 'daily',
           activeType: 'gameMaster'
+        })
+        .expect(204)
+    })
+  })
+
+  describe('PATCH /user', () => {
+    it('Should return 204 on success', async () => {
+      const token = await makeFakeToken()
+      await request(app.getHttpServer())
+        .patch('/user')
+        .set({ 'x-access-token': token })
+        .send({
+          firstName: 'first name',
+          lastName: 'last name',
+          phone: '11991887766',
+          dateOfBirth: '12-31-2000',
+          nickname: 'any_nickname'
         })
         .expect(204)
     })

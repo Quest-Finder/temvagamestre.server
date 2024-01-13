@@ -2,7 +2,8 @@ import { adaptRoute } from '@/main/factories/adapters'
 import { makeAddUserPreferenceController } from '@/main/factories/controllers/user/add-user-preference-controller-factory'
 import { makeUpdateUserPreferenceController } from '@/main/factories/controllers/user/update-user-preference-controller-factory'
 import { makeUpdateUserSocialMediaController } from '@/main/factories/controllers/user/update-user-social-media-controller-factory'
-import { Controller, Post, Put, Req, Res } from '@nestjs/common'
+import { makeUpdateUserController } from '@/main/factories/controllers/user/update-user-controller-factory'
+import { Controller, Patch, Post, Req, Res, Put } from '@nestjs/common'
 import { Request, Response } from 'express'
 
 @Controller('/user')
@@ -28,6 +29,12 @@ export class UserRoute {
     const adaptNest = adaptRoute(
       makeUpdateUserPreferenceController()
     )
+    await adaptNest.adapt(req, res)
+  }
+
+  @Patch()
+  async updateUser (@Req() req: Request, @Res() res: Response): Promise<void> {
+    const adaptNest = adaptRoute(makeUpdateUserController())
     await adaptNest.adapt(req, res)
   }
 }
