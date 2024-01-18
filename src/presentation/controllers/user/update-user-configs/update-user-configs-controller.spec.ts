@@ -1,10 +1,12 @@
-import { type UpdateUserConfigs, type UpdateUserConfigsData, type UpdateUserConfigsResponse } from '@/domain/contracts/user'
+import type { UpdateUserConfigs, UpdateUserConfigsData, UpdateUserConfigsResponse } from '@/domain/contracts/user'
 import { UpdateUserConfigsController } from './update-user-configs-controller'
-import { left, right } from '@/shared/either'
+import { type Either, left, right } from '@/shared/either'
+import { type Validation } from '@/presentation/contracts'
 
 type SutTypes = {
   sut: UpdateUserConfigsController
   updateUserConfigsStub: UpdateUserConfigs
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
@@ -13,12 +15,28 @@ const makeSut = (): SutTypes => {
       return await Promise.resolve(right(null))
     }
   }
+  class ValidationStub implements Validation {
+    async validate (input: any): Promise<Either<Error, null>> {
+      return await Promise.resolve(right(null))
+    }
+  }
   const updateUserConfigsStub = new UpdateUserConfigsStub()
-  const sut = new UpdateUserConfigsController(updateUserConfigsStub)
-  return { sut, updateUserConfigsStub }
+  const validationStub = new ValidationStub()
+  const sut = new UpdateUserConfigsController(validationStub, updateUserConfigsStub)
+  return { sut, updateUserConfigsStub, validationStub }
 }
 
 describe('UpdateUserConfigsController', () => {
+  it('Should call Validation with allow message', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    await sut.handle({
+      headers: { userId: 'any_user_id' },
+      body: { allowMessage: true }
+    })
+    expect(validateSpy).toHaveBeenCalledWith({ allowMessage: true })
+  })
+
   it('Should return 400 if allow message was not provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({
