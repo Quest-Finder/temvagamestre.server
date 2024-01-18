@@ -3,6 +3,7 @@ import { type PreferenceModel } from '@/domain/models'
 import { type DayPeriodModel } from '@/domain/models/day-period/day-period-model'
 import { type AddOrUpdateDayPeriodRepo, type FindPreferenceByIdRepo } from '@/usecases/contracts/db/user'
 import { AddDayPeriodUsecase } from './add-day-period-usecase'
+import { NonExistentUserPreferenceError } from '@/domain/errors'
 
 const makeFakeDayPeriodModel = (): DayPeriodModel => ({
   id: 'any_user_id',
@@ -60,5 +61,12 @@ describe('AddDayPeriodUsecase', () => {
     const executeSpy = jest.spyOn(findPreferenceByIdRepoStub, 'execute')
     await sut.perform(makeFakeDayPeriodModel())
     expect(executeSpy).toHaveBeenCalledWith('any_user_id')
+  })
+
+  it('Should return NonExistentUserPreferencesError if FindPreferenceByIdRepo does not returns a preference', async () => {
+    const { sut, findPreferenceByIdRepoStub } = makeSut()
+    jest.spyOn(findPreferenceByIdRepoStub, 'execute').mockReturnValueOnce(Promise.resolve(null))
+    const result = await sut.perform(makeFakeDayPeriodModel())
+    expect(result.value).toEqual(new NonExistentUserPreferenceError('any_user_id'))
   })
 })
