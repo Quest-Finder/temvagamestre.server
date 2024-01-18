@@ -2,15 +2,25 @@ import { type UpdateUserConfigs, type UpdateUserConfigsData, type UpdateUserConf
 import { UpdateUserConfigsController } from './update-user-configs-controller'
 import { right } from '@/shared/either'
 
+type SutTypes = {
+  sut: UpdateUserConfigsController
+  updateUserConfigsStub: UpdateUserConfigs
+}
+
+const makeSut = (): SutTypes => {
+  class UpdateUserConfigsStub implements UpdateUserConfigs {
+    async perform (data: UpdateUserConfigsData): Promise<UpdateUserConfigsResponse> {
+      return await Promise.resolve(right(null))
+    }
+  }
+  const updateUserConfigsStub = new UpdateUserConfigsStub()
+  const sut = new UpdateUserConfigsController(updateUserConfigsStub)
+  return { sut, updateUserConfigsStub }
+}
+
 describe('UpdateUserConfigsController', () => {
   it('Should return 400 if allow message was not provided', async () => {
-    class UpdateUserConfigsStub implements UpdateUserConfigs {
-      async perform (data: UpdateUserConfigsData): Promise<UpdateUserConfigsResponse> {
-        return await Promise.resolve(right(null))
-      }
-    }
-    const updateUserConfigsStub = new UpdateUserConfigsStub()
-    const sut = new UpdateUserConfigsController(updateUserConfigsStub)
+    const { sut } = makeSut()
     const httpResponse = await sut.handle({
       headers: { userId: 'any_user_id' },
       body: {}
@@ -19,13 +29,7 @@ describe('UpdateUserConfigsController', () => {
   })
 
   it('Should call UpdateUserConfigs with correct values', async () => {
-    class UpdateUserConfigsStub implements UpdateUserConfigs {
-      async perform (data: UpdateUserConfigsData): Promise<UpdateUserConfigsResponse> {
-        return await Promise.resolve(right(null))
-      }
-    }
-    const updateUserConfigsStub = new UpdateUserConfigsStub()
-    const sut = new UpdateUserConfigsController(updateUserConfigsStub)
+    const { sut, updateUserConfigsStub } = makeSut()
     const performSpy = jest.spyOn(updateUserConfigsStub, 'perform')
     await sut.handle({
       headers: { userId: 'any_user_id' },
