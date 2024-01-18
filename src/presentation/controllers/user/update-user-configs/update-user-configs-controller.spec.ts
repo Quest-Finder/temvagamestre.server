@@ -15,19 +15,27 @@ type SutTypes = {
   validationStub: Validation
 }
 
-const makeSut = (): SutTypes => {
+const makeUpdateUserConfigs = (): UpdateUserConfigs => {
   class UpdateUserConfigsStub implements UpdateUserConfigs {
     async perform (data: UpdateUserConfigsData): Promise<UpdateUserConfigsResponse> {
       return await Promise.resolve(right(null))
     }
   }
+  return new UpdateUserConfigsStub()
+}
+
+const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
     async validate (input: any): Promise<Either<Error, null>> {
       return await Promise.resolve(right(null))
     }
   }
-  const updateUserConfigsStub = new UpdateUserConfigsStub()
-  const validationStub = new ValidationStub()
+  return new ValidationStub()
+}
+
+const makeSut = (): SutTypes => {
+  const updateUserConfigsStub = makeUpdateUserConfigs()
+  const validationStub = makeValidation()
   const sut = new UpdateUserConfigsController(validationStub, updateUserConfigsStub)
   return { sut, updateUserConfigsStub, validationStub }
 }
