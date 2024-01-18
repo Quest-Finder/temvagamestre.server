@@ -14,7 +14,7 @@ export class UpdateUserConfigsController implements Controller {
       allowMessage: httpRequest.body.allowMessage
     })
     if (updateUserConfigsResult.isLeft()) {
-      return { body: '', statusCode: 400 }
+      return { body: updateUserConfigsResult.value, statusCode: 400 }
     }
     return { body: '', statusCode: 204 }
   }
