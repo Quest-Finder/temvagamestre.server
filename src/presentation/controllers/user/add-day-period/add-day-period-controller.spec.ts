@@ -86,4 +86,13 @@ describe('AddDayPeriodController', () => {
       ...makeFakeRequest().body
     })
   })
+
+  it('Should return 500 if AddDayPeriod throws', async () => {
+    const { sut, addDayPeriodStub } = makeSut()
+    jest.spyOn(addDayPeriodStub, 'perform').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
+  })
 })
