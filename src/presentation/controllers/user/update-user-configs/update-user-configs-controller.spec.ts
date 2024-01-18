@@ -44,13 +44,14 @@ describe('UpdateUserConfigsController', () => {
   it('Should return 400 if UpdateUserConfigs returns an Error', async () => {
     const { sut, updateUserConfigsStub } = makeSut()
     jest.spyOn(updateUserConfigsStub, 'perform').mockReturnValueOnce(
-      Promise.resolve(left(new Error()))
+      Promise.resolve(left(new Error('any_message')))
     )
     const httpResponse = await sut.handle({
       headers: { userId: 'any_user_id' },
       body: { allowMessage: true }
     })
     expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new Error('any_message'))
   })
 
   it('Should return 204 on success', async () => {
