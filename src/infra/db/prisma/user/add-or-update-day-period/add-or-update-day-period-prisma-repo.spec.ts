@@ -69,4 +69,21 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
 
     expect(dayPeriod).toEqual(makeFakeDayPeriodModel())
   })
+
+  it('Should update DayPeriod when relation exists', async () => {
+    const sut = makeSut()
+    await prismock.user.create({ data: makeFakeUserModel() })
+    await prismock.preference.create({ data: makeFakePreferenceModel() })
+    await prismock.dayPeriod.create({ data: makeFakeDayPeriodModel() })
+
+    await sut.execute({ ...makeFakeDayPeriodModel(), morning: false })
+
+    const dayPeriod = await prismock.dayPeriod.findUnique({
+      where: {
+        id: 'any_user_id'
+      }
+    })
+
+    expect(dayPeriod).toEqual({ ...makeFakeDayPeriodModel(), morning: false })
+  })
 })
