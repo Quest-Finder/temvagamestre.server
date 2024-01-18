@@ -6,10 +6,16 @@ export class UpdateUserConfigsController implements Controller {
   constructor (private readonly updateUserConfigs: UpdateUserConfigs) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    await this.updateUserConfigs.perform({
+    if (!httpRequest.body.allowMessage) {
+      return { body: '', statusCode: 400 }
+    }
+    const updateUserConfigsResult = await this.updateUserConfigs.perform({
       userId: httpRequest.headers.userId,
       allowMessage: httpRequest.body.allowMessage
     })
-    return { body: '', statusCode: 400 }
+    if (updateUserConfigsResult.isLeft()) {
+      return { body: '', statusCode: 400 }
+    }
+    return { body: '', statusCode: 204 }
   }
 }
