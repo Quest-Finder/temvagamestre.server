@@ -9,7 +9,10 @@ export class UpdateUserConfigsController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    await this.validation.validate(httpRequest.body)
+    const validationResult = await this.validation.validate(httpRequest.body)
+    if (validationResult.isLeft()) {
+      return { body: validationResult.value, statusCode: 400 }
+    }
     if (!httpRequest.body.allowMessage) {
       return { body: '', statusCode: 400 }
     }
