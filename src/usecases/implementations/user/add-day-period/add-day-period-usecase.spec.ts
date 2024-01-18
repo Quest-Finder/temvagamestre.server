@@ -69,4 +69,11 @@ describe('AddDayPeriodUsecase', () => {
     const result = await sut.perform(makeFakeDayPeriodModel())
     expect(result.value).toEqual(new NonExistentUserPreferenceError('any_user_id'))
   })
+
+  it('Should call AddOrUpdateDayPeriodRepo with correct values', async () => {
+    const { sut, addOrUpdateDayPeriodRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(addOrUpdateDayPeriodRepoStub, 'execute')
+    await sut.perform(makeFakeDayPeriodModel())
+    expect(executeSpy).toHaveBeenCalledWith(makeFakeDayPeriodModel())
+  })
 })
