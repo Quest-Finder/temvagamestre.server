@@ -76,4 +76,11 @@ describe('AddDayPeriodUsecase', () => {
     await sut.perform(makeFakeDayPeriodModel())
     expect(executeSpy).toHaveBeenCalledWith(makeFakeDayPeriodModel())
   })
+
+  it('Should throw if AddOrUpdateDayPeriodRepo throws', async () => {
+    const { sut, addOrUpdateDayPeriodRepoStub } = makeSut()
+    jest.spyOn(addOrUpdateDayPeriodRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform(makeFakeDayPeriodModel())
+    await expect(promise).rejects.toThrow()
+  })
 })
