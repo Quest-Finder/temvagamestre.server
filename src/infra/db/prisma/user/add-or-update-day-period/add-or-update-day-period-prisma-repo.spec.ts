@@ -86,4 +86,14 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
 
     expect(dayPeriod).toEqual({ ...makeFakeDayPeriodModel(), morning: false })
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.dayPeriod, 'upsert').mockRejectedValue(
+      new Error('any_error_message')
+    )
+
+    const promise = sut.execute(makeFakeDayPeriodModel())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
