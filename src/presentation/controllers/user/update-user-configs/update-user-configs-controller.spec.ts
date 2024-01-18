@@ -2,6 +2,12 @@ import type { UpdateUserConfigs, UpdateUserConfigsData, UpdateUserConfigsRespons
 import { UpdateUserConfigsController } from './update-user-configs-controller'
 import { type Either, left, right } from '@/shared/either'
 import { type Validation } from '@/presentation/contracts'
+import { type HttpRequest } from '@/presentation/types/http'
+
+const makeFakeRequest = (): HttpRequest => ({
+  headers: { userId: 'any_user_id' },
+  body: { allowMessage: true }
+})
 
 type SutTypes = {
   sut: UpdateUserConfigsController
@@ -30,10 +36,7 @@ describe('UpdateUserConfigsController', () => {
   it('Should call Validation with allow message', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
-    await sut.handle({
-      headers: { userId: 'any_user_id' },
-      body: { allowMessage: true }
-    })
+    await sut.handle(makeFakeRequest())
     expect(validateSpy).toHaveBeenCalledWith({ allowMessage: true })
   })
 
@@ -42,10 +45,7 @@ describe('UpdateUserConfigsController', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(
       Promise.resolve(left(new Error('any_message')))
     )
-    const httpResponse = await sut.handle({
-      headers: { userId: 'any_user_id' },
-      body: { allowMessage: true }
-    })
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new Error('any_message'))
   })
@@ -53,10 +53,7 @@ describe('UpdateUserConfigsController', () => {
   it('Should call UpdateUserConfigs with correct values', async () => {
     const { sut, updateUserConfigsStub } = makeSut()
     const performSpy = jest.spyOn(updateUserConfigsStub, 'perform')
-    await sut.handle({
-      headers: { userId: 'any_user_id' },
-      body: { allowMessage: true }
-    })
+    await sut.handle(makeFakeRequest())
     expect(performSpy).toHaveBeenCalledWith({
       userId: 'any_user_id',
       allowMessage: true
@@ -68,20 +65,14 @@ describe('UpdateUserConfigsController', () => {
     jest.spyOn(updateUserConfigsStub, 'perform').mockReturnValueOnce(
       Promise.resolve(left(new Error('any_message')))
     )
-    const httpResponse = await sut.handle({
-      headers: { userId: 'any_user_id' },
-      body: { allowMessage: true }
-    })
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new Error('any_message'))
   })
 
   it('Should return 204 on success', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle({
-      headers: { userId: 'any_user_id' },
-      body: { allowMessage: true }
-    })
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(204)
   })
 })
