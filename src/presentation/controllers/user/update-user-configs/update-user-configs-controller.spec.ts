@@ -50,15 +50,6 @@ describe('UpdateUserConfigsController', () => {
     expect(httpResponse.body).toEqual(new Error('any_message'))
   })
 
-  it('Should return 400 if allow message was not provided', async () => {
-    const { sut } = makeSut()
-    const httpResponse = await sut.handle({
-      headers: { userId: 'any_user_id' },
-      body: {}
-    })
-    expect(httpResponse.statusCode).toBe(400)
-  })
-
   it('Should call UpdateUserConfigs with correct values', async () => {
     const { sut, updateUserConfigsStub } = makeSut()
     const performSpy = jest.spyOn(updateUserConfigsStub, 'perform')

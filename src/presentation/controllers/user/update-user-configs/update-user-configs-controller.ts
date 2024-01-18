@@ -13,9 +13,6 @@ export class UpdateUserConfigsController implements Controller {
     if (validationResult.isLeft()) {
       return { body: validationResult.value, statusCode: 400 }
     }
-    if (!httpRequest.body.allowMessage) {
-      return { body: '', statusCode: 400 }
-    }
     const updateUserConfigsResult = await this.updateUserConfigs.perform({
       userId: httpRequest.headers.userId,
       allowMessage: httpRequest.body.allowMessage
