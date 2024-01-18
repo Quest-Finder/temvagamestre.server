@@ -1,6 +1,6 @@
 import { type UpdateUserConfigs, type UpdateUserConfigsData, type UpdateUserConfigsResponse } from '@/domain/contracts/user'
 import { UpdateUserConfigsController } from './update-user-configs-controller'
-import { right } from '@/shared/either'
+import { left, right } from '@/shared/either'
 
 type SutTypes = {
   sut: UpdateUserConfigsController
@@ -39,5 +39,17 @@ describe('UpdateUserConfigsController', () => {
       userId: 'any_user_id',
       allowMessage: true
     })
+  })
+
+  it('Should return 400 if UpdateUserConfigs return an Error', async () => {
+    const { sut, updateUserConfigsStub } = makeSut()
+    jest.spyOn(updateUserConfigsStub, 'perform').mockReturnValueOnce(
+      Promise.resolve(left(new Error()))
+    )
+    const httpResponse = await sut.handle({
+      headers: { userId: 'any_user_id' },
+      body: { allowMessage: true }
+    })
+    expect(httpResponse.statusCode).toBe(400)
   })
 })
