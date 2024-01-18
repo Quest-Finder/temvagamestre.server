@@ -76,4 +76,14 @@ describe('AddDayPeriodController', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
   })
+
+  it('Should call AddDayPeriod with correct values', async () => {
+    const { sut, addDayPeriodStub } = makeSut()
+    const performSpy = jest.spyOn(addDayPeriodStub, 'perform')
+    await sut.handle(makeFakeRequest())
+    expect(performSpy).toHaveBeenCalledWith({
+      id: 'any_user_id',
+      ...makeFakeRequest().body
+    })
+  })
 })
