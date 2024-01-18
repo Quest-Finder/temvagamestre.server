@@ -1,5 +1,6 @@
 import { type UpdateUserConfigs } from '@/domain/contracts/user'
 import type { Validation, Controller } from '@/presentation/contracts'
+import { badRequest, noContent } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
 export class UpdateUserConfigsController implements Controller {
@@ -11,15 +12,15 @@ export class UpdateUserConfigsController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const validationResult = await this.validation.validate(httpRequest.body)
     if (validationResult.isLeft()) {
-      return { body: validationResult.value, statusCode: 400 }
+      return badRequest(validationResult.value)
     }
     const updateUserConfigsResult = await this.updateUserConfigs.perform({
       userId: httpRequest.headers.userId,
       allowMessage: httpRequest.body.allowMessage
     })
     if (updateUserConfigsResult.isLeft()) {
-      return { body: updateUserConfigsResult.value, statusCode: 400 }
+      return badRequest(updateUserConfigsResult.value)
     }
-    return { body: '', statusCode: 204 }
+    return noContent()
   }
 }

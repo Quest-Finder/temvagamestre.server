@@ -3,6 +3,7 @@ import { UpdateUserConfigsController } from './update-user-configs-controller'
 import { type Either, left, right } from '@/shared/either'
 import { type Validation } from '@/presentation/contracts'
 import { type HttpRequest } from '@/presentation/types/http'
+import { badRequest, noContent } from '@/presentation/helpers/http-helpers'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: { userId: 'any_user_id' },
@@ -54,8 +55,7 @@ describe('UpdateUserConfigsController', () => {
       Promise.resolve(left(new Error('any_message')))
     )
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('any_message'))
+    expect(httpResponse).toEqual(badRequest(new Error('any_message')))
   })
 
   it('Should call UpdateUserConfigs with correct values', async () => {
@@ -74,13 +74,12 @@ describe('UpdateUserConfigsController', () => {
       Promise.resolve(left(new Error('any_message')))
     )
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('any_message'))
+    expect(httpResponse).toEqual(badRequest(new Error('any_message')))
   })
 
   it('Should return 204 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(204)
+    expect(httpResponse).toEqual(noContent())
   })
 })
