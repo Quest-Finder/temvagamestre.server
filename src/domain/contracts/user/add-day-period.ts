@@ -2,7 +2,7 @@ import type { NonExistentUserPreferenceError } from '@/domain/errors'
 import type { Either } from '@/shared/either'
 
 export type AddDayPeriodData = {
-  userId: string
+  id: string
   morning: boolean
   afternoon: boolean
   night: boolean
