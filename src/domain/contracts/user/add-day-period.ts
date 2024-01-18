@@ -11,5 +11,5 @@ export type AddDayPeriodData = {
 export type AddDayPeriodResponse = Either<NonExistentUserPreferenceError, null>
 
 export interface AddDayPeriod {
-  perform: (data: AddDayPeriodData) => Promise<AddDayPeriodData>
+  perform: (data: AddDayPeriodData) => Promise<AddDayPeriodResponse>
 }

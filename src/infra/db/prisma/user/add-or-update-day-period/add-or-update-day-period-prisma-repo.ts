@@ -1,6 +1,6 @@
 import { type AddDayPeriodData } from '@/domain/contracts/user/add-day-period'
-import { type AddOrUpdateDayPeriodRepo } from '@/usecases/contracts/db/user/add-or-update-day-period-repo'
 import { PrismaHelper } from '../../helpers/prisma-helper'
+import { type AddOrUpdateDayPeriodRepo } from '@/usecases/contracts/db/user'
 
 export class AddOrUpdateDayPeriodPrismaRepo implements AddOrUpdateDayPeriodRepo {
   async execute (data: AddDayPeriodData): Promise<void> {
