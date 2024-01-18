@@ -1,11 +1,15 @@
 import { type UpdateUserConfigs } from '@/domain/contracts/user'
-import { type Controller } from '@/presentation/contracts'
+import type { Validation, Controller } from '@/presentation/contracts'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
 export class UpdateUserConfigsController implements Controller {
-  constructor (private readonly updateUserConfigs: UpdateUserConfigs) {}
+  constructor (
+    private readonly validation: Validation,
+    private readonly updateUserConfigs: UpdateUserConfigs
+  ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    await this.validation.validate(httpRequest.body)
     if (!httpRequest.body.allowMessage) {
       return { body: '', statusCode: 400 }
     }
