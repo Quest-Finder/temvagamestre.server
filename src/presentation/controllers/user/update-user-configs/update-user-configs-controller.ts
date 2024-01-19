@@ -1,6 +1,6 @@
 import { type UpdateUserConfigs } from '@/domain/contracts/user'
 import type { Validation, Controller } from '@/presentation/contracts'
-import { badRequest, noContent } from '@/presentation/helpers/http-helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
 export class UpdateUserConfigsController implements Controller {
@@ -10,17 +10,21 @@ export class UpdateUserConfigsController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const validationResult = await this.validation.validate(httpRequest.body)
-    if (validationResult.isLeft()) {
-      return badRequest(validationResult.value)
+    try {
+      const validationResult = await this.validation.validate(httpRequest.body)
+      if (validationResult.isLeft()) {
+        return badRequest(validationResult.value)
+      }
+      const updateUserConfigsResult = await this.updateUserConfigs.perform({
+        userId: httpRequest.headers.userId,
+        allowMessage: httpRequest.body.allowMessage
+      })
+      if (updateUserConfigsResult.isLeft()) {
+        return badRequest(updateUserConfigsResult.value)
+      }
+      return noContent()
+    } catch (error: any) {
+      return serverError()
     }
-    const updateUserConfigsResult = await this.updateUserConfigs.perform({
-      userId: httpRequest.headers.userId,
-      allowMessage: httpRequest.body.allowMessage
-    })
-    if (updateUserConfigsResult.isLeft()) {
-      return badRequest(updateUserConfigsResult.value)
-    }
-    return noContent()
   }
 }
