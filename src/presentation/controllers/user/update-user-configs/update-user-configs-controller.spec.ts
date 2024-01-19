@@ -86,6 +86,15 @@ describe('UpdateUserConfigsController', () => {
     expect(httpResponse).toEqual(badRequest(new Error('any_message')))
   })
 
+  it('Should return 500 if UpdateUserConfigs throws', async () => {
+    const { sut, updateUserConfigsStub } = makeSut()
+    jest.spyOn(updateUserConfigsStub, 'perform').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
+  })
+
   it('Should return 204 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
