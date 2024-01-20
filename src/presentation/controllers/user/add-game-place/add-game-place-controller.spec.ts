@@ -75,4 +75,14 @@ describe('AddGamePlaceController', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
   })
+
+  it('Should call AddGamePlace with correct values', async () => {
+    const { sut, addGamePlaceStub } = makeSut()
+    const performSpy = jest.spyOn(addGamePlaceStub, 'perform')
+    await sut.handle(makeFakeRequest())
+    expect(performSpy).toHaveBeenCalledWith({
+      id: 'any_user_id',
+      ...makeFakeRequest().body
+    })
+  })
 })
