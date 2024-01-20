@@ -85,4 +85,13 @@ describe('AddGamePlaceController', () => {
       ...makeFakeRequest().body
     })
   })
+
+  it('Should return 500 if AddGamePlace throws', async () => {
+    const { sut, addGamePlaceStub } = makeSut()
+    jest.spyOn(addGamePlaceStub, 'perform').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
+  })
 })
