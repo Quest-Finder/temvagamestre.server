@@ -81,4 +81,14 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
 
     expect(gamePlace).toEqual({ ...makeFakeGamePlaceModel(), inPerson: true })
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.gamePlace, 'upsert').mockRejectedValue(
+      new Error('any_error_message')
+    )
+
+    const promise = sut.execute(makeFakeGamePlaceModel())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
