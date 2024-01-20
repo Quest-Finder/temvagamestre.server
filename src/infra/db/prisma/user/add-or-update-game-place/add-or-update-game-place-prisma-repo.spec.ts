@@ -1,0 +1,68 @@
+import type { GamePlaceModel, PreferenceModel, UserModel } from '@/domain/models'
+import { type PrismaClient } from '@prisma/client'
+import { AddOrUpdateGamePlacePrismaRepo } from './add-or-update-game-place-prisma-repo'
+import MockDate from 'mockdate'
+import { PrismockClient } from 'prismock'
+import { PrismaHelper } from '../../helpers/prisma-helper'
+
+let prismock: PrismaClient
+
+const makeFakeUserModel = (): UserModel => ({
+  id: 'any_user_id',
+  email: 'any_email@mail.com',
+  lastName: 'any_last_name',
+  firstName: 'any_first_name',
+  nickname: 'any_nick_name',
+  phone: 'any_user_phone',
+  dateOfBirth: new Date()
+})
+
+const makeFakePreferenceModel = (): PreferenceModel => ({
+  id: 'any_user_id',
+  frequency: 'daily',
+  activeType: 'player'
+})
+
+const makeFakeGamePlaceModel = (): GamePlaceModel => ({
+  id: 'any_user_id',
+  online: true,
+  inPerson: false
+})
+
+const makeSut = (): AddOrUpdateGamePlacePrismaRepo => {
+  return new AddOrUpdateGamePlacePrismaRepo()
+}
+
+describe('AddOrUpdateGamePlacePrismaRepo', () => {
+  beforeAll(async () => {
+    MockDate.set(new Date())
+    prismock = new PrismockClient()
+    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(Promise.resolve(prismock))
+  })
+
+  beforeEach(async () => {
+    await prismock.gamePlace.deleteMany()
+    await prismock.preference.deleteMany()
+    await prismock.user.deleteMany()
+  })
+
+  afterAll(async () => {
+    MockDate.reset()
+    await prismock.$disconnect()
+  })
+
+  it('Should add game place when relation does not exist', async () => {
+    const sut = makeSut()
+    await prismock.user.create({ data: makeFakeUserModel() })
+    await prismock.preference.create({ data: makeFakePreferenceModel() })
+    await sut.execute(makeFakeGamePlaceModel())
+
+    const gamePlace = await prismock.gamePlace.findUnique({
+      where: {
+        id: 'any_user_id'
+      }
+    })
+
+    expect(gamePlace).toEqual(makeFakeGamePlaceModel())
+  })
+})
