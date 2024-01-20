@@ -65,4 +65,20 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
 
     expect(gamePlace).toEqual(makeFakeGamePlaceModel())
   })
+
+  it('Should update game place when relation exists', async () => {
+    const sut = makeSut()
+    await prismock.user.create({ data: makeFakeUserModel() })
+    await prismock.preference.create({ data: makeFakePreferenceModel() })
+    await prismock.gamePlace.create({ data: makeFakeGamePlaceModel() })
+    await sut.execute({ ...makeFakeGamePlaceModel(), inPerson: true })
+
+    const gamePlace = await prismock.gamePlace.findUnique({
+      where: {
+        id: 'any_user_id'
+      }
+    })
+
+    expect(gamePlace).toEqual({ ...makeFakeGamePlaceModel(), inPerson: true })
+  })
 })
