@@ -81,4 +81,10 @@ describe('AddGamePlaceUsecase', () => {
     const promise = sut.perform(makeFakeGamePlaceModel())
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return right result on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.perform(makeFakeGamePlaceModel())
+    expect(result.isRight()).toBe(true)
+  })
 })
