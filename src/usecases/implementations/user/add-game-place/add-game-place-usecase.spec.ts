@@ -67,4 +67,11 @@ describe('AddGamePlaceUsecase', () => {
     const result = await sut.perform(makeFakeGamePlaceModel())
     expect(result.value).toEqual(new NonExistentUserPreferenceError('any_user_id'))
   })
+
+  it('Should call AddOrUpdateGamePlaceRepo with correct values', async () => {
+    const { sut, addOrUpdateGamePlaceRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(addOrUpdateGamePlaceRepoStub, 'execute')
+    await sut.perform(makeFakeGamePlaceModel())
+    expect(executeSpy).toHaveBeenCalledWith(makeFakeGamePlaceModel())
+  })
 })
