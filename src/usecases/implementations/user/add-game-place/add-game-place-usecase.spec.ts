@@ -74,4 +74,11 @@ describe('AddGamePlaceUsecase', () => {
     await sut.perform(makeFakeGamePlaceModel())
     expect(executeSpy).toHaveBeenCalledWith(makeFakeGamePlaceModel())
   })
+
+  it('Should throw if AddOrUpdateGamePlaceRepo throws', async () => {
+    const { sut, addOrUpdateGamePlaceRepoStub } = makeSut()
+    jest.spyOn(addOrUpdateGamePlaceRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform(makeFakeGamePlaceModel())
+    await expect(promise).rejects.toThrow()
+  })
 })
