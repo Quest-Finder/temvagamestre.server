@@ -60,4 +60,11 @@ describe('AddGamePlaceUsecase', () => {
     await sut.perform(makeFakeGamePlaceModel())
     expect(executeSpy).toHaveBeenCalledWith('any_user_id')
   })
+
+  it('Should return NonExistentUserPreferencesError if FindPreferenceByIdRepo returns null', async () => {
+    const { sut, findPreferenceByIdRepoStub } = makeSut()
+    jest.spyOn(findPreferenceByIdRepoStub, 'execute').mockReturnValueOnce(Promise.resolve(null))
+    const result = await sut.perform(makeFakeGamePlaceModel())
+    expect(result.value).toEqual(new NonExistentUserPreferenceError('any_user_id'))
+  })
 })
