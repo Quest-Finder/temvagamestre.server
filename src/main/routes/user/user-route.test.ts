@@ -151,4 +151,20 @@ describe('User Routes', () => {
       })
       .expect(204)
   })
-})
+  
+  describe('POST /user/preference/day-period', async () => {
+    await prisma.user.create({ data: makeFakeUserModel() })
+    await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+    const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+    await prisma.preference.create({ data: makeFakePreferenceModel() })
+
+    await request(app.getHttpServer())
+      .post('/user/preference/day-period')
+      .set({ 'x-access-token': token })
+      .send({
+        morning: true,
+        afternoon: false,
+        night: false
+      })
+      .expect(204)
+  })

@@ -1,8 +1,8 @@
-# Atualizar Preferências do Usuário
+# Adicionar ou Atualizar Período do Dia
 
 ## Endpoint
 
-`PUT /user/preference`
+`POST /user/preference/day-period`
 
 ## Cabeçalhos da Requisição
 
@@ -20,24 +20,26 @@ Exemplo:
 
 ## Corpo da Requisição
 
-O corpo da requisição deve conter um dos campos:
+O corpo da requisição deve conter os seguintes campos:
 
-- **frequency** (string): daily | weekly | monthly
-- **activeType** (string): player | gameMaster
+- **morning** (boolean)
+- **afternoon** (boolean)
+- **night** (boolean)
 
 Exemplo:
 
 ```json
 {
-  "frequency": "daily",
-  "activeType": "weekly"
+  "morning": true,
+  "afternoon": true,
+  "night": false
 }
 ```
 
 ## Caso de sucesso
 
-- Validar se o usuário já tem a relação **preferences**
-- Caso tenha atualiza a relação
+- Validar se o usuário tem a relação **preferences**
+- Caso tenha, cria ou atualiza o campo **dayPeriod** na relação
 - Salva os dados no DB
 
 ### Resposta
@@ -49,9 +51,9 @@ Exemplo:
 ### Respostas
 
 - Código de status: **400 Bad Request**
+  - Se a relação não existir.
   - Se o tipo do dado informado não for válido.
   - Se o client informar mais dados do que os requeridos.
-  - Se a relação não existir.
 - Código de status: **401 Unauthorized**
   - Se o cabeçalho de autorização estiver ausente ou inválido.
   - Se o token de autenticação for inválido ou expirado.
