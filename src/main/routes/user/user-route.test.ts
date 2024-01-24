@@ -136,6 +136,22 @@ describe('User Routes', () => {
       .expect(204)
   })
 
+  describe('POST /user/preference/game-place', async () => {
+    await prisma.user.create({ data: makeFakeUserModel() })
+    await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+    const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+    await prisma.preference.create({ data: makeFakePreferenceModel() })
+
+    await request(app.getHttpServer())
+      .post('/user/preference/game-place')
+      .set({ 'x-access-token': token })
+      .send({
+        online: true,
+        inPerson: false
+      })
+      .expect(204)
+  })
+  
   describe('POST /user/preference/day-period', async () => {
     await prisma.user.create({ data: makeFakeUserModel() })
     await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
@@ -152,4 +168,3 @@ describe('User Routes', () => {
       })
       .expect(204)
   })
-})

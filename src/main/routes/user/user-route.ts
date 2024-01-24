@@ -5,6 +5,7 @@ import { makeUpdateUserSocialMediaController } from '@/main/factories/controller
 import { makeUpdateUserController } from '@/main/factories/controllers/user/update-user-controller-factory'
 import { Controller, Patch, Post, Req, Res, Put } from '@nestjs/common'
 import { Request, Response } from 'express'
+import { makeAddGamePlaceController } from '@/main/factories/controllers/user/add-game-place-controller-factory'
 import { makeAddDayPeriodController } from '@/main/factories/controllers/user/add-day-period-controller-factory'
 
 @Controller('/user')
@@ -39,10 +40,18 @@ export class UserRoute {
     await adaptNest.adapt(req, res)
   }
 
-  @Post('/preference/day-period')
+ @Post('/preference/day-period')
   async addDayPeriod (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(
       makeAddDayPeriodController()
+    )
+    await adaptNest.adapt(req, res)
+  }
+  
+   @Post('/preference/game-place')
+  async addGamePlace (@Req() req: Request, @Res() res: Response): Promise<void> {
+    const adaptNest = adaptRoute(
+      makeAddGamePlaceController()
     )
     await adaptNest.adapt(req, res)
   }
