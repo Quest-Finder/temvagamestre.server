@@ -78,4 +78,11 @@ describe('AddRpgStyleUsecase', () => {
     const promise = sut.perform()
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should throw if AddRpgStyleRepo throws', async () => {
+    const { sut, addRpgStyleRepo } = makeSut()
+    jest.spyOn(addRpgStyleRepo, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform()
+    await expect(promise).rejects.toThrow()
+  })
 })
