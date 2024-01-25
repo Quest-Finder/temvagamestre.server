@@ -6,12 +6,12 @@ import { RpgStyles } from '@/domain/contracts/rpg-style'
 
 const makeFakeRpgStyleModel = (): RpgStyleModel => ({
   id: 'any_rpg_style_id',
-  name: 'any_rpg_style_name'
+  name: 'MMORPGs'
 })
 
 const makeIdBuilder = (): IdBuilder => {
   class IdBuilderStub implements IdBuilder {
-    build (): string { return 'any_social_media_id' }
+    build (): string { return 'any_rpg_style_id' }
   }
   return new IdBuilderStub()
 }
@@ -62,5 +62,13 @@ describe('AddRpgStyleUsecase', () => {
     await sut.perform()
     expect(executeSpy).toHaveBeenCalledTimes(RpgStyles.getRpgStyles().length)
     expect(executeSpy).toHaveBeenCalledWith(RpgStyles.getRpgStyles()[0])
+  })
+
+  it('Should call AddRpgStyleRepo with correct values', async () => {
+    const { sut, addRpgStyleRepo } = makeSut()
+    const executeSpy = jest.spyOn(addRpgStyleRepo, 'execute')
+    await sut.perform()
+    expect(executeSpy).toHaveBeenCalledTimes(RpgStyles.getRpgStyles().length)
+    expect(executeSpy).toHaveBeenCalledWith(makeFakeRpgStyleModel())
   })
 })
