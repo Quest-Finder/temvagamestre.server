@@ -1,9 +1,8 @@
 import { type UserModel } from '@/domain/models'
-import { FindUserByIdPrismaRepo } from './find-user-by-id-prisma-repo'
 import { type PrismaClient } from '@prisma/client'
-import { PrismaHelper } from '../../helpers/prisma-helper'
 import { PrismockClient } from 'prismock'
-import MockDate from 'mockdate'
+import { PrismaHelper } from '../../helpers/prisma-helper'
+import { FindUserByIdPrismaRepo } from './find-user-by-id-prisma-repo'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -20,7 +19,6 @@ let prismock: PrismaClient
 
 describe('FindUserByIdPrismaRepo', () => {
   beforeAll(async () => {
-    MockDate.set(new Date())
     prismock = new PrismockClient()
     jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(
       Promise.resolve(prismock)
@@ -29,8 +27,9 @@ describe('FindUserByIdPrismaRepo', () => {
 
   it('Should return an User if Prisma findUnique() is a success', async () => {
     const sut = new FindUserByIdPrismaRepo()
-    await prismock.user.create({ data: makeFakeUserModel() })
+    const userModel = makeFakeUserModel()
+    await prismock.user.create({ data: userModel })
     const user = await sut.execute('any_user_id')
-    expect(user).toEqual(makeFakeUserModel())
+    expect(user).toEqual(userModel)
   })
 })
