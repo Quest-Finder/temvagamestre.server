@@ -34,4 +34,10 @@ describe('FindRpgStyleByNamePrismaRepo', () => {
     const rpgStyle = await sut.execute('any_rpg_style_name')
     expect(rpgStyle).toEqual(makeFakeRpgStyleModel())
   })
+
+  it('Should return null if prisma findFirst() not found a rpg stype', async () => {
+    const sut = makeSut()
+    const rpgStyle = await sut.execute('invalid_rpg_style_name')
+    expect(rpgStyle).toBe(null)
+  })
 })
