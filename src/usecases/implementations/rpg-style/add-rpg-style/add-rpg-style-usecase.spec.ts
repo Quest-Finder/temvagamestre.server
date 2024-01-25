@@ -71,4 +71,11 @@ describe('AddRpgStyleUsecase', () => {
     expect(executeSpy).toHaveBeenCalledTimes(RpgStyles.getRpgStyles().length)
     expect(executeSpy).toHaveBeenCalledWith(makeFakeRpgStyleModel())
   })
+
+  it('Should throw if FindRpgStyleByNameRepo throws', async () => {
+    const { sut, findRpgStyleByNameRepo } = makeSut()
+    jest.spyOn(findRpgStyleByNameRepo, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform()
+    await expect(promise).rejects.toThrow()
+  })
 })
