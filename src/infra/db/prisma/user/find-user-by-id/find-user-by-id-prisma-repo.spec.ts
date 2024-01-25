@@ -25,11 +25,25 @@ describe('FindUserByIdPrismaRepo', () => {
     )
   })
 
+  beforeEach(async () => {
+    await prismock.user.deleteMany()
+  })
+
+  afterAll(async () => {
+    await prismock.$disconnect()
+  })
+
   it('Should return an User if Prisma findUnique() is a success', async () => {
     const sut = new FindUserByIdPrismaRepo()
     const userModel = makeFakeUserModel()
     await prismock.user.create({ data: userModel })
     const user = await sut.execute('any_user_id')
     expect(user).toEqual(userModel)
+  })
+
+  it('Should return null if Prisma findUnique() do not find a User', async () => {
+    const sut = new FindUserByIdPrismaRepo()
+    const user = await sut.execute('any_user_id')
+    expect(user).toBe(null)
   })
 })
