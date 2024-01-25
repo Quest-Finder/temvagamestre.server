@@ -46,4 +46,13 @@ describe('FindUserByIdPrismaRepo', () => {
     const user = await sut.execute('any_user_id')
     expect(user).toBe(null)
   })
+
+  it('Should throw if Prisma findUnique() throws', async () => {
+    const sut = new FindUserByIdPrismaRepo()
+    jest.spyOn(prismock.user, 'findUnique').mockRejectedValue(
+      new Error('any_message')
+    )
+    const promise = sut.execute('any_user_id')
+    await expect(promise).rejects.toThrow(new Error('any_message'))
+  })
 })
