@@ -35,4 +35,13 @@ describe('AddRpgStylePrismaRepo', () => {
     const rpgStyle = await prismock.rpgStyle.findUnique({ where: { id: 'any_rpg_style_id' } })
     expect(rpgStyle).toEqual(makeFakeRpgStyleModel())
   })
+
+  it('Should throw if prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.rpgStyle, 'create').mockRejectedValue(
+      new Error('any_error_message')
+    )
+    const promise = sut.execute(makeFakeRpgStyleModel())
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
