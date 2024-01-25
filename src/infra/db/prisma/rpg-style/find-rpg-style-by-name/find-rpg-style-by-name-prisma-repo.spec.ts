@@ -40,4 +40,11 @@ describe('FindRpgStyleByNamePrismaRepo', () => {
     const rpgStyle = await sut.execute('invalid_rpg_style_name')
     expect(rpgStyle).toBe(null)
   })
+
+  it('Should throw if Prisma throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(prismock.rpgStyle, 'findFirst').mockRejectedValue(new Error('any_error_message'))
+    const promise = sut.execute('any_rpg_style_name')
+    await expect(promise).rejects.toThrow(new Error('any_error_message'))
+  })
 })
