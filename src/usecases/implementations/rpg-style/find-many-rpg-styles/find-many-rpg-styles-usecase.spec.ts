@@ -39,4 +39,11 @@ describe('FindManyRpgStylesUsecase', () => {
     expect(executeSpy).toHaveBeenCalledTimes(1)
     expect(executeSpy).toHaveBeenCalledWith()
   })
+
+  it('Should throw if FindManyRpgStylesRepo throws', async () => {
+    const { sut, findManyRpgStylesRepoStub } = makeSut()
+    jest.spyOn(findManyRpgStylesRepoStub, 'execute').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.perform()
+    await expect(promise).rejects.toThrow()
+  })
 })
