@@ -1,8 +1,8 @@
-import { type FindManyRpgStyles, type FindManyRpgStylesResponse } from '@/domain/contracts/rpg-style'
+import type { FindManyRpgStyles, FindManyRpgStylesResponse } from '@/domain/contracts/rpg-style'
 import { type RpgStyleModel } from '@/domain/models'
 import { right } from '@/shared/either'
 import { FindManyRpgStylesController } from './find-many-rpg-styles-controller'
-import { serverError } from '@/presentation/helpers/http-helpers'
+import { ok, serverError } from '@/presentation/helpers/http-helpers'
 
 const makeFakeRpgStyleModel = (): RpgStyleModel => ({
   id: 'any_rpg_style_id',
@@ -48,5 +48,11 @@ describe('FindManyRpgStylesController', () => {
     jest.spyOn(findManyRpgStylesStub, 'perform').mockReturnValueOnce(Promise.resolve(Promise.reject(new Error())))
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(serverError())
+  })
+
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(ok([makeFakeRpgStyleModel()]))
   })
 })
