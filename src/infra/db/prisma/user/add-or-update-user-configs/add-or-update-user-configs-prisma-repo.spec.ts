@@ -26,7 +26,12 @@ describe('AddOrUpdateUserConfigsPrismaRepo', () => {
     )
   })
 
-  it('Should add an User if Prisma create() is a success', async () => {
+  beforeEach(async () => {
+    await prismock.user.deleteMany()
+    await prismock.userConfig.deleteMany()
+  })
+
+  it('Should add an UserConfig if Prisma create() is a success', async () => {
     const sut = new AddOrUpdateUserConfigsPrismaRepo()
     await prismock.user.create({ data: makeFakeUserModel() })
     await sut.execute(makeFakeUserConfigModel())
@@ -34,5 +39,20 @@ describe('AddOrUpdateUserConfigsPrismaRepo', () => {
       where: { id: 'any_user_id' }
     })
     expect(userConfig).toEqual(makeFakeUserConfigModel())
+  })
+
+  it('Should update UserConfig if already exist', async () => {
+    const sut = new AddOrUpdateUserConfigsPrismaRepo()
+    await prismock.user.create({ data: makeFakeUserModel() })
+    await prismock.userConfig.create({ data: { id: 'any_user_id', allowMessage: false } })
+    const userConfig = await prismock.userConfig.findUnique({
+      where: { id: 'any_user_id' }
+    })
+    await sut.execute(makeFakeUserConfigModel())
+    const userConfigUpdated = await prismock.userConfig.findUnique({
+      where: { id: 'any_user_id' }
+    })
+    expect(userConfig).toEqual({ id: 'any_user_id', allowMessage: false })
+    expect(userConfigUpdated).toEqual(makeFakeUserConfigModel())
   })
 })
