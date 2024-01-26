@@ -31,7 +31,7 @@ describe('AddOrUpdateUserConfigsPrismaRepo', () => {
     await prismock.userConfig.deleteMany()
   })
 
-  it('Should add an UserConfig if Prisma create() is a success', async () => {
+  it('Should add an UserConfig if Prisma upsert() is a success', async () => {
     const sut = new AddOrUpdateUserConfigsPrismaRepo()
     await prismock.user.create({ data: makeFakeUserModel() })
     await sut.execute(makeFakeUserConfigModel())
@@ -54,5 +54,15 @@ describe('AddOrUpdateUserConfigsPrismaRepo', () => {
     })
     expect(userConfig).toEqual({ id: 'any_user_id', allowMessage: false })
     expect(userConfigUpdated).toEqual(makeFakeUserConfigModel())
+  })
+
+  it('Should throw if Prisma upsert() throws', async () => {
+    const sut = new AddOrUpdateUserConfigsPrismaRepo()
+    await prismock.user.create({ data: makeFakeUserModel() })
+    jest.spyOn(prismock.userConfig, 'upsert').mockRejectedValue(
+      new Error('any_message')
+    )
+    const promise = sut.execute(makeFakeUserConfigModel())
+    await expect(promise).rejects.toThrow(new Error('any_message'))
   })
 })
