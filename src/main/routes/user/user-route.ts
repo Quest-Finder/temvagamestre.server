@@ -40,15 +40,15 @@ export class UserRoute {
     await adaptNest.adapt(req, res)
   }
 
- @Post('/preference/day-period')
+  @Post('/preference/day-period')
   async addDayPeriod (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(
       makeAddDayPeriodController()
     )
     await adaptNest.adapt(req, res)
   }
-  
-   @Post('/preference/game-place')
+
+  @Post('/preference/game-place')
   async addGamePlace (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(
       makeAddGamePlaceController()
