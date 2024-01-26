@@ -36,4 +36,10 @@ describe('FindManyRpgStylesPrismaRepo', () => {
 
     expect(rpgStyles).toEqual([makeFakeRpgStyleModel()])
   })
+
+  it('Should return an empty list when has no rpg styles', async () => {
+    const sut = makeSut()
+    const rpgStyles = await sut.execute()
+    expect(rpgStyles).toEqual([])
+  })
 })
