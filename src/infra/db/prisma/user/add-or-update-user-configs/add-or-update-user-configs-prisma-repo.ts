@@ -4,7 +4,12 @@ import { PrismaHelper } from '../../helpers/prisma-helper'
 
 export class AddOrUpdateUserConfigsPrismaRepo implements AddOrUpdateUserConfigsRepo {
   async execute (data: UserConfigModel): Promise<void> {
+    const { id, ...userConfigContent } = data
     const prisma = await PrismaHelper.getPrisma()
-    await prisma.userConfig.create({ data })
+    await prisma.userConfig.upsert({
+      where: { id },
+      update: { ...userConfigContent },
+      create: { ...data }
+    })
   }
 }
