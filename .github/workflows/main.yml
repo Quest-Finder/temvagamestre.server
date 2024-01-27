@@ -84,4 +84,26 @@ jobs:
           image: us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
           region: ${{ env.REGION }}
 
-    
+  run-database-migration:
+      # verifica se a referencia da Branch é a dev
+      # se estiver fazendo em outra branch deve escrever o nome da branch
+      if: github.ref == 'refs/heads/dev'
+      # Runs on é o OS da VM aqui sera executado em Linux Ubunto
+      runs-on: ubuntu-latest
+      outputs:
+        tags: ${{ steps.meta.outputs.tags }}
+      # os passos são os comando a serem executados
+      # nessa fase podemos usar comandos feitos por empresas ou pessoas
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+  
+        - name: Run migrations development
+          run: |
+            # Comandos migrations
+            npx prisma dev
+            npx prisma deploy
+          env:
+            #VARIAVEIS DE AMBIENTE  
+            DATABASE_URL: '${{ secrets.DATABASE_URL }}'
+      
