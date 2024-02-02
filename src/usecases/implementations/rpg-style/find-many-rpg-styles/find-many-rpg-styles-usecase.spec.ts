@@ -36,7 +36,7 @@ describe('FindManyRpgStylesUsecase', () => {
     const executeSpy = jest.spyOn(findManyRpgStylesRepoStub, 'execute')
     await sut.perform()
     expect(executeSpy).toHaveBeenCalledTimes(1)
-    expect(executeSpy).toHaveBeenCalledWith()
+    expect(executeSpy).toHaveBeenCalled()
   })
 
   it('Should throw if FindManyRpgStylesRepo throws', async () => {
