@@ -1,5 +1,5 @@
 import type { AddSocialMedia } from '@/domain/contracts/social-media'
-import { SocialMedias } from '@/domain/contracts/social-media/social-medias'
+import { SocialMedia } from '@/domain/entities/social-media/social-media'
 import { type AddSocialMediaRepo } from '@/usecases/contracts/db/social-media'
 import { type FindSocialMediaByNameRepo } from '@/usecases/contracts/db/social-media/find-social-media-by-name-repo'
 import { type IdBuilder } from '@/usecases/contracts/id'
@@ -12,7 +12,7 @@ export class AddSocialMediaUseCase implements AddSocialMedia {
   ) {}
 
   async perform (): Promise<void> {
-    const socialMedias = SocialMedias.getSocialMedias()
+    const socialMedias = SocialMedia.getSocialMedias()
     for (const socialMedia of socialMedias) {
       const existingSocialMedia = await this.findSocialMediaByNameRepo.execute(socialMedia)
       if (!existingSocialMedia) {
