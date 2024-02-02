@@ -14,9 +14,9 @@
     ]
   },
   "ignorePatterns": [
-    "jest.config.ts",
-    "jest-unit-config.ts",
-    "jest-integration-config.ts",
+    "jest.config.js",
+    "jest-unit-config.js",
+    "jest-integration-config.js",
     "commitlint.config.js",
     "src/**/*.sql",
     "src/**/*.toml",
