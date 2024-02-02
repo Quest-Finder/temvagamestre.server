@@ -2,15 +2,18 @@ import { type FindManySocialMediasRepo } from '@/usecases/contracts/db/social-me
 import { FindManySocialMediasUsecase } from './find-many-social-medias-usecase'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 
-const makeFakeSocialMediaModel = (): SocialMediaModel => ({
-  id: 'any_social_media_id',
+const makeFakeSocialMedias = (): SocialMediaModel[] => ([{
+  id: 'any_id',
   name: 'any_name'
-})
+}, {
+  id: 'other_id',
+  name: 'other_name'
+}])
 
 const makeFindManySocialMediasRepo = (): FindManySocialMediasRepo => {
   class FindManySocialMediasRepoStub implements FindManySocialMediasRepo {
-    async execute (): Promise<SocialMediaModel[] | []> {
-      return await Promise.resolve([makeFakeSocialMediaModel()])
+    async execute (): Promise<SocialMediaModel[]> {
+      return await Promise.resolve(makeFakeSocialMedias())
     }
   }
   return new FindManySocialMediasRepoStub()
@@ -24,11 +27,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const findManySocialMediasRepoStub = makeFindManySocialMediasRepo()
   const sut = new FindManySocialMediasUsecase(findManySocialMediasRepoStub)
-
-  return {
-    findManySocialMediasRepoStub,
-    sut
-  }
+  return { sut, findManySocialMediasRepoStub }
 }
 
 describe('FindManySocialMediasUsecase', () => {
@@ -37,7 +36,7 @@ describe('FindManySocialMediasUsecase', () => {
     const executeSpy = jest.spyOn(findManySocialMediasRepoStub, 'execute')
     await sut.perform()
     expect(executeSpy).toHaveBeenCalledTimes(1)
-    expect(executeSpy).toHaveBeenCalledWith()
+    expect(executeSpy).toHaveBeenCalled()
   })
 
   it('Should throw if FindManySocialMediasRepo throws', async () => {
@@ -47,9 +46,9 @@ describe('FindManySocialMediasUsecase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  it('Should return right result on success', async () => {
+  it('Should return all social medias on success', async () => {
     const { sut } = makeSut()
     const result = await sut.perform()
-    expect(result.isRight()).toBe(true)
+    expect(result.value).toEqual(makeFakeSocialMedias())
   })
 })
