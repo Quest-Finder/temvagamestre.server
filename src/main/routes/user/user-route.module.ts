@@ -12,10 +12,10 @@ export class UserModule implements NestModule {
       .forRoutes(
         { path: '/user/social-media', method: RequestMethod.POST },
         { path: '/user', method: RequestMethod.PATCH },
-        { path: '/preference', method: RequestMethod.POST },
-        { path: '/preference', method: RequestMethod.PUT },
-        { path: '/preference/day-period', method: RequestMethod.POST },
-        { path: '/preference/game-place', method: RequestMethod.POST }
+        { path: '/user/preference', method: RequestMethod.POST },
+        { path: '/user/preference', method: RequestMethod.PUT },
+        { path: '/user/preference/day-period', method: RequestMethod.POST },
+        { path: '/user/preference/game-place', method: RequestMethod.POST }
       )
   }
 }

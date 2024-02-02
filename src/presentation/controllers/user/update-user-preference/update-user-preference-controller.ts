@@ -23,6 +23,7 @@ export class UpdateUserPreferenceController implements Controller {
       })
       return noContent()
     } catch (error: any) {
+      console.log(error)
       return serverError()
     }
   }
