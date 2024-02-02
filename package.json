@@ -18,7 +18,6 @@
     "test:verbose-unit": "jest --passWithNoTests --runInBand --watch -c jest-unit-config.js",
     "test:verbose-integration": "jest --passWithNoTests --runInBand --watch -c jest-integration-config.js",
     "test:ci": "npm test -- --coverage",
-    "test:staged": "npm test -- --onlyChanged",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "prepare": "husky install",
     "seed:addSocialMedia": "ts-node -r tsconfig-paths/register src/main/seeds/social-media/add-social-media-seed.ts",
