@@ -47,13 +47,7 @@ const makeSut = (): SutTypes => {
   const findSocialMediaByNameRepo = makeFindSocialMediaByNameRepo()
   const idBuilder = makeIdBuilder()
   const sut = new AddSocialMediaUseCase(addSocialMediaRepo, findSocialMediaByNameRepo, idBuilder)
-
-  return {
-    sut,
-    addSocialMediaRepo,
-    findSocialMediaByNameRepo,
-    idBuilder
-  }
+  return { sut, addSocialMediaRepo, findSocialMediaByNameRepo, idBuilder }
 }
 
 describe('AddSocialMediaUseCase', () => {

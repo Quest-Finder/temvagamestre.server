@@ -13,16 +13,11 @@ export class AddSocialMediaUseCase implements AddSocialMedia {
 
   async perform (): Promise<void> {
     const socialMedias = SocialMedias.getSocialMedias()
-
     for (const socialMedia of socialMedias) {
       const existingSocialMedia = await this.findSocialMediaByNameRepo.execute(socialMedia)
       if (!existingSocialMedia) {
         const id = this.idBuilder.build()
-
-        await this.addSocialMediaRepo.execute({
-          id,
-          name: socialMedia
-        })
+        await this.addSocialMediaRepo.execute({ id, name: socialMedia })
       }
     }
   }
