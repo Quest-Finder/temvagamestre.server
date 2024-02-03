@@ -1,41 +1,33 @@
-export type Either<L extends Error, A> = Left<L, A> | Right<L, A>
+export type Either<L extends Error, R> = Left<L, R> | Right<L, R>
 
-class Left<L, A> {
-  readonly value: L
+class Left<L extends Error, R> {
+  constructor (readonly value: L) {}
 
-  constructor (value: L) {
-    this.value = value
-  }
-
-  isLeft (): this is Left<L, A> {
+  isLeft (): this is Left<L, R> {
     return true
   }
 
-  isRight (): this is Right<L, A> {
+  isRight (): this is Right<L, R> {
     return false
   }
 }
 
-class Right<L, A> {
-  readonly value: A
+class Right<L extends Error, R> {
+  constructor (readonly value: R) {}
 
-  constructor (value: A) {
-    this.value = value
-  }
-
-  isLeft (): this is Left<L, A> {
+  isLeft (): this is Left<L, R> {
     return false
   }
 
-  isRight (): this is Right<L, A> {
+  isRight (): this is Right<L, R> {
     return true
   }
 }
 
-export const left = <L extends Error, A>(l: L): Either<L, A> => {
-  return new Left<L, A>(l)
+export const left = <L extends Error, R>(l: L): Either<L, R> => {
+  return new Left<L, R>(l)
 }
 
-export const right = <L extends Error, A>(a: A): Either<L, A> => {
-  return new Right<L, A>(a)
+export const right = <L extends Error, R>(r: R): Either<L, R> => {
+  return new Right<L, R>(r)
 }
