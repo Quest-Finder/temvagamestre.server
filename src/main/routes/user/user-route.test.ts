@@ -1,6 +1,6 @@
 /**
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
- */
+*/
 
 import type { ExternalAuthMappingModel, PreferenceModel, SocialMediaModel, UserModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
@@ -121,50 +121,57 @@ describe('User Routes', () => {
     })
   })
 
-  describe('PUT /user/preference', async () => {
-    await prisma.user.create({ data: makeFakeUserModel() })
-    await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-    const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-    await prisma.preference.create({ data: makeFakePreferenceModel() })
+  describe('PUT /user/preference', () => {
+    it('Should return 204 on success', async () => {
+      await prisma.user.create({ data: makeFakeUserModel() })
+      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+      await prisma.preference.create({ data: makeFakePreferenceModel() })
 
-    await request(app.getHttpServer())
-      .put('/user/preference')
-      .set({ 'x-access-token': token })
-      .send({
-        activeType: 'gameMaster'
-      })
-      .expect(204)
+      await request(app.getHttpServer())
+        .put('/user/preference')
+        .set({ 'x-access-token': token })
+        .send({
+          activeType: 'gameMaster'
+        })
+        .expect(204)
+    })
   })
 
-  describe('POST /user/preference/game-place', async () => {
-    await prisma.user.create({ data: makeFakeUserModel() })
-    await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-    const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-    await prisma.preference.create({ data: makeFakePreferenceModel() })
+  describe('POST /user/preference/game-place', () => {
+    it('Should return 204 on success', async () => {
+      await prisma.user.create({ data: makeFakeUserModel() })
+      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+      await prisma.preference.create({ data: makeFakePreferenceModel() })
 
-    await request(app.getHttpServer())
-      .post('/user/preference/game-place')
-      .set({ 'x-access-token': token })
-      .send({
-        online: true,
-        inPerson: false
-      })
-      .expect(204)
+      await request(app.getHttpServer())
+        .post('/user/preference/game-place')
+        .set({ 'x-access-token': token })
+        .send({
+          online: true,
+          inPerson: false
+        })
+        .expect(204)
+    })
   })
-  
-  describe('POST /user/preference/day-period', async () => {
-    await prisma.user.create({ data: makeFakeUserModel() })
-    await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-    const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-    await prisma.preference.create({ data: makeFakePreferenceModel() })
 
-    await request(app.getHttpServer())
-      .post('/user/preference/day-period')
-      .set({ 'x-access-token': token })
-      .send({
-        morning: true,
-        afternoon: false,
-        night: false
-      })
-      .expect(204)
+  describe('POST /user/preference/day-period', () => {
+    it('Should return 204 on success', async () => {
+      await prisma.user.create({ data: makeFakeUserModel() })
+      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
+      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+      await prisma.preference.create({ data: makeFakePreferenceModel() })
+
+      await request(app.getHttpServer())
+        .post('/user/preference/day-period')
+        .set({ 'x-access-token': token })
+        .send({
+          morning: true,
+          afternoon: false,
+          night: false
+        })
+        .expect(204)
+    })
   })
+})
