@@ -45,7 +45,7 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
   })
 
   beforeEach(async () => {
-    await prismock.dayPeriod.deleteMany()
+    await prismock.userPreferenceDayPeriod.deleteMany()
     await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
@@ -61,7 +61,7 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
     await sut.execute(makeFakeDayPeriodModel())
 
-    const dayPeriod = await prismock.dayPeriod.findUnique({
+    const dayPeriod = await prismock.userPreferenceDayPeriod.findUnique({
       where: {
         id: 'any_user_id'
       }
@@ -74,11 +74,11 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
-    await prismock.dayPeriod.create({ data: makeFakeDayPeriodModel() })
+    await prismock.userPreferenceDayPeriod.create({ data: makeFakeDayPeriodModel() })
 
     await sut.execute({ ...makeFakeDayPeriodModel(), morning: false })
 
-    const dayPeriod = await prismock.dayPeriod.findUnique({
+    const dayPeriod = await prismock.userPreferenceDayPeriod.findUnique({
       where: {
         id: 'any_user_id'
       }
@@ -89,7 +89,7 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
 
   it('Should throw if Prisma throws', async () => {
     const sut = makeSut()
-    jest.spyOn(prismock.dayPeriod, 'upsert').mockRejectedValue(
+    jest.spyOn(prismock.userPreferenceDayPeriod, 'upsert').mockRejectedValue(
       new Error('any_error_message')
     )
 

@@ -6,16 +6,9 @@ export class AddOrUpdateDayPeriodPrismaRepo implements AddOrUpdateDayPeriodRepo 
   async execute (data: AddDayPeriodData): Promise<void> {
     const { id, morning, afternoon, night } = data
     const prisma = await PrismaHelper.getPrisma()
-
-    await prisma.dayPeriod.upsert({
-      where: {
-        id
-      },
-      update: {
-        morning,
-        afternoon,
-        night
-      },
+    await prisma.userPreferenceDayPeriod.upsert({
+      where: { id },
+      update: { morning, afternoon, night },
       create: data
     })
   }

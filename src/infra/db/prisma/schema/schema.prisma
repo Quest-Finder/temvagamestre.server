@@ -31,15 +31,15 @@ model Badge {
   @@map("badge")
 }
 
-model DayPeriod {
-  id        String  @id(map: "pk_day_period") @unique(map: "uq_day_period_id") @db.VarChar(50)
+model UserPreferenceDayPeriod {
+  id        String  @id(map: "pk_user_preference_day_period") @unique(map: "uq_user_preference_day_period_id") @db.VarChar(50)
   night     Boolean @default(false)
   morning   Boolean @default(false)
   afternoon Boolean @default(false)
 
-  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_preference_day_period")
+  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_preference_user_preference_day_period")
 
-  @@map("day_period")
+  @@map("user_preference_day_period")
 }
 
 model PlayersRange {
@@ -88,10 +88,10 @@ model UserPreference {
   frequency  Frequency
   activeType ActiveType @map("active_type")
 
-  dayPeriod              DayPeriod?
-  playersRange           PlayersRange?
-  gamePlace              GamePlace?
-  userPreferenceRpgStyle UserPreferenceRpgStyle[]
+  userPreferenceDayPeriod UserPreferenceDayPeriod?
+  playersRange            PlayersRange?
+  gamePlace               GamePlace?
+  userPreferenceRpgStyle  UserPreferenceRpgStyle[]
 
   user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_user_preference")
 
