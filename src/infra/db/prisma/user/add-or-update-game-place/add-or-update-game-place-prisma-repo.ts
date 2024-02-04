@@ -6,15 +6,9 @@ export class AddOrUpdateGamePlacePrismaRepo implements AddOrUpdateGamePlaceRepo 
   async execute (data: AddGamePlaceData): Promise<void> {
     const { id, online, inPerson } = data
     const prisma = await PrismaHelper.getPrisma()
-
-    await prisma.gamePlace.upsert({
-      where: {
-        id
-      },
-      update: {
-        online,
-        inPerson
-      },
+    await prisma.userPreferenceGamePlace.upsert({
+      where: { id },
+      update: { online, inPerson },
       create: data
     })
   }

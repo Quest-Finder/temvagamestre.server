@@ -41,7 +41,7 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
   })
 
   beforeEach(async () => {
-    await prismock.gamePlace.deleteMany()
+    await prismock.userPreferenceGamePlace.deleteMany()
     await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
@@ -57,7 +57,7 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
     await sut.execute(makeFakeGamePlaceModel())
 
-    const gamePlace = await prismock.gamePlace.findUnique({
+    const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
       where: {
         id: 'any_user_id'
       }
@@ -70,10 +70,10 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
-    await prismock.gamePlace.create({ data: makeFakeGamePlaceModel() })
+    await prismock.userPreferenceGamePlace.create({ data: makeFakeGamePlaceModel() })
     await sut.execute({ ...makeFakeGamePlaceModel(), inPerson: true })
 
-    const gamePlace = await prismock.gamePlace.findUnique({
+    const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
       where: {
         id: 'any_user_id'
       }
@@ -84,7 +84,7 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
 
   it('Should throw if Prisma throws', async () => {
     const sut = makeSut()
-    jest.spyOn(prismock.gamePlace, 'upsert').mockRejectedValue(
+    jest.spyOn(prismock.userPreferenceGamePlace, 'upsert').mockRejectedValue(
       new Error('any_error_message')
     )
 

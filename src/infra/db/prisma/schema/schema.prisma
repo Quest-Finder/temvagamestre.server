@@ -52,14 +52,14 @@ model UserPreferencePlayersRange {
   @@map("user_preference_players_range")
 }
 
-model GamePlace {
-  id       String  @id(map: "pk_game_place") @unique(map: "uq_game_place_id") @db.VarChar(50)
+model UserPreferenceGamePlace {
+  id       String  @id(map: "pk_user_preference_game_place") @unique(map: "uq_user_preference_game_place_id") @db.VarChar(50)
   online   Boolean @default(false)
   inPerson Boolean @default(false) @map("in_person")
 
-  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_preference_game_place")
+  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_preference_user_preference_game_place")
 
-  @@map("game_place")
+  @@map("user_preference_game_place")
 }
 
 model RpgStyle {
@@ -90,7 +90,7 @@ model UserPreference {
 
   userPreferenceDayPeriod    UserPreferenceDayPeriod?
   userPreferencePlayersRange UserPreferencePlayersRange?
-  gamePlace                  GamePlace?
+  userPreferenceGamePlace    UserPreferenceGamePlace?
   userPreferenceRpgStyle     UserPreferenceRpgStyle[]
 
   user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_user_preference")
