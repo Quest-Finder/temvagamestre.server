@@ -1,12 +1,12 @@
-import { type UpdateUserSocialMedia } from '@/domain/contracts/user'
+import { type SaveUserSocialMedia } from '@/domain/contracts/user-social-media'
 import type { Validation, Controller } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
-export class UpdateUserSocialMediaController implements Controller {
+export class SaveUserSocialMediaController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly updateUserSocialMedia: UpdateUserSocialMedia
+    private readonly saveUserSocialMedia: SaveUserSocialMedia
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -15,12 +15,12 @@ export class UpdateUserSocialMediaController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      const updateUserSocialMediaResult = await this.updateUserSocialMedia.perform({
+      const saveUserSocialMediaResult = await this.saveUserSocialMedia.perform({
         userId: httpRequest.headers.userId,
         ...httpRequest.body
       })
-      if (updateUserSocialMediaResult.isLeft()) {
-        return badRequest(updateUserSocialMediaResult.value)
+      if (saveUserSocialMediaResult.isLeft()) {
+        return badRequest(saveUserSocialMediaResult.value)
       }
       return noContent()
     } catch (error: any) {

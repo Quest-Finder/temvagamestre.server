@@ -1,11 +1,11 @@
-import { type PrismaClient } from '@prisma/client'
-import { AddOrUpdateUserSocialMediaByIdsPrismaRepo } from './add-or-update-user-social-media-by-ids-prisma-repo'
-import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
-import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
-import MockDate from 'mockdate'
-import { type UserSocialMediaModel } from '@/domain/models/user/user-social-media-model'
 import { type UserModel } from '@/domain/models'
+import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
+import { type UserSocialMediaModel } from '@/domain/models/user-social-media/user-social-media-model'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { type PrismaClient } from '@prisma/client'
+import MockDate from 'mockdate'
+import { PrismockClient } from 'prismock'
+import { SaveUserSocialMediaPrismaRepo } from './save-user-social-media-prisma-repo'
 
 let prismock: PrismaClient
 
@@ -31,11 +31,11 @@ const makeFakeSocialMedia = (): SocialMediaModel => ({
   name: 'any_social_media_name'
 })
 
-const makeSut = (): AddOrUpdateUserSocialMediaByIdsPrismaRepo => {
-  return new AddOrUpdateUserSocialMediaByIdsPrismaRepo()
+const makeSut = (): SaveUserSocialMediaPrismaRepo => {
+  return new SaveUserSocialMediaPrismaRepo()
 }
 
-describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
+describe('SaveUserSocialMediaPrismaRepo', () => {
   beforeAll(async () => {
     MockDate.set(new Date())
     prismock = new PrismockClient()
@@ -58,7 +58,6 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.socialMedia.create({ data: makeFakeSocialMedia() })
     await sut.execute(makeFakeUserSocialMedia())
-
     const userSocialMedia = await prismock.userSocialMedia.findUnique({
       where: {
         userId_socialMediaId: {
@@ -67,7 +66,6 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
         }
       }
     })
-
     expect(userSocialMedia).toEqual(
       makeFakeUserSocialMedia()
     )
@@ -79,7 +77,6 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
     await prismock.socialMedia.create({ data: makeFakeSocialMedia() })
     await prismock.userSocialMedia.create({ data: makeFakeUserSocialMedia() })
     await sut.execute({ ...makeFakeUserSocialMedia(), link: 'updated_link' })
-
     const userSocialMedia = await prismock.userSocialMedia.findUnique({
       where: {
         userId_socialMediaId: {
@@ -88,7 +85,6 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
         }
       }
     })
-
     expect(userSocialMedia).toEqual({ ...makeFakeUserSocialMedia(), link: 'updated_link' })
   })
 
@@ -97,7 +93,6 @@ describe('AddOrUpdateUserSocialMediaByIdsPrismaRepo', () => {
     jest.spyOn(prismock.userSocialMedia, 'upsert').mockRejectedValue(
       new Error('any_error_message')
     )
-
     const promise = sut.execute(makeFakeUserSocialMedia())
     await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })
