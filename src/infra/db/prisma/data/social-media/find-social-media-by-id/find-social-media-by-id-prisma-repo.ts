@@ -3,9 +3,9 @@ import { type FindSocialMediaByIdRepo } from '@/usecases/contracts/db/social-med
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 export class FindSocialMediaByIdPrismaRepo implements FindSocialMediaByIdRepo {
-  async execute (socialMediaId: string): Promise<null | SocialMediaModel> {
+  async execute (id: string): Promise<null | SocialMediaModel> {
     const prisma = await PrismaHelper.getPrisma()
-    const socialMediaOrNull = await prisma.socialMedia.findUnique({ where: { id: socialMediaId } })
+    const socialMediaOrNull = await prisma.socialMedia.findUnique({ where: { id } })
     return socialMediaOrNull
   }
 }

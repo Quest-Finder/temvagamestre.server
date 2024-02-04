@@ -4,14 +4,11 @@ import type { Controller } from '@/presentation/contracts'
 import { serverError, ok } from '@/presentation/helpers/http-helpers'
 
 export class FindManySocialMediasController implements Controller {
-  constructor (
-    private readonly findManySocialMedias: FindManySocialMedias
-  ) {}
+  constructor (private readonly findManySocialMedias: FindManySocialMedias) {}
 
   async handle (): Promise<HttpResponse> {
     try {
       const findManySocialMediasResult = await this.findManySocialMedias.perform()
-
       return ok(findManySocialMediasResult.value)
     } catch (error) {
       return serverError()

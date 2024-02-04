@@ -5,12 +5,7 @@ import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 export class FindSocialMediaByNamePrismaRepo implements FindSocialMediaByNameRepo {
   async execute (name: string): Promise<SocialMediaModel | null> {
     const prisma = await PrismaHelper.getPrisma()
-    const socialMediaOrNull = await prisma.socialMedia.findFirst(
-      {
-        where: {
-          name
-        }
-      })
+    const socialMediaOrNull = await prisma.socialMedia.findFirst({ where: { name } })
     return socialMediaOrNull
   }
 }

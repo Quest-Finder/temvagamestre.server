@@ -43,11 +43,7 @@ const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
   const updateUserPreferenceStub = makeFakeUpdateUserPreference()
   const sut = new UpdateUserPreferenceController(validationStub, updateUserPreferenceStub)
-  return {
-    sut,
-    validationStub,
-    updateUserPreferenceStub
-  }
+  return { sut, validationStub, updateUserPreferenceStub }
 }
 
 describe('UpdateUserPreferenceController', () => {

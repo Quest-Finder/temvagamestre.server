@@ -12,13 +12,10 @@ export class AddDayPeriodUsecase implements AddDayPeriod {
   async perform (data: AddDayPeriodData): Promise<AddDayPeriodResponse> {
     const { id } = data
     const userPreferenceExists = await this.findPreferenceByIdRepo.execute(id)
-
     if (!userPreferenceExists) {
       return left(new NonExistentUserPreferenceError(id))
     }
-
     await this.addOrUpdateDayPeriodRepo.execute(data)
-
     return right(null)
   }
 }

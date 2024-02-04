@@ -12,13 +12,10 @@ export class UpdateUserPreferenceUseCase implements UpdateUserPreference {
   async perform (data: UpdateUserPreferenceData): Promise<UpdateUserPreferenceResponse> {
     const { id } = data
     const userPreferenceExists = await this.findPreferenceByIdRepo.execute(id)
-
     if (!userPreferenceExists) {
       return left(new NonExistentUserPreferenceError(id))
     }
-
     await this.updateUserPreferenceRepo.execute(data)
-
     return right(null)
   }
 }

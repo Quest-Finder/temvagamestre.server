@@ -42,7 +42,6 @@ const makeSut = (): SutTypes => {
   const addOrUpdateUserSocialMediaByIdsRepoStub = makeAddOrUpdateUserSocialMediaByIdsRepo()
   const findSocialMediaByIdRepoStub = makeFindSocialMediaByIdRepo()
   const sut = new UpdateUserSocialMediaUseCase(findSocialMediaByIdRepoStub, addOrUpdateUserSocialMediaByIdsRepoStub)
-
   return {
     sut,
     findSocialMediaByIdRepoStub,

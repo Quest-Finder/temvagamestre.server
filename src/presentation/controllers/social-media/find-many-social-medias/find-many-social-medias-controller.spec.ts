@@ -26,11 +26,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const findManySocialMediasStub = makeFindManySocialMedias()
   const sut = new FindManySocialMediasController(findManySocialMediasStub)
-
-  return {
-    findManySocialMediasStub,
-    sut
-  }
+  return { findManySocialMediasStub, sut }
 }
 
 describe('FindManySocialMediasController', () => {

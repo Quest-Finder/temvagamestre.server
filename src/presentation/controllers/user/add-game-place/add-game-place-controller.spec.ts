@@ -43,11 +43,7 @@ const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
   const addGamePlaceStub = makeFakeAddGamePlace()
   const sut = new AddGamePlaceController(validationStub, addGamePlaceStub)
-  return {
-    sut,
-    addGamePlaceStub,
-    validationStub
-  }
+  return { sut, addGamePlaceStub, validationStub }
 }
 
 describe('AddGamePlaceController', () => {

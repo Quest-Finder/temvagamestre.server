@@ -26,11 +26,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const findManyRpgStylesStub = makeFindManyRpgStyles()
   const sut = new FindManyRpgStylesController(findManyRpgStylesStub)
-
-  return {
-    findManyRpgStylesStub,
-    sut
-  }
+  return { findManyRpgStylesStub, sut }
 }
 
 describe('FindManyRpgStylesController', () => {
@@ -38,7 +34,6 @@ describe('FindManyRpgStylesController', () => {
     const { sut, findManyRpgStylesStub } = makeSut()
     const performSpy = jest.spyOn(findManyRpgStylesStub, 'perform')
     await sut.handle()
-
     expect(performSpy).toHaveBeenCalledTimes(1)
     expect(performSpy).toHaveBeenCalledWith()
   })

@@ -44,11 +44,7 @@ const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
   const addDayPeriodStub = makeFakeAddDayPeriod()
   const sut = new AddDayPeriodController(validationStub, addDayPeriodStub)
-  return {
-    sut,
-    addDayPeriodStub,
-    validationStub
-  }
+  return { sut, addDayPeriodStub, validationStub }
 }
 
 describe('AddDayPeriodController', () => {

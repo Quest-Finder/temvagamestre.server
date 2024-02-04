@@ -45,11 +45,7 @@ const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
   const updateUserSocialMediaStub = makeUpdateUserSocialMedia()
   const sut = new UpdateUserSocialMediaController(validationStub, updateUserSocialMediaStub)
-  return {
-    sut,
-    updateUserSocialMediaStub,
-    validationStub
-  }
+  return { sut, updateUserSocialMediaStub, validationStub }
 }
 
 describe('UpdateUserSocialMediaController', () => {

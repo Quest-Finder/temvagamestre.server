@@ -12,11 +12,9 @@ export class AddGamePlaceController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const validationResult = await this.validation.validate(httpRequest.body)
-
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-
       await this.addGamePlace.perform({
         id: httpRequest.headers.userId,
         ...httpRequest.body

@@ -12,11 +12,9 @@ export class AddUserPreferenceController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const validationResult = await this.validation.validate(httpRequest.body)
-
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-
       await this.addUserPreference.perform({
         id: httpRequest.headers.userId,
         ...httpRequest.body

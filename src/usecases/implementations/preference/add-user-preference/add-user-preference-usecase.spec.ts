@@ -16,7 +16,6 @@ const makeFindPreferenceByIdRepo = (): FindPreferenceByIdRepo => {
       return await Promise.resolve(null)
     }
   }
-
   return new FindPreferenceByIdRepoStub()
 }
 
@@ -39,12 +38,7 @@ const makeSut = (): SutTypes => {
   const findPreferenceByIdRepoStub = makeFindPreferenceByIdRepo()
   const addUserPreferenceRepoStub = makeAddUserPreferenceRepo()
   const sut = new AddUserPreferenceUsecase(findPreferenceByIdRepoStub, addUserPreferenceRepoStub)
-
-  return {
-    sut,
-    addUserPreferenceRepoStub,
-    findPreferenceByIdRepoStub
-  }
+  return { sut, addUserPreferenceRepoStub, findPreferenceByIdRepoStub }
 }
 
 describe('AddUserPreferenceUsecase', () => {

@@ -13,13 +13,10 @@ export class AddGamePlaceUsecase implements AddGamePlace {
   async perform (data: AddGamePlaceData): Promise<AddGamePlaceResponse> {
     const { id } = data
     const userPreferenceExists = await this.findPreferenceByIdRepo.execute(id)
-
     if (!userPreferenceExists) {
       return left(new NonExistentUserPreferenceError(id))
     }
-
     await this.addOrUpdateGamePlaceRepo.execute(data)
-
     return right(null)
   }
 }

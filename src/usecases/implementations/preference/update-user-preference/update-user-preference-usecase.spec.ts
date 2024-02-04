@@ -21,7 +21,6 @@ const makeFindPreferenceByIdRepo = (): FindPreferenceByIdRepo => {
       return await Promise.resolve(makeFakePreferenceModel())
     }
   }
-
   return new FindPreferenceByIdRepoStub()
 }
 
@@ -44,11 +43,7 @@ const makeSut = (): SutTypes => {
   const findPreferenceByIdRepoStub = makeFindPreferenceByIdRepo()
   const updateUserPreferenceRepoStub = makeUpdateUserPreferenceRepo()
   const sut = new UpdateUserPreferenceUseCase(findPreferenceByIdRepoStub, updateUserPreferenceRepoStub)
-  return {
-    sut,
-    updateUserPreferenceRepoStub,
-    findPreferenceByIdRepoStub
-  }
+  return { sut, updateUserPreferenceRepoStub, findPreferenceByIdRepoStub }
 }
 
 describe('UpdateUserPreferenceUsecase', () => {

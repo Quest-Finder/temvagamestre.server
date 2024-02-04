@@ -47,12 +47,7 @@ const makeSut = (): SutTypes => {
   const findPreferenceByIdRepoStub = makeFindPreferenceByIdRepo()
   const addOrUpdateDayPeriodRepoStub = makeAddOrUpdateDayPeriodRepo()
   const sut = new AddDayPeriodUsecase(findPreferenceByIdRepoStub, addOrUpdateDayPeriodRepoStub)
-
-  return {
-    findPreferenceByIdRepoStub,
-    addOrUpdateDayPeriodRepoStub,
-    sut
-  }
+  return { findPreferenceByIdRepoStub, addOrUpdateDayPeriodRepoStub, sut }
 }
 
 describe('AddDayPeriodUsecase', () => {

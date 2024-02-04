@@ -12,13 +12,10 @@ export class AddUserPreferenceUsecase implements AddUserPreference {
   async perform (data: AddUserPreferenceData): Promise<AddUserPreferenceResponse> {
     const { id } = data
     const userPreferenceExists = await this.findPreferenceByIdRepo.execute(id)
-
     if (userPreferenceExists) {
       return left(new ExistentUserPreferenceError(id))
     }
-
     await this.addUserPreferenceRepo.execute(data)
-
     return right(null)
   }
 }

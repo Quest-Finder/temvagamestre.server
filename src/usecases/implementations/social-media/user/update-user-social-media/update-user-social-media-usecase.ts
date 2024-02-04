@@ -13,13 +13,10 @@ export class UpdateUserSocialMediaUseCase implements UpdateUserSocialMedia {
 
   async perform (data: UpdateUserSocialMediaData): Promise<UpdateUserSocialMediaResponse> {
     const socialMediaOrNull = await this.findSocialMediaByIdRepo.execute(data.socialMediaId)
-
     if (!socialMediaOrNull) {
       return left(new InvalidSocialMediaIdError(data.socialMediaId))
     }
-
     await this.addOrUpdateUserSocialMediaByIdsRepo.execute(data)
-
     return right(null)
   }
 }

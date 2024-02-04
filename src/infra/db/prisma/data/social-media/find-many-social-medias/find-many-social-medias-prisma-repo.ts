@@ -3,11 +3,9 @@ import { type FindManySocialMediasRepo } from '@/usecases/contracts/db/social-me
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 export class FindManySocialMediasPrismaRepo implements FindManySocialMediasRepo {
-  async execute (): Promise<SocialMediaModel[] | []> {
+  async execute (): Promise<SocialMediaModel[]> {
     const prisma = await PrismaHelper.getPrisma()
-
     const socialMediasOrEmpty = await prisma.socialMedia.findMany()
-
     return socialMediasOrEmpty
   }
 }

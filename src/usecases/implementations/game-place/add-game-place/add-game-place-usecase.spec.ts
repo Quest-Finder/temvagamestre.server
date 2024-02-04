@@ -46,11 +46,7 @@ const makeSut = (): SutTypes => {
   const findPreferenceByIdRepoStub = makeFindPreferenceByIdRepo()
   const addOrUpdateGamePlaceRepoStub = makeAddOrUpdateGamePlaceRepo()
   const sut = new AddGamePlaceUsecase(findPreferenceByIdRepoStub, addOrUpdateGamePlaceRepoStub)
-  return {
-    sut,
-    addOrUpdateGamePlaceRepoStub,
-    findPreferenceByIdRepoStub
-  }
+  return { sut, addOrUpdateGamePlaceRepoStub, findPreferenceByIdRepoStub }
 }
 
 describe('AddGamePlaceUsecase', () => {

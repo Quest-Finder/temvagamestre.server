@@ -32,14 +32,12 @@ describe('FindManySocialMediasPrismaRepo', () => {
     const sut = makeSut()
     await prismock.socialMedia.create({ data: makeFakeSocialMediaModel() })
     const socialMedias = await sut.execute()
-
     expect(socialMedias).toEqual([makeFakeSocialMediaModel()])
   })
 
   it('Should return an empty list when has no social medias', async () => {
     const sut = makeSut()
     const socialMedias = await sut.execute()
-
     expect(socialMedias).toEqual([])
   })
 })
