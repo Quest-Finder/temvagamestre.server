@@ -1,5 +1,5 @@
 import { type AddDayPeriodData } from '@/domain/contracts/user/add-day-period'
-import { PrismaHelper } from '../../helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { type AddOrUpdateDayPeriodRepo } from '@/usecases/contracts/db/user'
 
 export class AddOrUpdateDayPeriodPrismaRepo implements AddOrUpdateDayPeriodRepo {

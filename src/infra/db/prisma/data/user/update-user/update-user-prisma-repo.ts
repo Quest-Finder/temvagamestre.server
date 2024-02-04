@@ -1,5 +1,5 @@
 import type { UpdateUserRepo, UpdateUserRepoData } from '@/usecases/contracts/db/user'
-import { PrismaHelper } from '../../helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 export class UpdateUserPrismaRepo implements UpdateUserRepo {
   async execute (data: UpdateUserRepoData): Promise<void> {

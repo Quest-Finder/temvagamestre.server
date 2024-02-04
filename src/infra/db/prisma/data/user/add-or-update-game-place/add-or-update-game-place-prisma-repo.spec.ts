@@ -1,10 +1,9 @@
-import { type PreferenceModel, type UserModel } from '@/domain/models'
-import { type DayPeriodModel } from '@/domain/models/day-period/day-period-model'
+import type { GamePlaceModel, PreferenceModel, UserModel } from '@/domain/models'
 import { type PrismaClient } from '@prisma/client'
-import { AddOrUpdateDayPeriodPrismaRepo } from './add-or-update-day-period-prisma-repo'
+import { AddOrUpdateGamePlacePrismaRepo } from './add-or-update-game-place-prisma-repo'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '../../helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 let prismock: PrismaClient
 
@@ -24,28 +23,25 @@ const makeFakePreferenceModel = (): PreferenceModel => ({
   activeType: 'player'
 })
 
-const makeFakeDayPeriodModel = (): DayPeriodModel => ({
+const makeFakeGamePlaceModel = (): GamePlaceModel => ({
   id: 'any_user_id',
-  morning: true,
-  afternoon: false,
-  night: false
+  online: true,
+  inPerson: false
 })
 
-const makeSut = (): AddOrUpdateDayPeriodPrismaRepo => {
-  return new AddOrUpdateDayPeriodPrismaRepo()
+const makeSut = (): AddOrUpdateGamePlacePrismaRepo => {
+  return new AddOrUpdateGamePlacePrismaRepo()
 }
 
-describe('AddOrUpdateDayPeriodPrismaRepo', () => {
+describe('AddOrUpdateGamePlacePrismaRepo', () => {
   beforeAll(async () => {
     MockDate.set(new Date())
     prismock = new PrismockClient()
-    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(
-      Promise.resolve(prismock)
-    )
+    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(Promise.resolve(prismock))
   })
 
   beforeEach(async () => {
-    await prismock.userPreferenceDayPeriod.deleteMany()
+    await prismock.userPreferenceGamePlace.deleteMany()
     await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
@@ -55,45 +51,44 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
     await prismock.$disconnect()
   })
 
-  it('Should add DayPeriod when relation does not exist', async () => {
+  it('Should add game place when relation does not exist', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
-    await sut.execute(makeFakeDayPeriodModel())
+    await sut.execute(makeFakeGamePlaceModel())
 
-    const dayPeriod = await prismock.userPreferenceDayPeriod.findUnique({
+    const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
       where: {
         id: 'any_user_id'
       }
     })
 
-    expect(dayPeriod).toEqual(makeFakeDayPeriodModel())
+    expect(gamePlace).toEqual(makeFakeGamePlaceModel())
   })
 
-  it('Should update DayPeriod when relation exists', async () => {
+  it('Should update game place when relation exists', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
-    await prismock.userPreferenceDayPeriod.create({ data: makeFakeDayPeriodModel() })
+    await prismock.userPreferenceGamePlace.create({ data: makeFakeGamePlaceModel() })
+    await sut.execute({ ...makeFakeGamePlaceModel(), inPerson: true })
 
-    await sut.execute({ ...makeFakeDayPeriodModel(), morning: false })
-
-    const dayPeriod = await prismock.userPreferenceDayPeriod.findUnique({
+    const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
       where: {
         id: 'any_user_id'
       }
     })
 
-    expect(dayPeriod).toEqual({ ...makeFakeDayPeriodModel(), morning: false })
+    expect(gamePlace).toEqual({ ...makeFakeGamePlaceModel(), inPerson: true })
   })
 
   it('Should throw if Prisma throws', async () => {
     const sut = makeSut()
-    jest.spyOn(prismock.userPreferenceDayPeriod, 'upsert').mockRejectedValue(
+    jest.spyOn(prismock.userPreferenceGamePlace, 'upsert').mockRejectedValue(
       new Error('any_error_message')
     )
 
-    const promise = sut.execute(makeFakeDayPeriodModel())
+    const promise = sut.execute(makeFakeGamePlaceModel())
     await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })
 })

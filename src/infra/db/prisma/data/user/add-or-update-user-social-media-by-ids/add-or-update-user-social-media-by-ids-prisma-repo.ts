@@ -9,19 +9,10 @@ export class AddOrUpdateUserSocialMediaByIdsPrismaRepo implements AddOrUpdateUse
 
     await prisma.userSocialMedia.upsert({
       where: {
-        userId_socialMediaId: {
-          userId,
-          socialMediaId
-        }
+        userId_socialMediaId: { userId, socialMediaId }
       },
-      update: {
-        link
-      },
-      create: {
-        userId,
-        socialMediaId,
-        link
-      }
+      update: { link },
+      create: { userId, socialMediaId, link }
     })
   }
 }

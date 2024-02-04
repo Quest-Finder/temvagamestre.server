@@ -1,6 +1,6 @@
 import { type AddGamePlaceData } from '@/domain/contracts/user'
 import { type AddOrUpdateGamePlaceRepo } from '@/usecases/contracts/db/user/add-or-update-game-place-repo'
-import { PrismaHelper } from '../../helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 export class AddOrUpdateGamePlacePrismaRepo implements AddOrUpdateGamePlaceRepo {
   async execute (data: AddGamePlaceData): Promise<void> {

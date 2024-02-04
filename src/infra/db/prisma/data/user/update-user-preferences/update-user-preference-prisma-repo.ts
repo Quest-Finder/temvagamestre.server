@@ -1,6 +1,6 @@
 import { type UpdateUserPreferenceData } from '@/domain/contracts/user'
 import { type UpdateUserPreferenceRepo } from '@/usecases/contracts/db/user'
-import { PrismaHelper } from '../../helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 export class UpdateUserPreferencePrismaRepo implements UpdateUserPreferenceRepo {
   async execute (data: UpdateUserPreferenceData): Promise<void> {

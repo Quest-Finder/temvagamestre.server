@@ -4,7 +4,7 @@ import { type PrismaClient } from '@prisma/client'
 import { UpdateUserPreferencePrismaRepo } from './update-user-preference-prisma-repo'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '../../helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 let prismock: PrismaClient
 

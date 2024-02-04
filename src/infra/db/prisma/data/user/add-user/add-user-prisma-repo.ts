@@ -1,6 +1,6 @@
 import type { UserModel } from '@/domain/models'
 import type { AddUserRepo } from '@/usecases/contracts/db/user'
-import { PrismaHelper } from '../../helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 
 export class AddUserPrismaRepo implements AddUserRepo {
   async execute (data: UserModel): Promise<void> {
