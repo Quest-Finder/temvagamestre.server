@@ -42,14 +42,14 @@ model UserPreferenceDayPeriod {
   @@map("user_preference_day_period")
 }
 
-model PlayersRange {
-  id         String @id(map: "pk_players_range") @unique(map: "uq_players_range_id") @db.VarChar(50)
+model UserPreferencePlayersRange {
+  id         String @id(map: "pk_user_preference_players_range") @unique(map: "uq_user_preference_players_range_id") @db.VarChar(50)
   minPlayers Int    @map("min_players")
   maxPlayers Int    @map("max_players")
 
-  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_preference_players_range")
+  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_preference_user_preference_players_range")
 
-  @@map("players_range")
+  @@map("user_preference_players_range")
 }
 
 model GamePlace {
@@ -88,10 +88,10 @@ model UserPreference {
   frequency  Frequency
   activeType ActiveType @map("active_type")
 
-  userPreferenceDayPeriod UserPreferenceDayPeriod?
-  playersRange            PlayersRange?
-  gamePlace               GamePlace?
-  userPreferenceRpgStyle  UserPreferenceRpgStyle[]
+  userPreferenceDayPeriod    UserPreferenceDayPeriod?
+  userPreferencePlayersRange UserPreferencePlayersRange?
+  gamePlace                  GamePlace?
+  userPreferenceRpgStyle     UserPreferenceRpgStyle[]
 
   user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_user_preference")
 
