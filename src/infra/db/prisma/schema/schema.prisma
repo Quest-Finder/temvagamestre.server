@@ -66,21 +66,21 @@ model RpgStyle {
   id   String @id(map: "pk_rpg_style") @unique(map: "uq_rpg_style_id") @db.VarChar(50)
   name String @db.VarChar(35)
 
-  preferenceRpgStyle PreferenceRpgStyle[]
+  userPreferenceRpgStyle UserPreferenceRpgStyle[]
 
   @@map("rpg_style")
 }
 
-model PreferenceRpgStyle {
+model UserPreferenceRpgStyle {
   userPreferenceId String @map("user_preference_id") @db.VarChar(50)
   rpgStyleId       String @map("rpg_style_id") @db.VarChar(50)
 
-  userPreference UserPreference @relation(fields: [userPreferenceId], references: [id], onDelete: Cascade, map: "fk_user_preference_preference_rpg_style")
-  rpgStyle       RpgStyle       @relation(fields: [rpgStyleId], references: [id], onDelete: Cascade, map: "fk_rpg_style_preference_rpg_style")
+  userPreference UserPreference @relation(fields: [userPreferenceId], references: [id], onDelete: Cascade, map: "fk_user_preference_user_preference_rpg_style")
+  rpgStyle       RpgStyle       @relation(fields: [rpgStyleId], references: [id], onDelete: Cascade, map: "fk_rpg_style_user_preference_rpg_style")
 
-  @@id([userPreferenceId, rpgStyleId], map: "pk_preference_rpg_style")
-  @@unique([userPreferenceId, rpgStyleId], map: "uq_preference_rpg_style_user_preference_id_rpg_style_id")
-  @@map("preference_rpg_style")
+  @@id([userPreferenceId, rpgStyleId], map: "pk_puser_preference_rpg_style")
+  @@unique([userPreferenceId, rpgStyleId], map: "uq_user_preference_rpg_style_user_preference_id_rpg_style_id")
+  @@map("user_preference_rpg_style")
 }
 
 model UserPreference {
@@ -88,10 +88,10 @@ model UserPreference {
   frequency  Frequency
   activeType ActiveType @map("active_type")
 
-  dayPeriod          DayPeriod?
-  playersRange       PlayersRange?
-  gamePlace          GamePlace?
-  preferenceRpgStyle PreferenceRpgStyle[]
+  dayPeriod              DayPeriod?
+  playersRange           PlayersRange?
+  gamePlace              GamePlace?
+  userPreferenceRpgStyle UserPreferenceRpgStyle[]
 
   user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_user_preference")
 
