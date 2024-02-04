@@ -46,7 +46,7 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
 
   beforeEach(async () => {
     await prismock.dayPeriod.deleteMany()
-    await prismock.preference.deleteMany()
+    await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
 
@@ -58,7 +58,7 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
   it('Should add DayPeriod when relation does not exist', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.preference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
     await sut.execute(makeFakeDayPeriodModel())
 
     const dayPeriod = await prismock.dayPeriod.findUnique({
@@ -73,7 +73,7 @@ describe('AddOrUpdateDayPeriodPrismaRepo', () => {
   it('Should update DayPeriod when relation exists', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.preference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
     await prismock.dayPeriod.create({ data: makeFakeDayPeriodModel() })
 
     await sut.execute({ ...makeFakeDayPeriodModel(), morning: false })

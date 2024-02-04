@@ -30,7 +30,7 @@ const makeSut = (): FindPreferenceByIdPrismaRepo => {
 
 describe('FindPreferenceByIdPrismaRepo', () => {
   beforeEach(async () => {
-    await prismock.preference.deleteMany()
+    await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
 
@@ -47,7 +47,7 @@ describe('FindPreferenceByIdPrismaRepo', () => {
   it('Should return a Preference if prisma findUnique() is a success', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.preference.create({ data: makeFakePreference() })
+    await prismock.userPreference.create({ data: makeFakePreference() })
     const preference = await sut.execute('any_user_id')
     expect(preference).toEqual({ ...makeFakePreference() })
   })
@@ -60,7 +60,7 @@ describe('FindPreferenceByIdPrismaRepo', () => {
 
   it('Should throw if Prisma throws', async () => {
     const sut = makeSut()
-    jest.spyOn(prismock.preference, 'findUnique').mockRejectedValue(new Error('any_error_message'))
+    jest.spyOn(prismock.userPreference, 'findUnique').mockRejectedValue(new Error('any_error_message'))
     const promise = sut.execute('any_user_id')
     await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })

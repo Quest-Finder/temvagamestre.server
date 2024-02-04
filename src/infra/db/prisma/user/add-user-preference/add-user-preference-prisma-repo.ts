@@ -5,6 +5,6 @@ import { type AddUserPreferenceData } from '@/domain/contracts/user/add-user-pre
 export class AddUserPreferencePrismaRepo implements AddUserPreferenceRepo {
   async execute (data: AddUserPreferenceData): Promise<void> {
     const prisma = await PrismaHelper.getPrisma()
-    await prisma.preference.create({ data })
+    await prisma.userPreference.create({ data })
   }
 }

@@ -37,7 +37,7 @@ describe('AddUserPreferencePrismaRepo', () => {
   })
 
   beforeEach(async () => {
-    await prismock.preference.deleteMany()
+    await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
 
@@ -50,13 +50,13 @@ describe('AddUserPreferencePrismaRepo', () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await sut.execute(makeFakePreferenceModel())
-    const preference = await prismock.preference.findUnique({ where: { id: 'any_user_id' } })
+    const preference = await prismock.userPreference.findUnique({ where: { id: 'any_user_id' } })
     expect(preference).toEqual(makeFakePreferenceModel())
   })
 
   it('Should throw if Prisma throws', async () => {
     const sut = makeSut()
-    jest.spyOn(prismock.preference, 'create').mockRejectedValue(new Error('any_error_message'))
+    jest.spyOn(prismock.userPreference, 'create').mockRejectedValue(new Error('any_error_message'))
     const promise = sut.execute(makeFakePreferenceModel())
     await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })

@@ -42,7 +42,7 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
 
   beforeEach(async () => {
     await prismock.gamePlace.deleteMany()
-    await prismock.preference.deleteMany()
+    await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
 
@@ -54,7 +54,7 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
   it('Should add game place when relation does not exist', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.preference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
     await sut.execute(makeFakeGamePlaceModel())
 
     const gamePlace = await prismock.gamePlace.findUnique({
@@ -69,7 +69,7 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
   it('Should update game place when relation exists', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.preference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
     await prismock.gamePlace.create({ data: makeFakeGamePlaceModel() })
     await sut.execute({ ...makeFakeGamePlaceModel(), inPerson: true })
 

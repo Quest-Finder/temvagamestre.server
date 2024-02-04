@@ -6,6 +6,6 @@ export class UpdateUserPreferencePrismaRepo implements UpdateUserPreferenceRepo 
   async execute (data: UpdateUserPreferenceData): Promise<void> {
     const prisma = await PrismaHelper.getPrisma()
     const { id } = data
-    await prisma.preference.update({ where: { id }, data })
+    await prisma.userPreference.update({ where: { id }, data })
   }
 }

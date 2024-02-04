@@ -126,7 +126,7 @@ describe('User Routes', () => {
       await prisma.user.create({ data: makeFakeUserModel() })
       await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
       const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-      await prisma.preference.create({ data: makeFakePreferenceModel() })
+      await prisma.userPreference.create({ data: makeFakePreferenceModel() })
 
       await request(app.getHttpServer())
         .put('/user/preference')
@@ -143,7 +143,7 @@ describe('User Routes', () => {
       await prisma.user.create({ data: makeFakeUserModel() })
       await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
       const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-      await prisma.preference.create({ data: makeFakePreferenceModel() })
+      await prisma.userPreference.create({ data: makeFakePreferenceModel() })
 
       await request(app.getHttpServer())
         .post('/user/preference/game-place')
@@ -161,7 +161,7 @@ describe('User Routes', () => {
       await prisma.user.create({ data: makeFakeUserModel() })
       await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
       const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-      await prisma.preference.create({ data: makeFakePreferenceModel() })
+      await prisma.userPreference.create({ data: makeFakePreferenceModel() })
 
       await request(app.getHttpServer())
         .post('/user/preference/day-period')

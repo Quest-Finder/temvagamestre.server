@@ -5,7 +5,7 @@ import { type FindPreferenceByIdRepo } from '@/usecases/contracts/db/user'
 export class FindPreferenceByIdPrismaRepo implements FindPreferenceByIdRepo {
   async execute (userId: string): Promise<PreferenceModel | null> {
     const prisma = await PrismaHelper.getPrisma()
-    const userPreferenceOrNull = await prisma.preference.findUnique({
+    const userPreferenceOrNull = await prisma.userPreference.findUnique({
       where: {
         id: userId
       }

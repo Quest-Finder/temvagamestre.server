@@ -42,7 +42,7 @@ describe('UpdateUserPreferencesPrismaRepo', () => {
   })
 
   beforeEach(async () => {
-    await prismock.preference.deleteMany()
+    await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
   })
 
@@ -54,9 +54,9 @@ describe('UpdateUserPreferencesPrismaRepo', () => {
   it('Should update a User Preference if prisma update() is a success', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.preference.create({ data: makeFakePreference() })
+    await prismock.userPreference.create({ data: makeFakePreference() })
     await sut.execute(makeFakeUpdateUserPreferenceData())
-    const preference = await prismock.preference.findUnique({ where: { id: 'any_user_id' } })
+    const preference = await prismock.userPreference.findUnique({ where: { id: 'any_user_id' } })
     expect(preference).toEqual({
       id: 'any_user_id',
       frequency: 'daily',
@@ -66,7 +66,7 @@ describe('UpdateUserPreferencesPrismaRepo', () => {
 
   it('Should throw if Prisma throws', async () => {
     const sut = makeSut()
-    jest.spyOn(prismock.preference, 'update').mockRejectedValue(
+    jest.spyOn(prismock.userPreference, 'update').mockRejectedValue(
       new Error('any_error_message')
     )
     const promise = sut.execute(makeFakeUpdateUserPreferenceData())
