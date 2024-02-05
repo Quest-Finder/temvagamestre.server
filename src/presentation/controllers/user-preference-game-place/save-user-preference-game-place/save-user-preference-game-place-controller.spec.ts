@@ -1,9 +1,9 @@
-import { type AddGamePlace, type AddGamePlaceData, type AddGamePlaceResponse } from '@/domain/contracts/user'
+import type { SaveUserPreferenceGamePlace, SaveUserPreferenceGamePlaceData, SaveUserPreferenceGamePlaceResponse } from '@/domain/contracts/user-preference-game-place'
 import { type Validation } from '@/presentation/contracts'
-import { type HttpRequest } from '@/presentation/types/http'
-import { type Either, right, left } from '@/shared/either'
-import { AddGamePlaceController } from './add-game-place-controller'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
+import { type HttpRequest } from '@/presentation/types/http'
+import { left, right, type Either } from '@/shared/either'
+import { SaveUserPreferenceGamePlaceController } from './save-user-preference-game-place-controller'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
@@ -24,29 +24,29 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
-const makeFakeAddGamePlace = (): AddGamePlace => {
-  class AddGamePlaceStub implements AddGamePlace {
-    async perform (data: AddGamePlaceData): Promise<AddGamePlaceResponse> {
+const makeFakeSaveUserPreferenceGamePlace = (): SaveUserPreferenceGamePlace => {
+  class SaveUserPreferenceGamePlaceStub implements SaveUserPreferenceGamePlace {
+    async perform (data: SaveUserPreferenceGamePlaceData): Promise<SaveUserPreferenceGamePlaceResponse> {
       return await Promise.resolve(right(null))
     }
   }
-  return new AddGamePlaceStub()
+  return new SaveUserPreferenceGamePlaceStub()
 }
 
 type SutTypes = {
-  sut: AddGamePlaceController
+  sut: SaveUserPreferenceGamePlaceController
   validationStub: Validation
-  addGamePlaceStub: AddGamePlace
+  saveUserPreferenceGamePlaceStub: SaveUserPreferenceGamePlace
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const addGamePlaceStub = makeFakeAddGamePlace()
-  const sut = new AddGamePlaceController(validationStub, addGamePlaceStub)
-  return { sut, addGamePlaceStub, validationStub }
+  const saveUserPreferenceGamePlaceStub = makeFakeSaveUserPreferenceGamePlace()
+  const sut = new SaveUserPreferenceGamePlaceController(validationStub, saveUserPreferenceGamePlaceStub)
+  return { sut, saveUserPreferenceGamePlaceStub, validationStub }
 }
 
-describe('AddGamePlaceController', () => {
+describe('SaveUserPreferenceGamePlaceController', () => {
   it('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -72,19 +72,19 @@ describe('AddGamePlaceController', () => {
     expect(httpResponse).toEqual(serverError())
   })
 
-  it('Should call AddGamePlace with correct values', async () => {
-    const { sut, addGamePlaceStub } = makeSut()
-    const performSpy = jest.spyOn(addGamePlaceStub, 'perform')
+  it('Should call SaveUserPreferenceGamePlace with correct values', async () => {
+    const { sut, saveUserPreferenceGamePlaceStub } = makeSut()
+    const performSpy = jest.spyOn(saveUserPreferenceGamePlaceStub, 'perform')
     await sut.handle(makeFakeRequest())
     expect(performSpy).toHaveBeenCalledWith({
-      id: 'any_user_id',
+      userId: 'any_user_id',
       ...makeFakeRequest().body
     })
   })
 
-  it('Should return 500 if AddGamePlace throws', async () => {
-    const { sut, addGamePlaceStub } = makeSut()
-    jest.spyOn(addGamePlaceStub, 'perform').mockReturnValueOnce(
+  it('Should return 500 if SaveUserPreferenceGamePlace throws', async () => {
+    const { sut, saveUserPreferenceGamePlaceStub } = makeSut()
+    jest.spyOn(saveUserPreferenceGamePlaceStub, 'perform').mockReturnValueOnce(
       Promise.reject(new Error())
     )
     const httpResponse = await sut.handle(makeFakeRequest())

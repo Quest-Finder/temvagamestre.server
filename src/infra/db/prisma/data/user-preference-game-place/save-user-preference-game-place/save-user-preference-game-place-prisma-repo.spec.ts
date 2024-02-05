@@ -1,6 +1,6 @@
-import type { GamePlaceModel, PreferenceModel, UserModel } from '@/domain/models'
+import type { UserPreferenceGamePlaceModel, PreferenceModel, UserModel } from '@/domain/models'
 import { type PrismaClient } from '@prisma/client'
-import { AddOrUpdateGamePlacePrismaRepo } from './add-or-update-game-place-prisma-repo'
+import { SaveUserPreferenceGamePlacePrismaRepo } from './save-user-preference-game-place-prisma-repo'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
@@ -23,21 +23,23 @@ const makeFakePreferenceModel = (): PreferenceModel => ({
   activeType: 'player'
 })
 
-const makeFakeGamePlaceModel = (): GamePlaceModel => ({
+const makeFakeUserPreferenceGamePlaceModel = (): UserPreferenceGamePlaceModel => ({
   id: 'any_user_id',
   online: true,
   inPerson: false
 })
 
-const makeSut = (): AddOrUpdateGamePlacePrismaRepo => {
-  return new AddOrUpdateGamePlacePrismaRepo()
+const makeSut = (): SaveUserPreferenceGamePlacePrismaRepo => {
+  return new SaveUserPreferenceGamePlacePrismaRepo()
 }
 
-describe('AddOrUpdateGamePlacePrismaRepo', () => {
+describe('SaveUserPreferenceGamePlacePrismaRepo', () => {
   beforeAll(async () => {
     MockDate.set(new Date())
     prismock = new PrismockClient()
-    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(Promise.resolve(prismock))
+    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValue(
+      Promise.resolve(prismock)
+    )
   })
 
   beforeEach(async () => {
@@ -55,31 +57,25 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
-    await sut.execute(makeFakeGamePlaceModel())
-
+    await sut.execute(makeFakeUserPreferenceGamePlaceModel())
     const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
-      where: {
-        id: 'any_user_id'
-      }
+      where: { id: 'any_user_id' }
     })
-
-    expect(gamePlace).toEqual(makeFakeGamePlaceModel())
+    expect(gamePlace).toEqual(makeFakeUserPreferenceGamePlaceModel())
   })
 
   it('Should update game place when relation exists', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.userPreference.create({ data: makeFakePreferenceModel() })
-    await prismock.userPreferenceGamePlace.create({ data: makeFakeGamePlaceModel() })
-    await sut.execute({ ...makeFakeGamePlaceModel(), inPerson: true })
-
-    const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
-      where: {
-        id: 'any_user_id'
-      }
+    await prismock.userPreferenceGamePlace.create({
+      data: makeFakeUserPreferenceGamePlaceModel()
     })
-
-    expect(gamePlace).toEqual({ ...makeFakeGamePlaceModel(), inPerson: true })
+    await sut.execute({ ...makeFakeUserPreferenceGamePlaceModel(), inPerson: true })
+    const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
+      where: { id: 'any_user_id' }
+    })
+    expect(gamePlace).toEqual({ ...makeFakeUserPreferenceGamePlaceModel(), inPerson: true })
   })
 
   it('Should throw if Prisma throws', async () => {
@@ -87,8 +83,7 @@ describe('AddOrUpdateGamePlacePrismaRepo', () => {
     jest.spyOn(prismock.userPreferenceGamePlace, 'upsert').mockRejectedValue(
       new Error('any_error_message')
     )
-
-    const promise = sut.execute(makeFakeGamePlaceModel())
+    const promise = sut.execute(makeFakeUserPreferenceGamePlaceModel())
     await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })
 })

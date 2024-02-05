@@ -1,12 +1,12 @@
-import { type AddGamePlace } from '@/domain/contracts/user'
+import { type SaveUserPreferenceGamePlace } from '@/domain/contracts/user-preference-game-place'
 import type { Controller, Validation } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
-export class AddGamePlaceController implements Controller {
+export class SaveUserPreferenceGamePlaceController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly addGamePlace: AddGamePlace
+    private readonly saveUserPreferenceGamePlace: SaveUserPreferenceGamePlace
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -15,8 +15,8 @@ export class AddGamePlaceController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      await this.addGamePlace.perform({
-        id: httpRequest.headers.userId,
+      await this.saveUserPreferenceGamePlace.perform({
+        userId: httpRequest.headers.userId,
         ...httpRequest.body
       })
       return noContent()
