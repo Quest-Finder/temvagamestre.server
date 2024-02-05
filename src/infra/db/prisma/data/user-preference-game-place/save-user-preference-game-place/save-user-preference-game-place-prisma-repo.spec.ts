@@ -1,9 +1,9 @@
-import type { UserPreferenceGamePlaceModel, PreferenceModel, UserModel } from '@/domain/models'
+import type { UserModel, UserPreferenceGamePlaceModel, UserPreferenceModel } from '@/domain/models'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { type PrismaClient } from '@prisma/client'
-import { SaveUserPreferenceGamePlacePrismaRepo } from './save-user-preference-game-place-prisma-repo'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { SaveUserPreferenceGamePlacePrismaRepo } from './save-user-preference-game-place-prisma-repo'
 
 let prismock: PrismaClient
 
@@ -17,7 +17,7 @@ const makeFakeUserModel = (): UserModel => ({
   dateOfBirth: new Date()
 })
 
-const makeFakePreferenceModel = (): PreferenceModel => ({
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',
   frequency: 'daily',
   activeType: 'player'
@@ -56,7 +56,7 @@ describe('SaveUserPreferenceGamePlacePrismaRepo', () => {
   it('Should add game place when relation does not exist', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakeUserPreferenceModel() })
     await sut.execute(makeFakeUserPreferenceGamePlaceModel())
     const gamePlace = await prismock.userPreferenceGamePlace.findUnique({
       where: { id: 'any_user_id' }
@@ -67,7 +67,7 @@ describe('SaveUserPreferenceGamePlacePrismaRepo', () => {
   it('Should update game place when relation exists', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakeUserPreferenceModel() })
     await prismock.userPreferenceGamePlace.create({
       data: makeFakeUserPreferenceGamePlaceModel()
     })

@@ -1,9 +1,9 @@
-import { PrismockClient } from 'prismock'
+import type { UserModel, UserPreferenceModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
-import { type PreferenceModel, type UserModel } from '@/domain/models'
 import { type PrismaClient } from '@prisma/client'
 import MockDate from 'mockdate'
-import { FindPreferenceByIdPrismaRepo } from './find-preference-by-id-prisma-repo'
+import { PrismockClient } from 'prismock'
+import { FindUserPreferenceByIdPrismaRepo } from './find-user-preference-by-id-prisma-repo'
 
 let prismock: PrismaClient
 
@@ -18,17 +18,17 @@ const makeFakeUserModel = (): UserModel => ({
   email: 'any_email'
 })
 
-const makeFakePreference = (): PreferenceModel => ({
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',
   frequency: 'daily',
   activeType: 'player'
 })
 
-const makeSut = (): FindPreferenceByIdPrismaRepo => {
-  return new FindPreferenceByIdPrismaRepo()
+const makeSut = (): FindUserPreferenceByIdPrismaRepo => {
+  return new FindUserPreferenceByIdPrismaRepo()
 }
 
-describe('FindPreferenceByIdPrismaRepo', () => {
+describe('FindUserPreferenceByIdPrismaRepo', () => {
   beforeEach(async () => {
     await prismock.userPreference.deleteMany()
     await prismock.user.deleteMany()
@@ -47,9 +47,9 @@ describe('FindPreferenceByIdPrismaRepo', () => {
   it('Should return a Preference if prisma findUnique() is a success', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.userPreference.create({ data: makeFakePreference() })
+    await prismock.userPreference.create({ data: makeFakeUserPreferenceModel() })
     const preference = await sut.execute('any_user_id')
-    expect(preference).toEqual({ ...makeFakePreference() })
+    expect(preference).toEqual({ ...makeFakeUserPreferenceModel() })
   })
 
   it('Should return null if prisma findUnique() dit not found a preference', async () => {

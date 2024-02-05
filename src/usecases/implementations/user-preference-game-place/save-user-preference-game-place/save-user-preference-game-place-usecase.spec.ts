@@ -1,9 +1,9 @@
 import { NonExistentUserPreferenceError } from '@/domain/errors'
-import type { PreferenceModel, UserPreferenceGamePlaceModel } from '@/domain/models'
-import { type FindPreferenceByIdRepo } from '@/usecases/contracts/db/user'
+import type { UserPreferenceGamePlaceModel, UserPreferenceModel } from '@/domain/models'
 import { type SaveUserPreferenceGamePlaceRepo } from '@/usecases/contracts/db/user-preference-game-place'
 import { SaveUserPreferenceGamePlaceUsecase } from './save-user-preference-game-place-usecase'
 import { type SaveUserPreferenceGamePlaceData } from '@/domain/contracts/user-preference-game-place'
+import { type FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 
 const makeFakeSaveUserPreferenceGamePlaceData = (): SaveUserPreferenceGamePlaceData => ({
   userId: 'any_id',
@@ -11,19 +11,19 @@ const makeFakeSaveUserPreferenceGamePlaceData = (): SaveUserPreferenceGamePlaceD
   inPerson: false
 })
 
-const makeFakePreferenceModel = (): PreferenceModel => ({
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_id',
   frequency: 'daily',
   activeType: 'gameMaster'
 })
 
-const makeFindPreferenceByIdRepo = (): FindPreferenceByIdRepo => {
-  class FindPreferenceByIdRepoStub implements FindPreferenceByIdRepo {
-    async execute (id: string): Promise<PreferenceModel | null> {
-      return await Promise.resolve(makeFakePreferenceModel())
+const makeFindUserPreferenceByIdRepo = (): FindUserPreferenceByIdRepo => {
+  class FindUserPreferenceByIdRepoStub implements FindUserPreferenceByIdRepo {
+    async execute (id: string): Promise<UserPreferenceModel | null> {
+      return await Promise.resolve(makeFakeUserPreferenceModel())
     }
   }
-  return new FindPreferenceByIdRepoStub()
+  return new FindUserPreferenceByIdRepoStub()
 }
 
 const makeSaveUserPreferenceGamePlaceRepo = (): SaveUserPreferenceGamePlaceRepo => {
@@ -37,30 +37,30 @@ const makeSaveUserPreferenceGamePlaceRepo = (): SaveUserPreferenceGamePlaceRepo 
 
 type SutTypes = {
   sut: SaveUserPreferenceGamePlaceUsecase
-  findPreferenceByIdRepoStub: FindPreferenceByIdRepo
+  findUserPreferenceByIdRepoStub: FindUserPreferenceByIdRepo
   saveUserPreferenceGamePlaceRepoStub: SaveUserPreferenceGamePlaceRepo
 }
 
 const makeSut = (): SutTypes => {
-  const findPreferenceByIdRepoStub = makeFindPreferenceByIdRepo()
+  const findUserPreferenceByIdRepoStub = makeFindUserPreferenceByIdRepo()
   const saveUserPreferenceGamePlaceRepoStub = makeSaveUserPreferenceGamePlaceRepo()
   const sut = new SaveUserPreferenceGamePlaceUsecase(
-    findPreferenceByIdRepoStub, saveUserPreferenceGamePlaceRepoStub
+    findUserPreferenceByIdRepoStub, saveUserPreferenceGamePlaceRepoStub
   )
-  return { sut, findPreferenceByIdRepoStub, saveUserPreferenceGamePlaceRepoStub }
+  return { sut, findUserPreferenceByIdRepoStub, saveUserPreferenceGamePlaceRepoStub }
 }
 
 describe('SaveUserPreferenceGamePlaceUsecase', () => {
-  it('Should call FindPreferenceByIdRepo with correct values', async () => {
-    const { sut, findPreferenceByIdRepoStub } = makeSut()
-    const executeSpy = jest.spyOn(findPreferenceByIdRepoStub, 'execute')
+  it('Should call FindUserPreferenceByIdRepo with correct values', async () => {
+    const { sut, findUserPreferenceByIdRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(findUserPreferenceByIdRepoStub, 'execute')
     await sut.perform(makeFakeSaveUserPreferenceGamePlaceData())
     expect(executeSpy).toHaveBeenCalledWith('any_id')
   })
 
-  it('Should return NonExistentUserPreferencesError if FindPreferenceByIdRepo returns null', async () => {
-    const { sut, findPreferenceByIdRepoStub } = makeSut()
-    jest.spyOn(findPreferenceByIdRepoStub, 'execute').mockReturnValueOnce(
+  it('Should return NonExistentUserPreferencesError if FindUserPreferenceByIdRepo returns null', async () => {
+    const { sut, findUserPreferenceByIdRepoStub } = makeSut()
+    jest.spyOn(findUserPreferenceByIdRepoStub, 'execute').mockReturnValueOnce(
       Promise.resolve(null)
     )
     const result = await sut.perform(makeFakeSaveUserPreferenceGamePlaceData())

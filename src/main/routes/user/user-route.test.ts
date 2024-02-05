@@ -2,7 +2,7 @@
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
 */
 
-import type { ExternalAuthMappingModel, PreferenceModel, SocialMediaModel, UserModel } from '@/domain/models'
+import type { ExternalAuthMappingModel, SocialMediaModel, UserModel, UserPreferenceModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { AppModule } from '@/main/app.module'
 import env from '@/main/configs/env'
@@ -12,7 +12,7 @@ import type { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
 
-const makeFakePreferenceModel = (): PreferenceModel => ({
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',
   frequency: 'daily',
   activeType: 'gameMaster'
@@ -126,8 +126,7 @@ describe('User Routes', () => {
       await prisma.user.create({ data: makeFakeUserModel() })
       await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
       const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-      await prisma.userPreference.create({ data: makeFakePreferenceModel() })
-
+      await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())
         .put('/user/preference')
         .set({ 'x-access-token': token })
@@ -143,8 +142,7 @@ describe('User Routes', () => {
       await prisma.user.create({ data: makeFakeUserModel() })
       await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
       const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-      await prisma.userPreference.create({ data: makeFakePreferenceModel() })
-
+      await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())
         .post('/user/preference/game-place')
         .set({ 'x-access-token': token })
@@ -161,8 +159,7 @@ describe('User Routes', () => {
       await prisma.user.create({ data: makeFakeUserModel() })
       await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
       const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-      await prisma.userPreference.create({ data: makeFakePreferenceModel() })
-
+      await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())
         .post('/user/preference/day-period')
         .set({ 'x-access-token': token })

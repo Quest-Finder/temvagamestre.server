@@ -1,4 +1,4 @@
-import type { UserPreferenceDayPeriodModel, PreferenceModel, UserModel } from '@/domain/models'
+import type { UserPreferenceDayPeriodModel, UserModel, UserPreferenceModel } from '@/domain/models'
 import { type PrismaClient } from '@prisma/client'
 import { SaveUserPreferenceDayPeriodPrismaRepo } from './save-user-preference-day-period-prisma-repo'
 import MockDate from 'mockdate'
@@ -17,7 +17,7 @@ const makeFakeUserModel = (): UserModel => ({
   dateOfBirth: new Date()
 })
 
-const makeFakePreferenceModel = (): PreferenceModel => ({
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',
   frequency: 'daily',
   activeType: 'player'
@@ -57,7 +57,7 @@ describe('SaveUserPreferenceDayPeriodPrismaRepo', () => {
   it('Should add UserPreferenceDayPeriod when relation does not exist', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakeUserPreferenceModel() })
     await sut.execute(makeFakeUserPreferenceDayPeriodModel())
     const dayPeriod = await prismock.userPreferenceDayPeriod.findUnique({
       where: { id: 'any_user_id' }
@@ -68,7 +68,7 @@ describe('SaveUserPreferenceDayPeriodPrismaRepo', () => {
   it('Should update UserPreferenceDayPeriod when relation exists', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.userPreference.create({ data: makeFakePreferenceModel() })
+    await prismock.userPreference.create({ data: makeFakeUserPreferenceModel() })
     await prismock.userPreferenceDayPeriod.create({ data: makeFakeUserPreferenceDayPeriodModel() })
     await sut.execute({ ...makeFakeUserPreferenceDayPeriodModel(), morning: false })
     const dayPeriod = await prismock.userPreferenceDayPeriod.findUnique({

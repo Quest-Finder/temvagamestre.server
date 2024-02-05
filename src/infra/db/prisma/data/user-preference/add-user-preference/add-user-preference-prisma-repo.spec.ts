@@ -1,9 +1,9 @@
-import { type PreferenceModel, type UserModel } from '@/domain/models'
+import type { UserPreferenceModel, UserModel } from '@/domain/models'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { type PrismaClient } from '@prisma/client'
-import { AddUserPreferencePrismaRepo } from './add-user-preference-prisma-repo'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { AddUserPreferencePrismaRepo } from './add-user-preference-prisma-repo'
 
 let prismock: PrismaClient
 
@@ -17,7 +17,7 @@ const makeFakeUserModel = (): UserModel => ({
   dateOfBirth: new Date()
 })
 
-const makeFakePreferenceModel = (): PreferenceModel => ({
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',
   frequency: 'daily',
   activeType: 'player'
@@ -49,15 +49,15 @@ describe('AddUserPreferencePrismaRepo', () => {
   it('Should create a preference if prisma create() is a success', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await sut.execute(makeFakePreferenceModel())
+    await sut.execute(makeFakeUserPreferenceModel())
     const preference = await prismock.userPreference.findUnique({ where: { id: 'any_user_id' } })
-    expect(preference).toEqual(makeFakePreferenceModel())
+    expect(preference).toEqual(makeFakeUserPreferenceModel())
   })
 
   it('Should throw if Prisma throws', async () => {
     const sut = makeSut()
     jest.spyOn(prismock.userPreference, 'create').mockRejectedValue(new Error('any_error_message'))
-    const promise = sut.execute(makeFakePreferenceModel())
+    const promise = sut.execute(makeFakeUserPreferenceModel())
     await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })
 })

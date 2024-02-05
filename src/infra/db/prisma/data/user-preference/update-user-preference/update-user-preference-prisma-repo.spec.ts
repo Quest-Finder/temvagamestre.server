@@ -1,10 +1,10 @@
 import { type UpdateUserPreferenceData } from '@/domain/contracts/user'
-import { type PreferenceModel, type UserModel } from '@/domain/models'
+import type { UserModel, UserPreferenceModel } from '@/domain/models'
+import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { type PrismaClient } from '@prisma/client'
-import { UpdateUserPreferencePrismaRepo } from './update-user-preference-prisma-repo'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { UpdateUserPreferencePrismaRepo } from './update-user-preference-prisma-repo'
 
 let prismock: PrismaClient
 
@@ -19,7 +19,7 @@ const makeFakeUserModel = (): UserModel => ({
   email: 'any_email'
 })
 
-const makeFakePreference = (): PreferenceModel => ({
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',
   frequency: 'monthly',
   activeType: 'player'
@@ -54,7 +54,7 @@ describe('UpdateUserPreferencesPrismaRepo', () => {
   it('Should update a User Preference if prisma update() is a success', async () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
-    await prismock.userPreference.create({ data: makeFakePreference() })
+    await prismock.userPreference.create({ data: makeFakeUserPreferenceModel() })
     await sut.execute(makeFakeUpdateUserPreferenceData())
     const preference = await prismock.userPreference.findUnique({ where: { id: 'any_user_id' } })
     expect(preference).toEqual({
