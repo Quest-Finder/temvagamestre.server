@@ -1,4 +1,4 @@
-import { type AddUserPreference, type AddUserPreferenceData, type AddUserPreferenceResponse } from '@/domain/contracts/user/add-user-preference'
+import type { AddUserPreference, AddUserPreferenceData, AddUserPreferenceResponse } from '@/domain/contracts/user-preference'
 import { type Validation } from '@/presentation/contracts'
 import { type HttpRequest } from '@/presentation/types/http'
 import { right, type Either, left } from '@/shared/either'
@@ -77,7 +77,7 @@ describe('AddUserPreferenceController', () => {
     const performSpy = jest.spyOn(addUserPreferenceStub, 'perform')
     await sut.handle(makeFakeRequest())
     expect(performSpy).toHaveBeenCalledWith({
-      id: 'any_user_id',
+      userId: 'any_user_id',
       ...makeFakeRequest().body
     })
   })

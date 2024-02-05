@@ -1,9 +1,9 @@
-import { type ExistentUserPreferenceError } from '@/domain/errors'
+import type { ExistentUserPreferenceError } from '@/domain/errors'
 import type { ActiveType, Frequency } from '@/domain/models'
-import { type Either } from '@/shared/either'
+import type { Either } from '@/shared/either'
 
 export interface AddUserPreferenceData {
-  id: string
+  userId: string
   frequency: Frequency
   activeType: ActiveType
 }

@@ -1,4 +1,4 @@
-import { type AddUserPreference } from '@/domain/contracts/user/add-user-preference'
+import { type AddUserPreference } from '@/domain/contracts/user-preference'
 import type { Controller, Validation } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
@@ -16,7 +16,7 @@ export class AddUserPreferenceController implements Controller {
         return badRequest(validationResult.value)
       }
       await this.addUserPreference.perform({
-        id: httpRequest.headers.userId,
+        userId: httpRequest.headers.userId,
         ...httpRequest.body
       })
       return noContent()

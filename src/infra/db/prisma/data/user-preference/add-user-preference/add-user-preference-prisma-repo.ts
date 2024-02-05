@@ -1,9 +1,9 @@
-import { type AddUserPreferenceRepo } from '@/usecases/contracts/db/user'
+import { type UserPreferenceModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
-import { type AddUserPreferenceData } from '@/domain/contracts/user/add-user-preference'
+import { type AddUserPreferenceRepo } from '@/usecases/contracts/db/user-preference'
 
 export class AddUserPreferencePrismaRepo implements AddUserPreferenceRepo {
-  async execute (data: AddUserPreferenceData): Promise<void> {
+  async execute (data: UserPreferenceModel): Promise<void> {
     const prisma = await PrismaHelper.getPrisma()
     await prisma.userPreference.create({ data })
   }
