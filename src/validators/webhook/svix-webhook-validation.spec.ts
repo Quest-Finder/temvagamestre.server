@@ -24,25 +24,25 @@ const makeSut = (): SvixWebhookValidation => {
   return new SvixWebhookValidation()
 }
 describe('SvixWebhookValidation', () => {
-  it('Should return InvalidSvixError if any field required not exist', async () => {
+  it('Should return InvalidSvixError if any field required not exist', () => {
     const sut = makeSut()
-    const result = await sut.validate({})
+    const result = sut.validate({})
     expect(result.value).toEqual(new InvalidSvixError())
   })
 
-  it('Should call Svix Webhook with correct secret', async () => {
+  it('Should call Svix Webhook with correct secret', () => {
     const sut = makeSut()
-    await sut.validate(makeFakeRequest())
+    sut.validate(makeFakeRequest())
     expect(Webhook).toHaveBeenCalledWith(env.webhookSecret)
   })
 
-  it('Should return right resutl if Svix Webhook verify is a success', async () => {
+  it('Should return right resutl if Svix Webhook verify is a success', () => {
     const sut = makeSut()
-    const result = await sut.validate(makeFakeRequest())
+    const result = sut.validate(makeFakeRequest())
     expect(result.isRight()).toBe(true)
   })
 
-  it('Should return VerifyWebhookError if Svix Webhook verify throws', async () => {
+  it('Should return VerifyWebhookError if Svix Webhook verify throws', () => {
     const sut = makeSut()
     const wh = Webhook as jest.MockedFunction<any>
     wh.mockImplementation(() => ({
@@ -50,7 +50,7 @@ describe('SvixWebhookValidation', () => {
         throw new Error('Verification failed')
       })
     }))
-    const result = await sut.validate(makeFakeRequest())
+    const result = sut.validate(makeFakeRequest())
     expect(result.value).toEqual(new VerifyWebhookError())
   })
 })

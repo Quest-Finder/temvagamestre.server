@@ -4,12 +4,11 @@ import { z } from 'zod'
 import { ZodHelper } from '@/validators/helpers/zod-helper'
 
 export class AddUserPreferenceZodValidation implements Validation {
-  async validate (input: any): Promise<Either<Error, null>> {
+  validate (input: any): Either<Error, null> {
     const schema = z.object({
       frequency: z.enum(['daily', 'weekly', 'monthly']),
       activeType: z.enum(['player', 'gameMaster'])
     })
-
     return ZodHelper.check({ value: input, schema })
   }
 }

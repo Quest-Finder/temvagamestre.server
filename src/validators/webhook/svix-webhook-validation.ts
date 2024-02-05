@@ -6,7 +6,7 @@ import { InvalidSvixError, VerifyWebhookError } from '../errors'
 import { type SvixHeaders } from '../types/svix-headers'
 
 export class SvixWebhookValidation implements Validation {
-  async validate (input: any): Promise<Either<Error, null>> {
+  validate (input: any): Either<Error, null> {
     try {
       const headers = input.headers as SvixHeaders
       const payload = JSON.stringify(input.body)
