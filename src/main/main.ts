@@ -7,7 +7,7 @@ async function bootstrap (): Promise<void> {
     cors: true
   })
   await app.listen(env.port)
-  console.log(`Server running at http://localhost:${env.port}`)
+  console.log(`Server running at: ${await app.getUrl()}`)
 }
 
 bootstrap().catch(console.error)
