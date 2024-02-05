@@ -4,7 +4,7 @@ import { makeSaveUserPreferenceGamePlaceController } from '@/main/factories/cont
 import { makeSaveUserSocialMediaController } from '@/main/factories/controllers/user-social-media/save-user-social-media-controller-factory'
 import { makeAddUserPreferenceController } from '@/main/factories/controllers/user-preference/add-user-preference-controller-factory'
 import { makeUpdateUserController } from '@/main/factories/controllers/user/update-user-controller-factory'
-import { makeUpdateUserPreferenceController } from '@/main/factories/controllers/user/update-user-preference-controller-factory'
+import { makeUpdateUserPreferenceController } from '@/main/factories/controllers/user-preference/update-user-preference-controller-factory'
 import { Controller, Patch, Post, Put, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 

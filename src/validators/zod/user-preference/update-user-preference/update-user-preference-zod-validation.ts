@@ -1,8 +1,8 @@
 import { type Validation } from '@/presentation/contracts'
 import { left, type Either } from '@/shared/either'
 import { z } from 'zod'
-import { ZodHelper } from '../../../helpers/zod-helper'
-import { SomeFieldBeMandatoryError } from '../../../errors'
+import { ZodHelper } from '@/validators/helpers/zod-helper'
+import { SomeFieldBeMandatoryError } from '@/validators/errors'
 
 export class UpdateUserPreferenceZodValidation implements Validation {
   async validate (input: any): Promise<Either<Error, null>> {

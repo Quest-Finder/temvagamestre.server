@@ -1,4 +1,3 @@
-import { type UpdateUserPreferenceData } from '@/domain/contracts/user'
 import type { UserModel, UserPreferenceModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
 import { type PrismaClient } from '@prisma/client'
@@ -25,9 +24,10 @@ const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   activeType: 'player'
 })
 
-const makeFakeUpdateUserPreferenceData = (): UpdateUserPreferenceData => ({
+const makeFakeUserPreferenceModelUpdated = (): UserPreferenceModel => ({
   id: 'any_user_id',
-  frequency: 'daily'
+  frequency: 'daily',
+  activeType: 'gameMaster'
 })
 
 const makeSut = (): UpdateUserPreferencePrismaRepo => {
@@ -55,13 +55,9 @@ describe('UpdateUserPreferencesPrismaRepo', () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     await prismock.userPreference.create({ data: makeFakeUserPreferenceModel() })
-    await sut.execute(makeFakeUpdateUserPreferenceData())
+    await sut.execute(makeFakeUserPreferenceModelUpdated())
     const preference = await prismock.userPreference.findUnique({ where: { id: 'any_user_id' } })
-    expect(preference).toEqual({
-      id: 'any_user_id',
-      frequency: 'daily',
-      activeType: 'player'
-    })
+    expect(preference).toEqual(makeFakeUserPreferenceModelUpdated())
   })
 
   it('Should throw if Prisma throws', async () => {
@@ -69,7 +65,7 @@ describe('UpdateUserPreferencesPrismaRepo', () => {
     jest.spyOn(prismock.userPreference, 'update').mockRejectedValue(
       new Error('any_error_message')
     )
-    const promise = sut.execute(makeFakeUpdateUserPreferenceData())
+    const promise = sut.execute(makeFakeUserPreferenceModel())
     await expect(promise).rejects.toThrow(new Error('any_error_message'))
   })
 })

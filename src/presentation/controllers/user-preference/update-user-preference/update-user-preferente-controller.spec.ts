@@ -1,4 +1,4 @@
-import { type UpdateUserPreferenceResponse, type UpdateUserPreference, type UpdateUserPreferenceData } from '@/domain/contracts/user'
+import type { UpdateUserPreferenceResponse, UpdateUserPreference, UpdateUserPreferenceData } from '@/domain/contracts/user-preference'
 import { type Validation } from '@/presentation/contracts'
 import { type HttpRequest } from '@/presentation/types/http'
 import { type Either, right, left } from '@/shared/either'
@@ -77,7 +77,7 @@ describe('UpdateUserPreferenceController', () => {
     const performSpy = jest.spyOn(updateUserPreferenceStub, 'perform')
     await sut.handle(makeFakeRequest())
     expect(performSpy).toHaveBeenCalledWith({
-      id: 'any_user_id',
+      userId: 'any_user_id',
       ...makeFakeRequest().body
     })
   })
