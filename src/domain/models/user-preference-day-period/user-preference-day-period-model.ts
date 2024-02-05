@@ -1,4 +1,4 @@
-export type DayPeriodModel = {
+export type UserPreferenceDayPeriodModel = {
   id: string
   morning: boolean
   afternoon: boolean

@@ -1,9 +1,9 @@
-import { type AddDayPeriod, type AddDayPeriodData, type AddDayPeriodResponse } from '@/domain/contracts/user'
-import { type Validation } from '@/presentation/contracts'
-import { type HttpRequest } from '@/presentation/types/http'
-import { type Either, right, left } from '@/shared/either'
-import { AddDayPeriodController } from './add-day-period-controller'
+import type { SaveUserPreferenceDayPeriod, SaveUserPreferenceDayPeriodData, SaveUserPreferenceDayPeriodResponse } from '@/domain/contracts/user-preference-day-period'
+import type { Validation } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
+import type { HttpRequest } from '@/presentation/types/http'
+import { left, right, type Either } from '@/shared/either'
+import { SaveUserPreferenceDayPeriodController } from './save-user-preference-day-period-controller'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
@@ -25,9 +25,9 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
-const makeFakeAddDayPeriod = (): AddDayPeriod => {
-  class AddDayPeriodStub implements AddDayPeriod {
-    async perform (data: AddDayPeriodData): Promise<AddDayPeriodResponse> {
+const makeFakeSaveUserPreferenceDayPeriod = (): SaveUserPreferenceDayPeriod => {
+  class AddDayPeriodStub implements SaveUserPreferenceDayPeriod {
+    async perform (data: SaveUserPreferenceDayPeriodData): Promise<SaveUserPreferenceDayPeriodResponse> {
       return await Promise.resolve(right(null))
     }
   }
@@ -35,19 +35,21 @@ const makeFakeAddDayPeriod = (): AddDayPeriod => {
 }
 
 type SutTypes = {
-  sut: AddDayPeriodController
+  sut: SaveUserPreferenceDayPeriodController
   validationStub: Validation
-  addDayPeriodStub: AddDayPeriod
+  saveUserPreferenceDayPeriodStub: SaveUserPreferenceDayPeriod
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const addDayPeriodStub = makeFakeAddDayPeriod()
-  const sut = new AddDayPeriodController(validationStub, addDayPeriodStub)
-  return { sut, addDayPeriodStub, validationStub }
+  const saveUserPreferenceDayPeriodStub = makeFakeSaveUserPreferenceDayPeriod()
+  const sut = new SaveUserPreferenceDayPeriodController(
+    validationStub, saveUserPreferenceDayPeriodStub
+  )
+  return { sut, saveUserPreferenceDayPeriodStub, validationStub }
 }
 
-describe('AddDayPeriodController', () => {
+describe('SaveUserPreferenceDayPeriodController', () => {
   it('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -73,19 +75,19 @@ describe('AddDayPeriodController', () => {
     expect(httpResponse).toEqual(serverError())
   })
 
-  it('Should call AddDayPeriod with correct values', async () => {
-    const { sut, addDayPeriodStub } = makeSut()
-    const performSpy = jest.spyOn(addDayPeriodStub, 'perform')
+  it('Should call SaveUserPreferenceDayPeriod with correct values', async () => {
+    const { sut, saveUserPreferenceDayPeriodStub } = makeSut()
+    const performSpy = jest.spyOn(saveUserPreferenceDayPeriodStub, 'perform')
     await sut.handle(makeFakeRequest())
     expect(performSpy).toHaveBeenCalledWith({
-      id: 'any_user_id',
+      userId: 'any_user_id',
       ...makeFakeRequest().body
     })
   })
 
-  it('Should return 500 if AddDayPeriod throws', async () => {
-    const { sut, addDayPeriodStub } = makeSut()
-    jest.spyOn(addDayPeriodStub, 'perform').mockReturnValueOnce(
+  it('Should return 500 if SaveUserPreferenceDayPeriod throws', async () => {
+    const { sut, saveUserPreferenceDayPeriodStub } = makeSut()
+    jest.spyOn(saveUserPreferenceDayPeriodStub, 'perform').mockReturnValueOnce(
       Promise.reject(new Error())
     )
     const httpResponse = await sut.handle(makeFakeRequest())

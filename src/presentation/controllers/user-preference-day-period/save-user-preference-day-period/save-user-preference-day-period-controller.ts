@@ -1,12 +1,12 @@
-import { type AddDayPeriod } from '@/domain/contracts/user'
+import type { SaveUserPreferenceDayPeriod } from '@/domain/contracts/user-preference-day-period'
 import type { Controller, Validation } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
-export class AddDayPeriodController implements Controller {
+export class SaveUserPreferenceDayPeriodController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly addDayPeriod: AddDayPeriod
+    private readonly saveUserPreferenceDayPeriod: SaveUserPreferenceDayPeriod
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -15,8 +15,8 @@ export class AddDayPeriodController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      await this.addDayPeriod.perform({
-        id: httpRequest.headers.userId,
+      await this.saveUserPreferenceDayPeriod.perform({
+        userId: httpRequest.headers.userId,
         ...httpRequest.body
       })
       return noContent()
