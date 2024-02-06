@@ -1,17 +1,16 @@
 import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from '@nestjs/common'
-import { UserRoutes } from './user-routes'
+import { UserPreferenceDayPeriodRoutes } from './user-preference-day-period-routes'
 import { AuthNestMiddleware } from '@/main/middlewares'
 
 @Module({
-  controllers: [UserRoutes]
+  controllers: [UserPreferenceDayPeriodRoutes]
 })
-export class UserRoutesModule implements NestModule {
+export class UserPreferenceDayPeriodRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply(AuthNestMiddleware)
       .forRoutes(
-        { path: '/user', method: RequestMethod.PATCH },
-        { path: '/user/preference/game-place', method: RequestMethod.POST }
+        { path: '/user/preference/day-period', method: RequestMethod.POST }
       )
   }
 }

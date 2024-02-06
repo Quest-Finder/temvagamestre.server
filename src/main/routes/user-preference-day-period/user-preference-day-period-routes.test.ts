@@ -41,7 +41,7 @@ const makeFakeToken = async (): Promise<string> => {
 let prisma: PrismaClient
 let app: INestApplication
 
-describe('User Routes', () => {
+describe('UserPreferenceDayPeriod Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
     prisma = await PrismaHelper.getPrisma()
@@ -68,35 +68,17 @@ describe('User Routes', () => {
     await PrismaHelper.disconnect()
   })
 
-  describe('PATCH /user', () => {
-    it('Should return 204 on success', async () => {
+  describe('POST /user/preference/day-period', () => {
+    it("Should return 204 when adding a period of the day to the user's preferences", async () => {
       const token = await makeFakeToken()
-      await request(app.getHttpServer())
-        .patch('/user')
-        .set({ 'x-access-token': token })
-        .send({
-          firstName: 'first name',
-          lastName: 'last name',
-          phone: '11991887766',
-          dateOfBirth: '12-31-2000',
-          nickname: 'any_nickname'
-        })
-        .expect(204)
-    })
-  })
-
-  describe('POST /user/preference/game-place', () => {
-    it('Should return 204 on success', async () => {
-      await prisma.user.create({ data: makeFakeUserModel() })
-      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
       await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())
-        .post('/user/preference/game-place')
+        .post('/user/preference/day-period')
         .set({ 'x-access-token': token })
         .send({
-          online: true,
-          inPerson: false
+          morning: true,
+          afternoon: false,
+          night: false
         })
         .expect(204)
     })
