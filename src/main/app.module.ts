@@ -4,6 +4,7 @@ import { SignUpModule } from './routes/user/signup/signup.module'
 import { UserRoutesModule } from './routes/user/user-routes.module'
 import { RpgStyleRoutesModule } from './routes/rpg-style/rpg-style-routes.module'
 import { UserSocialMediaModule } from './routes/user-social-media/user-social-media-routes.module'
+import { UserPreferenceRoutesModule } from './routes/user-preference/user-preference-routes.module'
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { UserSocialMediaModule } from './routes/user-social-media/user-social-me
     SocialMediaRoutesModule,
     UserRoutesModule,
     UserSocialMediaModule,
+    UserPreferenceRoutesModule,
     RpgStyleRoutesModule
   ]
 })

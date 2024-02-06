@@ -11,8 +11,6 @@ export class UserRoutesModule implements NestModule {
       .apply(AuthNestMiddleware)
       .forRoutes(
         { path: '/user', method: RequestMethod.PATCH },
-        { path: '/user/preference', method: RequestMethod.POST },
-        { path: '/user/preference', method: RequestMethod.PUT },
         { path: '/user/preference/day-period', method: RequestMethod.POST },
         { path: '/user/preference/game-place', method: RequestMethod.POST }
       )

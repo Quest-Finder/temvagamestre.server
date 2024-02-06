@@ -41,7 +41,7 @@ const makeFakeToken = async (): Promise<string> => {
 let prisma: PrismaClient
 let app: INestApplication
 
-describe('User Routes', () => {
+describe('UserPreference Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
     prisma = await PrismaHelper.getPrisma()
@@ -54,10 +54,9 @@ describe('User Routes', () => {
 
     app = module.createNestApplication()
     await app.init()
-    await prisma.userSocialMedia.deleteMany()
-    await prisma.socialMedia.deleteMany()
-    await prisma.externalAuthMapping.deleteMany()
-    await prisma.user.deleteMany()
+    await prisma.externalAuthMapping.deleteMany({})
+    await prisma.user.deleteMany({})
+    await prisma.userPreference.deleteMany({})
   })
 
   afterEach(async () => {
@@ -68,53 +67,29 @@ describe('User Routes', () => {
     await PrismaHelper.disconnect()
   })
 
-  describe('PATCH /user', () => {
+  describe('POST /user/preference', () => {
     it('Should return 204 on success', async () => {
       const token = await makeFakeToken()
       await request(app.getHttpServer())
-        .patch('/user')
+        .post('/user/preference')
         .set({ 'x-access-token': token })
         .send({
-          firstName: 'first name',
-          lastName: 'last name',
-          phone: '11991887766',
-          dateOfBirth: '12-31-2000',
-          nickname: 'any_nickname'
+          frequency: 'daily',
+          activeType: 'gameMaster'
         })
         .expect(204)
     })
   })
 
-  describe('POST /user/preference/game-place', () => {
+  describe('PATCH /user/preference', () => {
     it('Should return 204 on success', async () => {
-      await prisma.user.create({ data: makeFakeUserModel() })
-      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
+      const token = await makeFakeToken()
       await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())
-        .post('/user/preference/game-place')
+        .patch('/user/preference')
         .set({ 'x-access-token': token })
         .send({
-          online: true,
-          inPerson: false
-        })
-        .expect(204)
-    })
-  })
-
-  describe('POST /user/preference/day-period', () => {
-    it('Should return 204 on success', async () => {
-      await prisma.user.create({ data: makeFakeUserModel() })
-      await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
-      const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
-      await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
-      await request(app.getHttpServer())
-        .post('/user/preference/day-period')
-        .set({ 'x-access-token': token })
-        .send({
-          morning: true,
-          afternoon: false,
-          night: false
+          activeType: 'gameMaster'
         })
         .expect(204)
     })
