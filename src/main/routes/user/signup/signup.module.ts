@@ -5,7 +5,7 @@ import { WebhookValidatorMiddleware } from '@/main/middlewares'
 @Module({
   controllers: [SignUpRoute]
 })
-export class SignUpModule implements NestModule {
+export class SignUpRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply(WebhookValidatorMiddleware)

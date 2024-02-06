@@ -5,7 +5,7 @@ import { AuthNestMiddleware } from '@/main/middlewares'
 @Module({
   controllers: [UserSocialMediaRoutes]
 })
-export class UserSocialMediaModule implements NestModule {
+export class UserSocialMediaRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply(AuthNestMiddleware)
