@@ -4,8 +4,8 @@ import { makeAdaptClerkRequestSignUpControllerDecorator } from '@/main/factories
 import { Controller, Post, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 
-@Controller('/signup')
-export class SignUpRoute {
+@Controller('/user/signup')
+export class SignUpRoutes {
   @Post('/webhook')
   async signUpWebhook (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(

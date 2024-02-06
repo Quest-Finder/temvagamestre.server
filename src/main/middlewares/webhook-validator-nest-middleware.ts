@@ -3,7 +3,7 @@ import type { NextFunction, Response, Request } from 'express'
 import { adaptMiddleware } from '@/main/factories/adapters'
 import { makeWebhookValidatorMiddleware } from '@/main/factories/middlewares'
 
-export class WebhookValidatorMiddleware implements NestMiddleware {
+export class WebhookValidatorNestMiddleware implements NestMiddleware {
   async use (req: Request, res: Response, next: NextFunction): Promise<void> {
     const middleware = makeWebhookValidatorMiddleware()
     const adaptedMiddleware = adaptMiddleware(middleware)

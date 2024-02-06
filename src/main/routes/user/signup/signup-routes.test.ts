@@ -66,7 +66,7 @@ const signature = crypto
 
 let app: INestApplication
 
-describe('SignUpWebhook Routes', () => {
+describe('SignUp Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
   })
@@ -88,10 +88,10 @@ describe('SignUpWebhook Routes', () => {
     await PrismaHelper.disconnect()
   })
 
-  describe('POST /signup/webhook', () => {
+  describe('POST /user/signup/webhook', () => {
     it('Should return 204 when signup a user', async () => {
       await request(app.getHttpServer())
-        .post('/signup/webhook')
+        .post('/user/signup/webhook')
         .set({
           'svix-id': svixId,
           'svix-timestamp': time,
