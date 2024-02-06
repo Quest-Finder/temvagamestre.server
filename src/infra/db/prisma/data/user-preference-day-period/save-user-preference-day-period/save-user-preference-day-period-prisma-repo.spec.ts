@@ -3,7 +3,7 @@ import { type PrismaClient } from '@prisma/client'
 import { SaveUserPreferenceDayPeriodPrismaRepo } from './save-user-preference-day-period-prisma-repo'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 
 let prismock: PrismaClient
 

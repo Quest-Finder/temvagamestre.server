@@ -3,7 +3,7 @@
  */
 import { Test } from '@nestjs/testing'
 import { type RpgStyleModel } from '@/domain/models'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type INestApplication } from '@nestjs/common'
 import { type PrismaClient } from '@prisma/client'
 import { AppModule } from '@/main/app.module'

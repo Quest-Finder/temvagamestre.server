@@ -1,5 +1,5 @@
 import type { UserPreferenceModel, UserModel } from '@/domain/models'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type PrismaClient } from '@prisma/client'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'

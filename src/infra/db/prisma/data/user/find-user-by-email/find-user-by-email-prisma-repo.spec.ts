@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { FindUserByEmailPrismaRepo } from './find-user-by-email-prisma-repo'
 import MockDate from 'mockdate'
 import { type UserModel } from '@/domain/models'

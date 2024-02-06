@@ -1,7 +1,7 @@
 import { type PrismaClient } from '@prisma/client'
 import { FindSocialMediaByIdPrismaRepo } from './find-social-media-by-id-prisma-repo'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 
 let prismock: PrismaClient

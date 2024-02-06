@@ -2,7 +2,7 @@
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
  */
 
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type PrismaClient } from '@prisma/client'
 import addRpgStyleSeed from './add-rpg-style-seed'
 

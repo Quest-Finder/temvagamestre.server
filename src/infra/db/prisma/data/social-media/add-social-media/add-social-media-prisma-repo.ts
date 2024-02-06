@@ -1,6 +1,6 @@
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 import { type AddSocialMediaRepo } from '@/usecases/contracts/db/social-media'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 
 export class AddSocialMediaPrismaRepo implements AddSocialMediaRepo {
   async execute (data: SocialMediaModel): Promise<void> {

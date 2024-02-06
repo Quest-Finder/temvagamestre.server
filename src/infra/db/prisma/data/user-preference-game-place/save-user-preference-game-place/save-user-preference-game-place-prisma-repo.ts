@@ -1,5 +1,5 @@
 import { type UserPreferenceGamePlaceModel } from '@/domain/models'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type SaveUserPreferenceGamePlaceRepo } from '@/usecases/contracts/db/user-preference-game-place'
 
 export class SaveUserPreferenceGamePlacePrismaRepo implements SaveUserPreferenceGamePlaceRepo {

@@ -1,5 +1,5 @@
 import { type UserPreferenceModel } from '@/domain/models'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 
 export class FindUserPreferenceByIdPrismaRepo implements FindUserPreferenceByIdRepo {
