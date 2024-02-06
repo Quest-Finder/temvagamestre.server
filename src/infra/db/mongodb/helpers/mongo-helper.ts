@@ -7,13 +7,14 @@ export const MongoHelper = {
   async connect (uri: string): Promise<void> {
     this.uri = uri
     this.client = await MongoClient.connect(this.uri)
-    console.log(`MongoDB running at ${this.uri}`)
+    console.log('MongoDB running')
   },
 
   async disconnect (): Promise<void> {
     if (this.client) {
       await this.client.close()
       this.client = null
+      console.log('MongoDB down')
     }
   },
 
