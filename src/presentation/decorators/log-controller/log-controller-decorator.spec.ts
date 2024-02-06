@@ -1,6 +1,9 @@
+import type { LogErrorModel } from '@/domain/models'
 import type { Controller } from '@/presentation/contracts'
-import { ok } from '@/presentation/helpers/http-helpers'
-import type { HttpResponse, HttpRequest } from '@/presentation/types/http'
+import { ok, serverError } from '@/presentation/helpers/http-helpers'
+import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
+import type { LogErrorRepo } from '@/usecases/contracts/db/log-error/log-error-repo'
+import MockDate from 'mockdate'
 import { LogControllerDecorator } from './log-controller-decorator'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -17,15 +20,10 @@ const makeFakeData = (): { value: string, data: string } => ({
   data: 'any_data'
 })
 
-interface SutTypes {
-  sut: LogControllerDecorator
-  controllerStub: Controller
-}
-
-const makeSut = (): SutTypes => {
-  const controllerStub = makeController()
-  const sut = new LogControllerDecorator(controllerStub)
-  return { sut, controllerStub }
+const makeFakeServerError = (): HttpResponse => {
+  const fakeError = new Error()
+  fakeError.stack = 'any_stack'
+  return serverError(fakeError)
 }
 
 const makeController = (): Controller => {
@@ -37,7 +35,33 @@ const makeController = (): Controller => {
   return new ControllerStub()
 }
 
+const makeLogErrorRepo = (): LogErrorRepo => {
+  class LogErrorRepoStub implements LogErrorRepo {
+    async execute (data: LogErrorModel): Promise<void> {
+      await Promise.resolve()
+    }
+  }
+  return new LogErrorRepoStub()
+}
+
+interface SutTypes {
+  sut: LogControllerDecorator
+  controllerStub: Controller
+  logErrorRepoStub: LogErrorRepo
+}
+
+const makeSut = (): SutTypes => {
+  const controllerStub = makeController()
+  const logErrorRepoStub = makeLogErrorRepo()
+  const sut = new LogControllerDecorator(controllerStub, logErrorRepoStub)
+  return { sut, controllerStub, logErrorRepoStub }
+}
+
 describe('LogControllerDecorator', () => {
+  beforeAll(() => { MockDate.set(new Date()) })
+
+  afterAll(() => { MockDate.reset() })
+
   it('Should call Controller with http request', async () => {
     const { sut, controllerStub } = makeSut()
     const handleSpy = jest.spyOn(controllerStub, 'handle')
@@ -49,5 +73,18 @@ describe('LogControllerDecorator', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok(makeFakeData()))
+  })
+
+  it('Should call LogErrorRepo with correct values if Controller returns a server error', async () => {
+    const { sut, controllerStub, logErrorRepoStub } = makeSut()
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(
+      Promise.resolve(makeFakeServerError())
+    )
+    const executeSpy = jest.spyOn(logErrorRepoStub, 'execute')
+    await sut.handle(makeFakeRequest())
+    expect(executeSpy).toHaveBeenCalledWith({
+      stack: 'any_stack',
+      date: new Date()
+    })
   })
 })
