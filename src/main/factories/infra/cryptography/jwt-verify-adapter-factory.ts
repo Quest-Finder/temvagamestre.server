@@ -1,4 +1,4 @@
-import { JwtVerifyAdapter } from '@/infra/cryptography/jwt-adapter/jwt-verify-adapter'
+import { JwtVerifyAdapter } from '@/infra/cryptography'
 import env from '@/main/configs/env'
 import { type Decrypter } from '@/usecases/contracts/cryptography/decrypter'
 
