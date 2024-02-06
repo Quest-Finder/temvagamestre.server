@@ -6,6 +6,7 @@ import { UserPreferenceRoutesModule } from './routes/user-preference/user-prefer
 import { UserSocialMediaRoutesModule } from './routes/user-social-media/user-social-media-routes.module'
 import { SignUpRoutesModule } from './routes/user/signup/signup.module'
 import { UserRoutesModule } from './routes/user/user-routes.module'
+import { UserPreferenceGamePlaceRoutesModule } from './routes/user-preference-game-place/user-preference-game-place-routes.module'
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UserRoutesModule } from './routes/user/user-routes.module'
     UserSocialMediaRoutesModule,
     UserPreferenceRoutesModule,
     UserPreferenceDayPeriodRoutesModule,
+    UserPreferenceGamePlaceRoutesModule,
     RpgStyleRoutesModule
   ]
 })

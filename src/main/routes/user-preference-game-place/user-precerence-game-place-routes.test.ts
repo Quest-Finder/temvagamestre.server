@@ -2,7 +2,7 @@
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
 */
 
-import type { ExternalAuthMappingModel, UserModel } from '@/domain/models'
+import type { ExternalAuthMappingModel, UserModel, UserPreferenceModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { AppModule } from '@/main/app.module'
 import env from '@/main/configs/env'
@@ -11,6 +11,12 @@ import { Test } from '@nestjs/testing'
 import type { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
+
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
+  id: 'any_user_id',
+  frequency: 'daily',
+  activeType: 'gameMaster'
+})
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -35,7 +41,7 @@ const makeFakeToken = async (): Promise<string> => {
 let prisma: PrismaClient
 let app: INestApplication
 
-describe('User Routes', () => {
+describe('UserPreferenceGamePlace Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
     prisma = await PrismaHelper.getPrisma()
@@ -48,10 +54,6 @@ describe('User Routes', () => {
 
     app = module.createNestApplication()
     await app.init()
-    await prisma.userSocialMedia.deleteMany()
-    await prisma.socialMedia.deleteMany()
-    await prisma.externalAuthMapping.deleteMany()
-    await prisma.user.deleteMany()
   })
 
   afterEach(async () => {
@@ -62,18 +64,16 @@ describe('User Routes', () => {
     await PrismaHelper.disconnect()
   })
 
-  describe('PATCH /user', () => {
-    it('Should return 204 on success', async () => {
+  describe('POST /user/preference/game-place', () => {
+    it("Should return 204 when adding a game place to the user's preferences", async () => {
       const token = await makeFakeToken()
+      await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())
-        .patch('/user')
+        .post('/user/preference/game-place')
         .set({ 'x-access-token': token })
         .send({
-          firstName: 'first name',
-          lastName: 'last name',
-          phone: '11991887766',
-          dateOfBirth: '12-31-2000',
-          nickname: 'any_nickname'
+          online: true,
+          inPerson: false
         })
         .expect(204)
     })
