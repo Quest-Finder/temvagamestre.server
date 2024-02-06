@@ -62,4 +62,13 @@ describe('AddFakeUserUseCase', () => {
       email: 'email_123456@mail.com'
     })
   })
+
+  it('Should throw if AddUser throws', async () => {
+    const { sut, addUserStub } = makeSut()
+    jest.spyOn(addUserStub, 'perform').mockImplementation(() => {
+      throw new Error()
+    })
+    const promise = sut.perform()
+    await expect(promise).rejects.toThrow()
+  })
 })
