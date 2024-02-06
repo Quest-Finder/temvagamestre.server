@@ -18,7 +18,6 @@ export class AddFakeUserUseCase implements AddFakeUser {
       lastName: `last_name_${value}`,
       firstName: `first_name_${value}`
     })
-    this.encrypter.execute(id)
-    return { token: '' }
+    return this.encrypter.execute(id)
   }
 }
