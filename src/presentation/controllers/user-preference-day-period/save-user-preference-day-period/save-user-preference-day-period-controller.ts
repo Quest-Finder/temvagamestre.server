@@ -20,8 +20,8 @@ export class SaveUserPreferenceDayPeriodController implements Controller {
         ...httpRequest.body
       })
       return noContent()
-    } catch (error) {
-      return serverError()
+    } catch (error: any) {
+      return serverError(error)
     }
   }
 }

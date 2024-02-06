@@ -69,7 +69,7 @@ describe('SaveUserPreferenceGamePlaceController', () => {
       throw new Error()
     })
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(serverError())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should call SaveUserPreferenceGamePlace with correct values', async () => {
@@ -88,7 +88,7 @@ describe('SaveUserPreferenceGamePlaceController', () => {
       Promise.reject(new Error())
     )
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(serverError())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should return 204 on success', async () => {

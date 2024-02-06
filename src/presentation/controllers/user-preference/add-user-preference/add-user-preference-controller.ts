@@ -21,7 +21,7 @@ export class AddUserPreferenceController implements Controller {
       })
       return noContent()
     } catch (error: any) {
-      return serverError()
+      return serverError(error)
     }
   }
 }

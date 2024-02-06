@@ -13,7 +13,7 @@ export class WebhookValidatorMiddleware implements Middleware {
       }
       return noContent()
     } catch (error: any) {
-      return serverError()
+      return serverError(error)
     }
   }
 }

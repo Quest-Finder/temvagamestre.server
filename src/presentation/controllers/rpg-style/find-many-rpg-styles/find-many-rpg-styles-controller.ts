@@ -10,8 +10,8 @@ export class FindManyRpgStylesController implements Controller {
     try {
       const findManyRpgStylesResult = await this.findManyRpgStyles.perform()
       return ok(findManyRpgStylesResult.value)
-    } catch (error) {
-      return serverError()
+    } catch (error: any) {
+      return serverError(error)
     }
   }
 }

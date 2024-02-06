@@ -54,7 +54,7 @@ describe('WebhookValidatorMiddleware', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     const error = new Error()
     error.stack = 'any_stack'
-    expect(httpResponse).toEqual(serverError())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should return 204 on success', async () => {

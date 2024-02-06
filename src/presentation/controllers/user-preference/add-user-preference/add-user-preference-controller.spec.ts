@@ -69,7 +69,7 @@ describe('AddUserPreferenceController', () => {
       throw new Error()
     })
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(serverError())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should call AddUserPreference with correct values', async () => {
@@ -88,7 +88,7 @@ describe('AddUserPreferenceController', () => {
       Promise.reject(new Error())
     )
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(serverError())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should return 204 on success', async () => {

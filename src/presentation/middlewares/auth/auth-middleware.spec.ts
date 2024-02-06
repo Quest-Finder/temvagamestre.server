@@ -68,7 +68,7 @@ describe('Auth Middleware', () => {
       throw new Error()
     })
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(serverError())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should return 200 on success', async () => {

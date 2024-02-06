@@ -23,7 +23,7 @@ export class UpdateUserController implements Controller {
       }
       return noContent()
     } catch (error: any) {
-      return serverError()
+      return serverError(error)
     }
   }
 }

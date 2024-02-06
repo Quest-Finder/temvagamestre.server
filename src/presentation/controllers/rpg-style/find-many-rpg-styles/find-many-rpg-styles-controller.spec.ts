@@ -42,7 +42,7 @@ describe('FindManyRpgStylesController', () => {
     const { sut, findManyRpgStylesStub } = makeSut()
     jest.spyOn(findManyRpgStylesStub, 'perform').mockReturnValueOnce(Promise.resolve(Promise.reject(new Error())))
     const httpResponse = await sut.handle()
-    expect(httpResponse).toEqual(serverError())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should return 200 on success', async () => {
