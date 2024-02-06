@@ -28,7 +28,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const idBuilderStub = makeIdBuilder()
   const addUserStub = makeAddUser()
-  const sut = new AddFakeUserUseCase(idBuilderStub)
+  const sut = new AddFakeUserUseCase(idBuilderStub, addUserStub)
   return { sut, idBuilderStub, addUserStub }
 }
 
@@ -48,5 +48,18 @@ describe('AddFakeUserUseCase', () => {
     })
     const promise = sut.perform()
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should call AddUser with correct values', async () => {
+    const { sut, addUserStub } = makeSut()
+    const performSpy = jest.spyOn(addUserStub, 'perform')
+    jest.spyOn(Math, 'random').mockReturnValue(0.123456789)
+    await sut.perform()
+    expect(performSpy).toHaveBeenCalledWith({
+      externalAuthUserId: 'any_fake_user_id',
+      firstName: 'first_name_123456',
+      lastName: 'last_name_123456',
+      email: 'email_123456@mail.com'
+    })
   })
 })
