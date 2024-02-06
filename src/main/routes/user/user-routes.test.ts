@@ -2,7 +2,7 @@
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
 */
 
-import type { ExternalAuthMappingModel, SocialMediaModel, UserModel, UserPreferenceModel } from '@/domain/models'
+import type { ExternalAuthMappingModel, UserModel, UserPreferenceModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { AppModule } from '@/main/app.module'
 import env from '@/main/configs/env'
@@ -16,11 +16,6 @@ const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',
   frequency: 'daily',
   activeType: 'gameMaster'
-})
-
-const makeFakeSocialMediaModel = (): SocialMediaModel => ({
-  id: 'any_social_media_id',
-  name: 'any_s_m_name'
 })
 
 const makeFakeUserModel = (): UserModel => ({
@@ -71,21 +66,6 @@ describe('User Routes', () => {
 
   afterAll(async () => {
     await PrismaHelper.disconnect()
-  })
-
-  describe('POST /user/social-media', () => {
-    it('Should return 204 on success', async () => {
-      await prisma.socialMedia.create({ data: makeFakeSocialMediaModel() })
-      const token = await makeFakeToken()
-      await request(app.getHttpServer())
-        .post('/user/social-media')
-        .set({ 'x-access-token': token })
-        .send({
-          socialMediaId: 'any_social_media_id',
-          link: 'any_link'
-        })
-        .expect(204)
-    })
   })
 
   describe('POST /user/preference', () => {

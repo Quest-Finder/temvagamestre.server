@@ -1,21 +1,14 @@
 import { adaptRoute } from '@/main/factories/adapters'
 import { makeSaveUserPreferenceDayPeriodController } from '@/main/factories/controllers/user-preference-day-period/save-user-preference-day-period-controller-factory'
 import { makeSaveUserPreferenceGamePlaceController } from '@/main/factories/controllers/user-preference-game-place/save-user-preference-game-place-controller-factory'
-import { makeSaveUserSocialMediaController } from '@/main/factories/controllers/user-social-media/save-user-social-media-controller-factory'
 import { makeAddUserPreferenceController } from '@/main/factories/controllers/user-preference/add-user-preference-controller-factory'
-import { makeUpdateUserController } from '@/main/factories/controllers/user/update-user-controller-factory'
 import { makeUpdateUserPreferenceController } from '@/main/factories/controllers/user-preference/update-user-preference-controller-factory'
+import { makeUpdateUserController } from '@/main/factories/controllers/user/update-user-controller-factory'
 import { Controller, Patch, Post, Put, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 
 @Controller('/user')
 export class UserRoutes {
-  @Post('/social-media')
-  async saveUserSocialMedia (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(makeSaveUserSocialMediaController())
-    await adaptNest.adapt(req, res)
-  }
-
   @Post('/preference')
   async addUserPreference (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(makeAddUserPreferenceController())
