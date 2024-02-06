@@ -1,6 +1,6 @@
 /**
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
- */
+*/
 
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import type { PrismaClient } from '@prisma/client'
@@ -12,10 +12,6 @@ describe('addSocialMediaSeed', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
     prisma = await PrismaHelper.getPrisma()
-  })
-
-  beforeEach(async () => {
-    await prisma.socialMedia.deleteMany()
   })
 
   afterAll(async () => {

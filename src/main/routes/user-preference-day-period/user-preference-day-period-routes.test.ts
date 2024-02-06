@@ -51,13 +51,8 @@ describe('UserPreferenceDayPeriod Routes', () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
-
     app = module.createNestApplication()
     await app.init()
-    await prisma.userSocialMedia.deleteMany()
-    await prisma.socialMedia.deleteMany()
-    await prisma.externalAuthMapping.deleteMany()
-    await prisma.user.deleteMany()
   })
 
   afterEach(async () => {

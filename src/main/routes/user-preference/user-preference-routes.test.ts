@@ -89,7 +89,8 @@ describe('UserPreference Routes', () => {
         .patch('/user/preference')
         .set({ 'x-access-token': token })
         .send({
-          activeType: 'gameMaster'
+          frequency: 'monthly',
+          activeType: 'player'
         })
         .expect(204)
     })

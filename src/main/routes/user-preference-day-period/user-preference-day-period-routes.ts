@@ -3,9 +3,9 @@ import { makeSaveUserPreferenceDayPeriodController } from '@/main/factories/cont
 import { Controller, Post, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 
-@Controller('/user')
+@Controller('/user/preference/day-period')
 export class UserPreferenceDayPeriodRoutes {
-  @Post('/preference/day-period')
+  @Post()
   async addDayPeriod (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(makeSaveUserPreferenceDayPeriodController())
     await adaptNest.adapt(req, res)

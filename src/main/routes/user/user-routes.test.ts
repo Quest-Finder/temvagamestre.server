@@ -45,13 +45,8 @@ describe('User Routes', () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
-
     app = module.createNestApplication()
     await app.init()
-    await prisma.userSocialMedia.deleteMany()
-    await prisma.socialMedia.deleteMany()
-    await prisma.externalAuthMapping.deleteMany()
-    await prisma.user.deleteMany()
   })
 
   afterEach(async () => {
@@ -63,7 +58,7 @@ describe('User Routes', () => {
   })
 
   describe('PATCH /user', () => {
-    it('Should return 204 on success', async () => {
+    it('Should return 204 when updating a user', async () => {
       const token = await makeFakeToken()
       await request(app.getHttpServer())
         .patch('/user')
