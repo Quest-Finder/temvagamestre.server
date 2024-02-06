@@ -7,10 +7,7 @@ import { Request, Response } from 'express'
 export class SocialMediaRoutes {
   @Get()
   async findManySocialMedias (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(
-      makeFindManySocialMediasController()
-    )
-
+    const adaptNest = adaptRoute(makeFindManySocialMediasController())
     await adaptNest.adapt(req, res)
   }
 }

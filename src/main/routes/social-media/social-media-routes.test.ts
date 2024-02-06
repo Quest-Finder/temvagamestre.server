@@ -31,10 +31,8 @@ describe('SocialMedia Routes', () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
-
     app = module.createNestApplication()
     await app.init()
-    await prisma.socialMedia.deleteMany()
   })
 
   afterEach(async () => {
@@ -46,7 +44,7 @@ describe('SocialMedia Routes', () => {
   })
 
   describe('GET /social-media', () => {
-    it('Should return 200 on success', async () => {
+    it('Should return 200 when returns all social medias', async () => {
       await prisma.socialMedia.createMany({
         data: makeFakeSocialMediasModel()
       })

@@ -1,6 +1,7 @@
 /**
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
- */
+*/
+
 import { Test } from '@nestjs/testing'
 import { type RpgStyleModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
@@ -30,10 +31,8 @@ describe('Rpg Style Routes', () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
-
     app = module.createNestApplication()
     await app.init()
-    await prisma.rpgStyle.deleteMany()
   })
 
   afterEach(async () => {
@@ -45,7 +44,7 @@ describe('Rpg Style Routes', () => {
   })
 
   describe('GET /rpg-style', () => {
-    it('Should return 200 on success', async () => {
+    it('Should return 200 when returns all rgp styles', async () => {
       await prisma.rpgStyle.createMany({
         data: makeFakeRpgStylesModel()
       })

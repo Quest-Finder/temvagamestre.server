@@ -7,10 +7,7 @@ import { Request, Response } from 'express'
 export class RpgStyleRoutes {
   @Get()
   async findManyRpgStyles (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(
-      makeFindManyRpgStylesController()
-    )
-
+    const adaptNest = adaptRoute(makeFindManyRpgStylesController())
     await adaptNest.adapt(req, res)
   }
 }

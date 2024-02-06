@@ -68,7 +68,7 @@ describe('UserPreference Routes', () => {
   })
 
   describe('POST /user/preference', () => {
-    it('Should return 204 on success', async () => {
+    it('Should return 204 when adding an user preference', async () => {
       const token = await makeFakeToken()
       await request(app.getHttpServer())
         .post('/user/preference')
@@ -82,7 +82,7 @@ describe('UserPreference Routes', () => {
   })
 
   describe('PATCH /user/preference', () => {
-    it('Should return 204 on success', async () => {
+    it('Should return 204 when updating an user preference', async () => {
       const token = await makeFakeToken()
       await prisma.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())

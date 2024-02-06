@@ -1,6 +1,6 @@
 /**
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
- */
+*/
 
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { AppModule } from '@/main/app.module'
@@ -8,7 +8,6 @@ import env from '@/main/configs/env'
 import { makeUuidAdapter } from '@/main/factories/infra/id/uuid-adapter-factory'
 import type { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
-import type { PrismaClient } from '@prisma/client'
 import * as crypto from 'crypto'
 import request from 'supertest'
 
@@ -65,13 +64,11 @@ const signature = crypto
   .update(signedContent)
   .digest('base64')
 
-let prisma: PrismaClient
 let app: INestApplication
 
-describe('SignUp Webhook Route', () => {
+describe('SignUpWebhook Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
-    prisma = await PrismaHelper.getPrisma()
   })
 
   beforeEach(async () => {
@@ -81,8 +78,6 @@ describe('SignUp Webhook Route', () => {
 
     app = module.createNestApplication()
     await app.init()
-    await prisma.user.deleteMany()
-    await prisma.externalAuthMapping.deleteMany()
   })
 
   afterEach(async () => {
@@ -94,7 +89,7 @@ describe('SignUp Webhook Route', () => {
   })
 
   describe('POST /signup/webhook', () => {
-    it('Should return 204 on success', async () => {
+    it('Should return 204 when signup a user', async () => {
       await request(app.getHttpServer())
         .post('/signup/webhook')
         .set({
