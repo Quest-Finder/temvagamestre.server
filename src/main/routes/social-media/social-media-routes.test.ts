@@ -21,7 +21,7 @@ const makeFakeSocialMediasModel = (): SocialMediaModel[] => ([{
 let prisma: PrismaClient
 let app: INestApplication
 
-describe('User Routes', () => {
+describe('SocialMedia Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
     prisma = await PrismaHelper.getPrisma()

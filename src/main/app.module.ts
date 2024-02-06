@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common'
-import { SocialMediaModule } from './routes/social-media/social-media-route.module'
+import { SocialMediaRoutesModule } from './routes/social-media/social-media-routes.module'
 import { SignUpModule } from './routes/signup/signup.module'
-import { UserModule } from './routes/user/user-route.module'
-import { RpgStyleModule } from './routes/rpg-style/rpg-style-route.module'
+import { UserRoutesModule } from './routes/user/user-routes.module'
+import { RpgStyleRoutesModule } from './routes/rpg-style/rpg-style-routes.module'
 
 @Module({
-  imports: [SignUpModule, SocialMediaModule, UserModule, RpgStyleModule]
+  imports: [
+    SignUpModule,
+    SocialMediaRoutesModule,
+    UserRoutesModule,
+    RpgStyleRoutesModule
+  ]
 })
 export class AppModule {}

@@ -1,10 +1,10 @@
 import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from '@nestjs/common'
-import { SocialMediaRoute } from './social-media-route'
+import { SocialMediaRoutes } from './social-media-routes'
 
 @Module({
-  controllers: [SocialMediaRoute]
+  controllers: [SocialMediaRoutes]
 })
-export class SocialMediaModule implements NestModule {
+export class SocialMediaRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply()

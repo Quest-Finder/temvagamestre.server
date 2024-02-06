@@ -4,7 +4,7 @@ import { Controller, Get, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 
 @Controller('/rpg-style')
-export class RpgStyleRoute {
+export class RpgStyleRoutes {
   @Get()
   async findManyRpgStyles (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(

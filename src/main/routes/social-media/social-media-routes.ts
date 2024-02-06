@@ -4,7 +4,7 @@ import { Controller, Get, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 
 @Controller('/social-media')
-export class SocialMediaRoute {
+export class SocialMediaRoutes {
   @Get()
   async findManySocialMedias (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(

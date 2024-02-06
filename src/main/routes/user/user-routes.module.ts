@@ -1,11 +1,11 @@
 import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from '@nestjs/common'
-import { UserRoute } from './user-route'
+import { UserRoutes } from './user-routes'
 import { AuthNestMiddleware } from '@/main/middlewares'
 
 @Module({
-  controllers: [UserRoute]
+  controllers: [UserRoutes]
 })
-export class UserModule implements NestModule {
+export class UserRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply(AuthNestMiddleware)

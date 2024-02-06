@@ -9,7 +9,7 @@ import { Controller, Patch, Post, Put, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 
 @Controller('/user')
-export class UserRoute {
+export class UserRoutes {
   @Post('/social-media')
   async saveUserSocialMedia (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(makeSaveUserSocialMediaController())

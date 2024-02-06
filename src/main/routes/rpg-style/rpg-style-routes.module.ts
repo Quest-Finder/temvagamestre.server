@@ -1,10 +1,10 @@
 import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from '@nestjs/common'
-import { RpgStyleRoute } from './rpg-style-route'
+import { RpgStyleRoutes } from './rpg-style-routes'
 
 @Module({
-  controllers: [RpgStyleRoute]
+  controllers: [RpgStyleRoutes]
 })
-export class RpgStyleModule implements NestModule {
+export class RpgStyleRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply()
