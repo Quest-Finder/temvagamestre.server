@@ -1,13 +1,15 @@
-import type { AddFakeUser, AddFakeUserResponse, AddUser } from '@/domain/contracts/user'
+import type { AddFakeUser, AddUser } from '@/domain/contracts/user'
+import { type Encrypter } from '@/usecases/contracts/cryptography/encrypter'
 import { type IdBuilder } from '@/usecases/contracts/id'
 
 export class AddFakeUserUseCase implements AddFakeUser {
   constructor (
     private readonly idBuilder: IdBuilder,
-    private readonly addUser: AddUser
+    private readonly addUser: AddUser,
+    private readonly encrypter: Encrypter
   ) {}
 
-  async perform (): Promise<AddFakeUserResponse> {
+  async perform (): Promise<{ token: string }> {
     const id = this.idBuilder.build()
     const value = Math.random().toString().substring(2, 8)
     await this.addUser.perform({
@@ -16,6 +18,7 @@ export class AddFakeUserUseCase implements AddFakeUser {
       lastName: `last_name_${value}`,
       firstName: `first_name_${value}`
     })
+    this.encrypter.execute(id)
     return { token: '' }
   }
 }
