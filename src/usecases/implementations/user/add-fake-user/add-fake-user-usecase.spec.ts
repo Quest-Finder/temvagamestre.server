@@ -99,4 +99,10 @@ describe('AddFakeUserUseCase', () => {
     const promise = sut.perform()
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return an token on success', async () => {
+    const { sut } = makeSut()
+    const token = await sut.perform()
+    expect(token).toEqual({ token: 'any_token' })
+  })
 })
