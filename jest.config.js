@@ -13,6 +13,7 @@ module.exports =  {
     '!<rootDir>/src/main/main.ts',
     '!<rootDir>/src/validators/**/*.ts'
   ],
+  preset: '@/shelf/jest-mongodb',
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'
   }
