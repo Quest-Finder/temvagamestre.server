@@ -2,6 +2,7 @@ import type { AddUser, AddUserData, AddUserResponse } from '@/domain/contracts/u
 import { AddFakeUserUseCase } from './add-fake-user-usecase'
 import { right } from '@/shared/either'
 import { type IdBuilder } from '@/usecases/contracts/id'
+import { type Encrypter } from '@/usecases/contracts/cryptography/encrypter'
 
 const makeIdBuilder = (): IdBuilder => {
   class IdBuilderStub implements IdBuilder {
@@ -19,17 +20,28 @@ const makeAddUser = (): AddUser => {
   return new AddUserStub()
 }
 
+const makeEncrypter = (): Encrypter => {
+  class EncrypterStub implements Encrypter {
+    execute (value: string): { token: string } {
+      return { token: 'any_token' }
+    }
+  }
+  return new EncrypterStub()
+}
+
 type SutTypes = {
   sut: AddFakeUserUseCase
   idBuilderStub: IdBuilder
   addUserStub: AddUser
+  encrypterStub: Encrypter
 }
 
 const makeSut = (): SutTypes => {
   const idBuilderStub = makeIdBuilder()
   const addUserStub = makeAddUser()
-  const sut = new AddFakeUserUseCase(idBuilderStub, addUserStub)
-  return { sut, idBuilderStub, addUserStub }
+  const encrypterStub = makeEncrypter()
+  const sut = new AddFakeUserUseCase(idBuilderStub, addUserStub, encrypterStub)
+  return { sut, idBuilderStub, addUserStub, encrypterStub }
 }
 
 describe('AddFakeUserUseCase', () => {
@@ -70,5 +82,12 @@ describe('AddFakeUserUseCase', () => {
     })
     const promise = sut.perform()
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should call Encrypter with correct id', async () => {
+    const { sut, encrypterStub } = makeSut()
+    const executeSpy = jest.spyOn(encrypterStub, 'execute')
+    await sut.perform()
+    expect(executeSpy).toHaveBeenCalledWith('any_fake_user_id')
   })
 })
