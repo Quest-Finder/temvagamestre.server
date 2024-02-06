@@ -16,7 +16,7 @@ describe('JwtSignAdapter', () => {
     const sut = makeSut()
     const signSpy = jest.spyOn(jwt, 'sign')
     sut.execute('any_id')
-    expect(signSpy).toHaveBeenCalledWith({ id: 'any_id' }, 'any_secret', { expiresIn: '1h' })
+    expect(signSpy).toHaveBeenCalledWith({ clerkUserId: 'any_id' }, 'any_secret', { expiresIn: '1h' })
   })
 
   it('Should throw if sign throws', async () => {
