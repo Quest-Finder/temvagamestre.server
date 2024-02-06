@@ -90,4 +90,13 @@ describe('AddFakeUserUseCase', () => {
     await sut.perform()
     expect(executeSpy).toHaveBeenCalledWith('any_fake_user_id')
   })
+
+  it('Should throw if Encrypter throws', async () => {
+    const { sut, encrypterStub } = makeSut()
+    jest.spyOn(encrypterStub, 'execute').mockImplementation(() => {
+      throw new Error()
+    })
+    const promise = sut.perform()
+    await expect(promise).rejects.toThrow()
+  })
 })
