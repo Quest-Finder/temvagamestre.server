@@ -1,1 +1,1 @@
-export * from './adapt-clerk-request-signup-controller-decorator/adapt-clerk-request-signup-controller-decorator'
+export * from './adapt-clerk-request-signup-controller/adapt-clerk-request-signup-controller-decorator'
