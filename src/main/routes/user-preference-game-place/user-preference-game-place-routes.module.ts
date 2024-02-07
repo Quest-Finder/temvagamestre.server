@@ -1,5 +1,5 @@
 import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from '@nestjs/common'
-import { UserPreferenceGamePlaceRoutes } from './user-precerence-game-place-routes'
+import { UserPreferenceGamePlaceRoutes } from './user-preference-game-place-routes'
 import { AuthNestMiddleware } from '@/main/middlewares'
 
 @Module({

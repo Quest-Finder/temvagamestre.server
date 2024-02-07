@@ -1,8 +1,10 @@
 import { adaptRoute } from '@/main/factories/adapters'
 import { makeAddFakeUserController } from '@/main/factories/controllers/user/add-fake-user-controller-factory'
 import { Controller, Get, Req, Res } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
+@ApiTags('Fake-User')
 @Controller('/fake-user')
 export class FakeUserRoutes {
   @Get('/generate-token')
