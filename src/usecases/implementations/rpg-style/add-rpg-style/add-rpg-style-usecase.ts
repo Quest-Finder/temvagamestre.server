@@ -1,5 +1,6 @@
-import { RpgStyles, type AddRpgStyle } from '@/domain/contracts/rpg-style'
-import { type AddRpgStyleRepo, type FindRpgStyleByNameRepo } from '@/usecases/contracts/db/rpg-style'
+import { type AddRpgStyle } from '@/domain/contracts/rpg-style'
+import { RpgStyle } from '@/domain/entities/rpg-style/rpg-style'
+import type { AddRpgStyleRepo, FindRpgStyleByNameRepo } from '@/usecases/contracts/db/rpg-style'
 import { type IdBuilder } from '@/usecases/contracts/id'
 
 export class AddRpgStyleUsecase implements AddRpgStyle {
@@ -10,17 +11,12 @@ export class AddRpgStyleUsecase implements AddRpgStyle {
   ) {}
 
   async perform (): Promise<void> {
-    const rpgStyles = RpgStyles.getRpgStyles()
-
+    const rpgStyles = RpgStyle.getRpgStyles()
     for (const rpgStyle of rpgStyles) {
       const existingRpgStyle = await this.findRpgStyleByNameRepo.execute(rpgStyle)
       if (!existingRpgStyle) {
         const id = this.idBuilder.build()
-
-        await this.addRpgStyleRepo.execute({
-          id,
-          name: rpgStyle
-        })
+        await this.addRpgStyleRepo.execute({ id, name: rpgStyle })
       }
     }
   }

@@ -68,8 +68,6 @@ describe('SignUpController', () => {
       Promise.reject(new Error())
     )
     const httpResponse = await sut.handle(makeFakeRequest())
-    const error = new Error()
-    error.stack = 'any_stack'
     expect(httpResponse).toEqual(serverError())
   })
 

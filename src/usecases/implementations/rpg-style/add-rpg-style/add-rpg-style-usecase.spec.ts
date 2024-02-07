@@ -1,12 +1,18 @@
 import { type RpgStyleModel } from '@/domain/models'
 import { type AddRpgStyleRepo, type FindRpgStyleByNameRepo } from '@/usecases/contracts/db/rpg-style'
 import { type IdBuilder } from '@/usecases/contracts/id'
+import { RpgStyle } from '@/domain/entities/rpg-style/rpg-style'
 import { AddRpgStyleUsecase } from './add-rpg-style-usecase'
-import { RpgStyles } from '@/domain/contracts/rpg-style'
+
+jest.mock('@/domain/entities/rpg-style/rpg-style', () => ({
+  RpgStyle: {
+    getRpgStyles: jest.fn(() => ['any_rpg_style'])
+  }
+}))
 
 const makeFakeRpgStyleModel = (): RpgStyleModel => ({
   id: 'any_rpg_style_id',
-  name: 'MMORPGs'
+  name: 'any_rpg_style'
 })
 
 const makeIdBuilder = (): IdBuilder => {
@@ -46,29 +52,32 @@ const makeSut = (): SutTypes => {
   const findRpgStyleByNameRepo = makeFindRpgStyleByNameRepo()
   const idBuilder = makeIdBuilder()
   const sut = new AddRpgStyleUsecase(addRpgStyleRepo, findRpgStyleByNameRepo, idBuilder)
-
   return {
-    sut,
-    addRpgStyleRepo,
-    findRpgStyleByNameRepo,
-    idBuilder
+    sut, addRpgStyleRepo, findRpgStyleByNameRepo, idBuilder
   }
 }
 
 describe('AddRpgStyleUsecase', () => {
+  it('Should call RpgStyle Entity', async () => {
+    const { sut } = makeSut()
+    const getSocialMediasSpy = jest.spyOn(RpgStyle, 'getRpgStyles')
+    await sut.perform()
+    expect(getSocialMediasSpy).toHaveBeenCalled()
+  })
+
   it('Should call FindRpgStyleByNameRepo with correct rpg style name', async () => {
     const { sut, findRpgStyleByNameRepo } = makeSut()
     const executeSpy = jest.spyOn(findRpgStyleByNameRepo, 'execute')
     await sut.perform()
-    expect(executeSpy).toHaveBeenCalledTimes(RpgStyles.getRpgStyles().length)
-    expect(executeSpy).toHaveBeenCalledWith(RpgStyles.getRpgStyles()[0])
+    expect(executeSpy).toHaveBeenCalledTimes(1)
+    expect(executeSpy).toHaveBeenCalledWith('any_rpg_style')
   })
 
   it('Should call AddRpgStyleRepo with correct values', async () => {
     const { sut, addRpgStyleRepo } = makeSut()
     const executeSpy = jest.spyOn(addRpgStyleRepo, 'execute')
     await sut.perform()
-    expect(executeSpy).toHaveBeenCalledTimes(RpgStyles.getRpgStyles().length)
+    expect(executeSpy).toHaveBeenCalledTimes(1)
     expect(executeSpy).toHaveBeenCalledWith(makeFakeRpgStyleModel())
   })
 

@@ -31,71 +31,71 @@ model Badge {
   @@map("badge")
 }
 
-model DayPeriod {
-  id        String  @id(map: "pk_day_period") @unique(map: "uq_day_period_id") @db.VarChar(50)
+model UserPreferenceDayPeriod {
+  id        String  @id(map: "pk_user_preference_day_period") @unique(map: "uq_user_preference_day_period_id") @db.VarChar(50)
   night     Boolean @default(false)
   morning   Boolean @default(false)
   afternoon Boolean @default(false)
 
-  preference Preference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_preference_day_period")
+  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_preference_user_preference_day_period")
 
-  @@map("day_period")
+  @@map("user_preference_day_period")
 }
 
-model PlayersRange {
-  id         String @id(map: "pk_players_range") @unique(map: "uq_players_range_id") @db.VarChar(50)
+model UserPreferencePlayersRange {
+  id         String @id(map: "pk_user_preference_players_range") @unique(map: "uq_user_preference_players_range_id") @db.VarChar(50)
   minPlayers Int    @map("min_players")
   maxPlayers Int    @map("max_players")
 
-  preference Preference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_preference_players_range")
+  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_preference_user_preference_players_range")
 
-  @@map("players_range")
+  @@map("user_preference_players_range")
 }
 
-model GamePlace {
-  id       String  @id(map: "pk_game_place") @unique(map: "uq_game_place_id") @db.VarChar(50)
+model UserPreferenceGamePlace {
+  id       String  @id(map: "pk_user_preference_game_place") @unique(map: "uq_user_preference_game_place_id") @db.VarChar(50)
   online   Boolean @default(false)
   inPerson Boolean @default(false) @map("in_person")
 
-  preference Preference @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_preference_game_place")
+  userPreference UserPreference @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_preference_user_preference_game_place")
 
-  @@map("game_place")
+  @@map("user_preference_game_place")
 }
 
 model RpgStyle {
   id   String @id(map: "pk_rpg_style") @unique(map: "uq_rpg_style_id") @db.VarChar(50)
   name String @db.VarChar(35)
 
-  preferenceRpgStyle PreferenceRpgStyle[]
+  userPreferenceRpgStyle UserPreferenceRpgStyle[]
 
   @@map("rpg_style")
 }
 
-model PreferenceRpgStyle {
-  preferenceId String @map("preference_id") @db.VarChar(50)
-  rpgStyleId   String @map("rpg_style_id") @db.VarChar(50)
+model UserPreferenceRpgStyle {
+  userPreferenceId String @map("user_preference_id") @db.VarChar(50)
+  rpgStyleId       String @map("rpg_style_id") @db.VarChar(50)
 
-  preference Preference @relation(fields: [preferenceId], references: [id], onDelete: Cascade, map: "fk_preference_preference_rpg_style")
-  rpgStyle   RpgStyle   @relation(fields: [rpgStyleId], references: [id], onDelete: Cascade, map: "fk_rpg_style_preference_rpg_style")
+  userPreference UserPreference @relation(fields: [userPreferenceId], references: [id], onDelete: Cascade, map: "fk_user_preference_user_preference_rpg_style")
+  rpgStyle       RpgStyle       @relation(fields: [rpgStyleId], references: [id], onDelete: Cascade, map: "fk_rpg_style_user_preference_rpg_style")
 
-  @@id([preferenceId, rpgStyleId], map: "pk_preference_rpg_style")
-  @@unique([preferenceId, rpgStyleId], map: "uq_preference_rpg_style_preference_id_rpg_style_id")
-  @@map("preference_rpg_style")
+  @@id([userPreferenceId, rpgStyleId], map: "pk_puser_preference_rpg_style")
+  @@unique([userPreferenceId, rpgStyleId], map: "uq_user_preference_rpg_style_user_preference_id_rpg_style_id")
+  @@map("user_preference_rpg_style")
 }
 
-model Preference {
-  id         String     @id(map: "pk_preference") @unique(map: "uq_preference_id") @db.VarChar(50)
+model UserPreference {
+  id         String     @id(map: "pk_user_preference") @unique(map: "uq_user_preference_id") @db.VarChar(50)
   frequency  Frequency
   activeType ActiveType @map("active_type")
 
-  dayPeriod          DayPeriod?
-  playersRange       PlayersRange?
-  gamePlace          GamePlace?
-  preferenceRpgStyle PreferenceRpgStyle[]
+  userPreferenceDayPeriod    UserPreferenceDayPeriod?
+  userPreferencePlayersRange UserPreferencePlayersRange?
+  userPreferenceGamePlace    UserPreferenceGamePlace?
+  userPreferenceRpgStyle     UserPreferenceRpgStyle[]
 
-  user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_preference")
+  user User @relation(fields: [id], references: [id], onDelete: Cascade, map: "fk_user_user_preference")
 
-  @@map("preference")
+  @@map("user_preference")
 }
 
 model SocialMedia {
@@ -117,7 +117,7 @@ model User {
   addressId   String?   @map("address_id") @db.VarChar(50)
   dateOfBirth DateTime? @map("date_of_birth") @db.Date()
 
-  preference          Preference?
+  userPreference      UserPreference?
   userConfig          UserConfig?
   userBadge           UserBadge[]
   externalAuthMapping ExternalAuthMapping?
@@ -141,8 +141,8 @@ model UserBadge {
 }
 
 model UserConfig {
-  id           String   @id(map: "pk_user_config") @unique(map: "uq_user_config_id") @db.VarChar(50)
-  allowMessage Boolean? @default(false) @map("allow_message")
+  id           String  @id(map: "pk_user_config") @unique(map: "uq_user_config_id") @db.VarChar(50)
+  allowMessage Boolean @default(false) @map("allow_message")
 
   user User @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_user_config")
 

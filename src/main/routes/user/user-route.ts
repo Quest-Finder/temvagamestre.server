@@ -1,36 +1,30 @@
 import { adaptRoute } from '@/main/factories/adapters'
-import { makeAddUserPreferenceController } from '@/main/factories/controllers/user/add-user-preference-controller-factory'
-import { makeUpdateUserPreferenceController } from '@/main/factories/controllers/user/update-user-preference-controller-factory'
-import { makeUpdateUserSocialMediaController } from '@/main/factories/controllers/user/update-user-social-media-controller-factory'
+import { makeSaveUserPreferenceDayPeriodController } from '@/main/factories/controllers/user-preference-day-period/save-user-preference-day-period-controller-factory'
+import { makeSaveUserPreferenceGamePlaceController } from '@/main/factories/controllers/user-preference-game-place/save-user-preference-game-place-controller-factory'
+import { makeSaveUserSocialMediaController } from '@/main/factories/controllers/user-social-media/save-user-social-media-controller-factory'
+import { makeAddUserPreferenceController } from '@/main/factories/controllers/user-preference/add-user-preference-controller-factory'
 import { makeUpdateUserController } from '@/main/factories/controllers/user/update-user-controller-factory'
-import { Controller, Patch, Post, Req, Res, Put } from '@nestjs/common'
+import { makeUpdateUserPreferenceController } from '@/main/factories/controllers/user-preference/update-user-preference-controller-factory'
+import { Controller, Patch, Post, Put, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
-import { makeAddGamePlaceController } from '@/main/factories/controllers/user/add-game-place-controller-factory'
-import { makeAddDayPeriodController } from '@/main/factories/controllers/user/add-day-period-controller-factory'
 
 @Controller('/user')
 export class UserRoute {
   @Post('/social-media')
-  async updateSocialMedia (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(
-      makeUpdateUserSocialMediaController()
-    )
+  async saveUserSocialMedia (@Req() req: Request, @Res() res: Response): Promise<void> {
+    const adaptNest = adaptRoute(makeSaveUserSocialMediaController())
     await adaptNest.adapt(req, res)
   }
 
   @Post('/preference')
   async addUserPreference (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(
-      makeAddUserPreferenceController()
-    )
+    const adaptNest = adaptRoute(makeAddUserPreferenceController())
     await adaptNest.adapt(req, res)
   }
 
   @Put('/preference')
   async updateUserPreference (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(
-      makeUpdateUserPreferenceController()
-    )
+    const adaptNest = adaptRoute(makeUpdateUserPreferenceController())
     await adaptNest.adapt(req, res)
   }
 
@@ -42,17 +36,13 @@ export class UserRoute {
 
   @Post('/preference/day-period')
   async addDayPeriod (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(
-      makeAddDayPeriodController()
-    )
+    const adaptNest = adaptRoute(makeSaveUserPreferenceDayPeriodController())
     await adaptNest.adapt(req, res)
   }
 
   @Post('/preference/game-place')
   async addGamePlace (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const adaptNest = adaptRoute(
-      makeAddGamePlaceController()
-    )
+    const adaptNest = adaptRoute(makeSaveUserPreferenceGamePlaceController())
     await adaptNest.adapt(req, res)
   }
 }
