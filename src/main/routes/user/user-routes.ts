@@ -3,7 +3,7 @@ import { makeUpdateUserController } from '@/main/factories/controllers/user/upda
 import { Controller, Patch, Req, Res } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
-import { UpdateUserRoutesDto } from './user-routes-dtos/update-user-routes-dto'
+import { UpdateUserRoutesDto } from './dtos/update-user-routes-dto'
 
 @ApiTags('User')
 @Controller('/user')

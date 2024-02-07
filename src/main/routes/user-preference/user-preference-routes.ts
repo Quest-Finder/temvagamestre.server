@@ -4,7 +4,7 @@ import { makeUpdateUserPreferenceController } from '@/main/factories/controllers
 import { Controller, Patch, Post, Req, Res } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
-import { AddUserPreferenceRoutesDto, UpdateUserPreferenceRoutesDto } from './user-preference-routes-dtos'
+import { AddUserPreferenceRoutesDto, UpdateUserPreferenceRoutesDto } from './dtos'
 
 @ApiTags('User-Preference')
 @Controller('/user/preference')
