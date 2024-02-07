@@ -5,6 +5,11 @@ export const swaggerSetup = (app: INestApplication<any>): void => {
   const config = new DocumentBuilder()
     .setTitle('Tem Vaga Mestre?')
     .setVersion('0.0.1')
+    .addBearerAuth({
+      name: 'x-access-token',
+      type: 'apiKey',
+      in: 'header'
+    })
     .addTag('Fake-User')
     .addTag('SignUp-Clerk')
     .addTag('User')
