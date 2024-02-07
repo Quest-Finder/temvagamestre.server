@@ -5,7 +5,7 @@ import { ZodHelper } from '@/validators/helpers/zod-helper'
 import { z } from 'zod'
 
 export class UpdateUserZodValidation implements Validation {
-  async validate (input: any): Promise<Either<Error, null>> {
+  validate (input: any): Either<Error, null> {
     const mandatoryFields = ['firstName', 'lastName', 'nickname', 'phone', 'dateOfBirth']
     if (mandatoryFields.every(field => !input[field])) {
       return left(new SomeFieldBeMandatoryError(mandatoryFields.join(', ')))

@@ -7,13 +7,13 @@ export class WebhookValidatorMiddleware implements Middleware {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const validationResult = await this.validation.validate(httpRequest)
+      const validationResult = this.validation.validate(httpRequest)
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
       return noContent()
     } catch (error: any) {
-      return serverError()
+      return serverError(error)
     }
   }
 }

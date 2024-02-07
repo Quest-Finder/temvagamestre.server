@@ -11,7 +11,7 @@ export class SaveUserPreferenceDayPeriodController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const validationResult = await this.validation.validate(httpRequest.body)
+      const validationResult = this.validation.validate(httpRequest.body)
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
@@ -20,8 +20,8 @@ export class SaveUserPreferenceDayPeriodController implements Controller {
         ...httpRequest.body
       })
       return noContent()
-    } catch (error) {
-      return serverError()
+    } catch (error: any) {
+      return serverError(error)
     }
   }
 }

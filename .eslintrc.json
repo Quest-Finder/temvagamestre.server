@@ -14,10 +14,7 @@
     ]
   },
   "ignorePatterns": [
-    "jest.config.js",
-    "jest-unit-config.js",
-    "jest-integration-config.js",
-    "commitlint.config.js",
+    "**.js",
     "src/**/*.sql",
     "src/**/*.toml",
     "src/**/*.prisma"

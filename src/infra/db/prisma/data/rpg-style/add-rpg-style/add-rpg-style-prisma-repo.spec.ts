@@ -1,7 +1,7 @@
 import { type RpgStyleModel } from '@/domain/models'
 import { AddRpgStylePrismaRepo } from './add-rpg-style-prisma-repo'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type PrismaClient } from '@prisma/client'
 
 let prismock: PrismaClient

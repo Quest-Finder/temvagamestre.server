@@ -1,5 +1,5 @@
 import { type FindRpgStyleByNameRepo } from '@/usecases/contracts/db/rpg-style'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type RpgStyleModel } from '@/domain/models'
 
 export class FindRpgStyleByNamePrismaRepo implements FindRpgStyleByNameRepo {

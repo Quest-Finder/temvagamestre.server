@@ -1,7 +1,7 @@
 import { type UserModel } from '@/domain/models'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
 import { type UserSocialMediaModel } from '@/domain/models/user-social-media/user-social-media-model'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type PrismaClient } from '@prisma/client'
 import MockDate from 'mockdate'
 import { PrismockClient } from 'prismock'

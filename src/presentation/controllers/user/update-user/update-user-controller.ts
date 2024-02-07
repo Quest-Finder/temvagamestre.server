@@ -11,7 +11,7 @@ export class UpdateUserController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const validationResult = await this.validation.validate(httpRequest.body)
+      const validationResult = this.validation.validate(httpRequest.body)
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
@@ -23,7 +23,7 @@ export class UpdateUserController implements Controller {
       }
       return noContent()
     } catch (error: any) {
-      return serverError()
+      return serverError(error)
     }
   }
 }

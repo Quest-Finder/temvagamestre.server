@@ -1,5 +1,5 @@
 import { type UserPreferenceDayPeriodModel } from '@/domain/models'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { type SaveUserPreferenceDayPeriodRepo } from '@/usecases/contracts/db/user-preference-day-period'
 
 export class SaveUserPreferenceDayPeriodPrismaRepo implements SaveUserPreferenceDayPeriodRepo {

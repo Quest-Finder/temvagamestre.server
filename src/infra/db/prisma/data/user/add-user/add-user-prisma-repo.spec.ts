@@ -1,7 +1,7 @@
 import type { UserModel } from '@/domain/models'
 import type { PrismaClient } from '@prisma/client'
 import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import MockDate from 'mockdate'
 import { AddUserPrismaRepo } from './add-user-prisma-repo'
 

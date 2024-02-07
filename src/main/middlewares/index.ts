@@ -1,2 +1,2 @@
-export * from './webhook-validator-middleware'
+export * from './webhook-validator-nest-middleware'
 export * from './auth-nest-middleware'

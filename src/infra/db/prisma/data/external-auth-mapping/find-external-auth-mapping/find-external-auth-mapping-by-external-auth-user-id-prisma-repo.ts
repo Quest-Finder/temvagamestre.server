@@ -1,5 +1,5 @@
 import type { ExternalAuthMappingModel } from '@/domain/models'
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import type { FindExternalAuthMappingByExternalAuthUserIdRepo } from '@/usecases/contracts/db/external-auth-mapping'
 
 export class FindExternalAuthMappingByExternalAuthUserIdPrismaRepo implements FindExternalAuthMappingByExternalAuthUserIdRepo {
