@@ -39,3 +39,6 @@ lerna-debug.log*
 
 #env
 .env
+
+#configs
+globalConfig.json
