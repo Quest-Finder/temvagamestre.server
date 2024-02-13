@@ -8,7 +8,7 @@ export interface AddUserPreferenceData {
   activeType: ActiveType
 }
 
-export type AddUserPreferenceResponse = Either<ExistentUserPreferenceError, null>
+export type AddUserPreferenceResponse = Either<ExistentUserPreferenceError, void>
 
 export interface AddUserPreference {
   perform: (data: AddUserPreferenceData) => Promise<AddUserPreferenceResponse>

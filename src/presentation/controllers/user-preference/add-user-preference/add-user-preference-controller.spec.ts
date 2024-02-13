@@ -27,7 +27,7 @@ const makeValidation = (): Validation => {
 const makeFakeAddUserPreference = (): AddUserPreference => {
   class AddUserPreferenceStub implements AddUserPreference {
     async perform (data: AddUserPreferenceData): Promise<AddUserPreferenceResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new AddUserPreferenceStub()
