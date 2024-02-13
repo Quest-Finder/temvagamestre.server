@@ -26,7 +26,7 @@ const makeValidation = (): Validation => {
 const makeAddUser = (): AddUser => {
   class AddUserStub implements AddUser {
     async perform (account: AddUserData): Promise<AddUserResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new AddUserStub()
