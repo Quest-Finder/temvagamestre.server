@@ -4,7 +4,7 @@ import { ZodHelper } from '@/validators/helpers/zod-helper'
 import { z } from 'zod'
 
 export class SignUpZodValidation implements Validation {
-  validate (input: any): Either<Error, null> {
+  validate (input: any): Either<Error, void> {
     const schema = z.object({
       externalAuthUserId: z.string(),
       firstName: z.string().min(2).max(25),

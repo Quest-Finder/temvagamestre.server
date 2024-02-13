@@ -5,10 +5,10 @@ import { fromZodError } from 'zod-validation-error'
 import { type ZodHelperData } from '../types/zod-helper-data'
 
 export class ZodHelper {
-  static check (data: ZodHelperData): Either<Error, null> {
+  static check (data: ZodHelperData): Either<Error, void> {
     try {
       data.schema.parse(data.value)
-      return right(null)
+      return right()
     } catch (error: any) {
       if (error instanceof ZodError) {
         return left(new ValidationError(fromZodError(error)))

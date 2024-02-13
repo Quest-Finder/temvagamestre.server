@@ -4,7 +4,7 @@ import { ZodHelper } from '@/validators/helpers/zod-helper'
 import { z } from 'zod'
 
 export class SaveUserPreferenceDayPeriodZodValidation implements Validation {
-  validate (input: any): Either<Error, null> {
+  validate (input: any): Either<Error, void> {
     const schema = z.object({
       morning: z.boolean(),
       afternoon: z.boolean(),
