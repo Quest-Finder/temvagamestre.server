@@ -27,7 +27,7 @@ const makeValidation = (): Validation => {
 const makeFakeSaveUserPreferenceGamePlace = (): SaveUserPreferenceGamePlace => {
   class SaveUserPreferenceGamePlaceStub implements SaveUserPreferenceGamePlace {
     async perform (data: SaveUserPreferenceGamePlaceData): Promise<SaveUserPreferenceGamePlaceResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new SaveUserPreferenceGamePlaceStub()
