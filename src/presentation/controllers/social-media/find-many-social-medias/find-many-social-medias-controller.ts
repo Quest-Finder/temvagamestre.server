@@ -9,7 +9,7 @@ export class FindManySocialMediasController implements Controller {
   async handle (): Promise<HttpResponse> {
     try {
       const findManySocialMediasResult = await this.findManySocialMedias.perform()
-      return ok(findManySocialMediasResult.value)
+      return ok(findManySocialMediasResult)
     } catch (error: any) {
       return serverError(error)
     }
