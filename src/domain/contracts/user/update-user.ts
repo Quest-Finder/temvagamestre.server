@@ -10,7 +10,7 @@ export type UpdateUserData = {
   dateOfBirth?: string
 }
 
-export type UpdateUserResponse = Either<UserEntityErrors, null>
+export type UpdateUserResponse = Either<UserEntityErrors, void>
 
 export interface UpdateUser {
   perform: (data: UpdateUserData) => Promise<UpdateUserResponse>

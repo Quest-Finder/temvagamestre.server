@@ -30,7 +30,7 @@ const makeValidation = (): Validation => {
 const makeFakeUpdateUser = (): UpdateUser => {
   class UpdateUserStub implements UpdateUser {
     async perform (data: UpdateUserData): Promise<UpdateUserResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new UpdateUserStub()
