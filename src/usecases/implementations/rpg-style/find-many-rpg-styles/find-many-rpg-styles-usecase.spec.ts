@@ -49,6 +49,6 @@ describe('FindManyRpgStylesUsecase', () => {
   it('Should return all rpg styles on success', async () => {
     const { sut } = makeSut()
     const result = await sut.perform()
-    expect(result.value).toEqual(makeFakeRpgStyles())
+    expect(result).toEqual(makeFakeRpgStyles())
   })
 })
