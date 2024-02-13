@@ -8,7 +8,7 @@ export type SaveUserPreferenceDayPeriodData = {
   night: boolean
 }
 
-export type SaveUserPreferenceDayPeriodResponse = Either<NonExistentUserPreferenceError, null>
+export type SaveUserPreferenceDayPeriodResponse = Either<NonExistentUserPreferenceError, void>
 
 export interface SaveUserPreferenceDayPeriod {
   perform: (data: SaveUserPreferenceDayPeriodData) => Promise<SaveUserPreferenceDayPeriodResponse>

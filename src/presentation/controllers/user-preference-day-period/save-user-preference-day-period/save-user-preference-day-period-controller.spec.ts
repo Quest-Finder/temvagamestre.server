@@ -28,7 +28,7 @@ const makeValidation = (): Validation => {
 const makeFakeSaveUserPreferenceDayPeriod = (): SaveUserPreferenceDayPeriod => {
   class AddDayPeriodStub implements SaveUserPreferenceDayPeriod {
     async perform (data: SaveUserPreferenceDayPeriodData): Promise<SaveUserPreferenceDayPeriodResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new AddDayPeriodStub()
