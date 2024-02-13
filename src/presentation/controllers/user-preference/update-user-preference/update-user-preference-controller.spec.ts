@@ -27,7 +27,7 @@ const makeValidation = (): Validation => {
 const makeFakeUpdateUserPreference = (): UpdateUserPreference => {
   class UpdateUserPreferenceStub implements UpdateUserPreference {
     async perform (data: UpdateUserPreferenceData): Promise<UpdateUserPreferenceResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new UpdateUserPreferenceStub()
