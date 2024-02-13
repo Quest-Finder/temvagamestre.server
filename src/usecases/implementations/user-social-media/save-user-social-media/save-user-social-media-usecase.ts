@@ -16,6 +16,6 @@ export class SaveUserSocialMediaUseCase implements SaveUserSocialMedia {
       return left(new InvalidSocialMediaIdError(data.socialMediaId))
     }
     await this.saveUserSocialMediaRepo.execute(data)
-    return right(null)
+    return right()
   }
 }

@@ -27,7 +27,7 @@ const makeValidation = (): Validation => {
 const makeSaveUserSocialMedia = (): SaveUserSocialMedia => {
   class SaveUserSocialMediaStub implements SaveUserSocialMedia {
     async perform (data: SaveUserSocialMediaData): Promise<SaveUserSocialMediaResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new SaveUserSocialMediaStub()

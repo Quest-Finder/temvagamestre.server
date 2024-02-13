@@ -7,7 +7,7 @@ export interface SaveUserSocialMediaData {
   link: string
 }
 
-export type SaveUserSocialMediaResponse = Either<InvalidSocialMediaIdError, null>
+export type SaveUserSocialMediaResponse = Either<InvalidSocialMediaIdError, void>
 
 export interface SaveUserSocialMedia {
   perform: (data: SaveUserSocialMediaData) => Promise<SaveUserSocialMediaResponse>
