@@ -16,6 +16,6 @@ export class AddUserPreferenceUsecase implements AddUserPreference {
       return left(new ExistentUserPreferenceError(id))
     }
     await this.addUserPreferenceRepo.execute({ id, ...otherData })
-    return right(null)
+    return right()
   }
 }

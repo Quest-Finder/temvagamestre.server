@@ -17,6 +17,6 @@ export class SaveUserPreferenceGamePlaceUsecase implements SaveUserPreferenceGam
       return left(new NonExistentUserPreferenceError(id))
     }
     await this.saveUserPreferenceGamePlaceRepo.execute({ id, ...otherData })
-    return right(null)
+    return right()
   }
 }

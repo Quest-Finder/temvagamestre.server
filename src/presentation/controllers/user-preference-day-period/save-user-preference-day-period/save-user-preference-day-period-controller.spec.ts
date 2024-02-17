@@ -18,8 +18,8 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Either<Error, null> {
-      return right(null)
+    validate (input: any): Either<Error, void> {
+      return right()
     }
   }
   return new ValidationStub()
@@ -28,7 +28,7 @@ const makeValidation = (): Validation => {
 const makeFakeSaveUserPreferenceDayPeriod = (): SaveUserPreferenceDayPeriod => {
   class AddDayPeriodStub implements SaveUserPreferenceDayPeriod {
     async perform (data: SaveUserPreferenceDayPeriodData): Promise<SaveUserPreferenceDayPeriodResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new AddDayPeriodStub()

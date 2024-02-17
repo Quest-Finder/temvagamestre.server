@@ -16,6 +16,6 @@ export class UpdateUserPreferenceUseCase implements UpdateUserPreference {
       return left(new NonExistentUserPreferenceError(id))
     }
     await this.updateUserPreferenceRepo.execute({ id, ...otherData })
-    return right(null)
+    return right()
   }
 }

@@ -8,7 +8,7 @@ export interface UpdateUserPreferenceData {
   activeType?: ActiveType
 }
 
-export type UpdateUserPreferenceResponse = Either<NonExistentUserPreferenceError, null>
+export type UpdateUserPreferenceResponse = Either<NonExistentUserPreferenceError, void>
 
 export interface UpdateUserPreference {
   perform: (data: UpdateUserPreferenceData) => Promise<UpdateUserPreferenceResponse>

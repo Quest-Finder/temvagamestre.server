@@ -11,8 +11,8 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Either<Error, null> {
-      return right(null)
+    validate (input: any): Either<Error, void> {
+      return right()
     }
   }
   return new ValidationStub()

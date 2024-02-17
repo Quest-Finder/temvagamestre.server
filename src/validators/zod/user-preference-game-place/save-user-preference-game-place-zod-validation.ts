@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { ZodHelper } from '@/validators/helpers/zod-helper'
 
 export class SaveUserPreferenceGamePlaceZodValidation implements Validation {
-  validate (input: any): Either<Error, null> {
+  validate (input: any): Either<Error, void> {
     const schema = z.object({
       online: z.boolean(),
       inPerson: z.boolean()

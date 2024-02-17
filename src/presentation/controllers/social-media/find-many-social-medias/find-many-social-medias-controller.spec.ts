@@ -1,18 +1,20 @@
-import { type FindManySocialMedias, type FindManySocialMediasResponse } from '@/domain/contracts/social-media'
+import { type FindManySocialMedias } from '@/domain/contracts/social-media'
 import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
-import { right } from '@/shared/either'
-import { FindManySocialMediasController } from './find-many-social-medias-controller'
 import { ok, serverError } from '@/presentation/helpers/http-helpers'
+import { FindManySocialMediasController } from './find-many-social-medias-controller'
 
-const makeFakeSocialMediasModel = (): SocialMediaModel => ({
+const makeFakeSocialMediasModel = (): SocialMediaModel[] => ([{
   id: 'any_social_media_id',
   name: 'any_social_media_name'
-})
+}, {
+  id: 'other_social_media_id',
+  name: 'other_social_media_name'
+}])
 
 const makeFindManySocialMedias = (): FindManySocialMedias => {
   class FindManySocialMediasStub implements FindManySocialMedias {
-    async perform (): Promise<FindManySocialMediasResponse> {
-      return await Promise.resolve(right([makeFakeSocialMediasModel()]))
+    async perform (): Promise<SocialMediaModel[]> {
+      return await Promise.resolve(makeFakeSocialMediasModel())
     }
   }
   return new FindManySocialMediasStub()
@@ -49,6 +51,6 @@ describe('FindManySocialMediasController', () => {
   it('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle()
-    expect(httpResponse).toEqual(ok([makeFakeSocialMediasModel()]))
+    expect(httpResponse).toEqual(ok(makeFakeSocialMediasModel()))
   })
 })

@@ -17,8 +17,8 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Either<Error, null> {
-      return right(null)
+    validate (input: any): Either<Error, void> {
+      return right()
     }
   }
   return new ValidationStub()
@@ -27,7 +27,7 @@ const makeValidation = (): Validation => {
 const makeSaveUserSocialMedia = (): SaveUserSocialMedia => {
   class SaveUserSocialMediaStub implements SaveUserSocialMedia {
     async perform (data: SaveUserSocialMediaData): Promise<SaveUserSocialMediaResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new SaveUserSocialMediaStub()

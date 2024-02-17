@@ -30,6 +30,6 @@ export class UpdateUserUseCase implements UpdateUser {
       ), {})
     }
     await this.updateUserRepo.execute(dataRepo)
-    return right(null)
+    return right()
   }
 }

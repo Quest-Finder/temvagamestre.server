@@ -22,6 +22,6 @@ export class AddUserUseCase implements AddUser {
     const { externalAuthUserId, ...userData } = data
     await this.addUserRepo.execute({ id, ...userData })
     await this.addExternalAuthMappingRepo.execute({ userId: id, externalAuthUserId })
-    return right(null)
+    return right()
   }
 }

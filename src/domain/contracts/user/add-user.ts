@@ -8,7 +8,7 @@ export type AddUserData = {
   email: string
 }
 
-export type AddUserResponse = Either<EmailInUseError, null>
+export type AddUserResponse = Either<EmailInUseError, void>
 
 export interface AddUser {
   perform: (data: AddUserData) => Promise<AddUserResponse>

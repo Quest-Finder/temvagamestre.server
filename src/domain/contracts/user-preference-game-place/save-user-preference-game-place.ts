@@ -7,7 +7,7 @@ export interface SaveUserPreferenceGamePlaceData {
   inPerson: boolean
 }
 
-export type SaveUserPreferenceGamePlaceResponse = Either<NonExistentUserPreferenceError, null>
+export type SaveUserPreferenceGamePlaceResponse = Either<NonExistentUserPreferenceError, void>
 
 export interface SaveUserPreferenceGamePlace {
   perform: (data: SaveUserPreferenceGamePlaceData) => Promise<SaveUserPreferenceGamePlaceResponse>

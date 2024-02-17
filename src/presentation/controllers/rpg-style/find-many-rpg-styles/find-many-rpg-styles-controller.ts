@@ -9,7 +9,7 @@ export class FindManyRpgStylesController implements Controller {
   async handle (): Promise<HttpResponse> {
     try {
       const findManyRpgStylesResult = await this.findManyRpgStyles.perform()
-      return ok(findManyRpgStylesResult.value)
+      return ok(findManyRpgStylesResult)
     } catch (error: any) {
       return serverError(error)
     }

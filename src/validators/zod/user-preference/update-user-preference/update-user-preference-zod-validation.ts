@@ -5,7 +5,7 @@ import { ZodHelper } from '@/validators/helpers/zod-helper'
 import { SomeFieldBeMandatoryError } from '@/validators/errors'
 
 export class UpdateUserPreferenceZodValidation implements Validation {
-  validate (input: any): Either<Error, null> {
+  validate (input: any): Either<Error, void> {
     const mandatoryFields = ['activeType', 'frequency']
 
     if (mandatoryFields.every(field => !input[field])) {

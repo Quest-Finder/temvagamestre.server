@@ -49,6 +49,6 @@ describe('FindManySocialMediasUsecase', () => {
   it('Should return all social medias on success', async () => {
     const { sut } = makeSut()
     const result = await sut.perform()
-    expect(result.value).toEqual(makeFakeSocialMedias())
+    expect(result).toEqual(makeFakeSocialMedias())
   })
 })

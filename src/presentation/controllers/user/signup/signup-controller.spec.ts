@@ -16,8 +16,8 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Either<Error, null> {
-      return right(null)
+    validate (input: any): Either<Error, void> {
+      return right()
     }
   }
   return new ValidationStub()
@@ -26,7 +26,7 @@ const makeValidation = (): Validation => {
 const makeAddUser = (): AddUser => {
   class AddUserStub implements AddUser {
     async perform (account: AddUserData): Promise<AddUserResponse> {
-      return await Promise.resolve(right(null))
+      return await Promise.resolve(right())
     }
   }
   return new AddUserStub()

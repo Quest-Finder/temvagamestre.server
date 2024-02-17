@@ -6,7 +6,7 @@ import { InvalidSvixError, VerifyWebhookError } from '../errors'
 import { type SvixHeaders } from '../types/svix-headers'
 
 export class SvixWebhookValidation implements Validation {
-  validate (input: any): Either<Error, null> {
+  validate (input: any): Either<Error, void> {
     try {
       const headers = input.headers as SvixHeaders
       const payload = JSON.stringify(input.body)
@@ -19,7 +19,7 @@ export class SvixWebhookValidation implements Validation {
         'svix-timestamp': headers['svix-timestamp'],
         'svix-signature': headers['svix-signature']
       })
-      return right(null)
+      return right()
     } catch (error: any) {
       return left(new VerifyWebhookError())
     }

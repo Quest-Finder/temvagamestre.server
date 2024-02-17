@@ -17,6 +17,6 @@ export class SaveUserPreferenceDayPeriodUsecase implements SaveUserPreferenceDay
       return left(new NonExistentUserPreferenceError(id))
     }
     await this.saveUserPreferenceDayPeriodRepo.execute({ id, ...otherData })
-    return right(null)
+    return right()
   }
 }
