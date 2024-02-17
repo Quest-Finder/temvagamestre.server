@@ -6,10 +6,10 @@ import dotenv from 'dotenv'
 import NodeEnvironment from 'jest-environment-node'
 
 dotenv.config({
-  path: resolve(__dirname, '.env.test')
+  path: resolve(__dirname, '../../../../.env')
 })
 
-const baseUrl = 'postgresql://postgres:admin@localhost:5432/test?schema='
+const baseUrl = process.env.DATABASE_TEST_URL
 class CustomEnvironment extends NodeEnvironment {
   private readonly schema: string | null = null
   private readonly connectionString: string | undefined = undefined
