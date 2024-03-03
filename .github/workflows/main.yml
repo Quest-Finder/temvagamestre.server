@@ -12,7 +12,7 @@ on:
 
 # Variáveis de ambiente para ser utilizado nos fluxos
 env:
-  REGISTRY: tem-vaga-mestre-images # repositorio artifact
+  REGISTRY: soujunior # repositorio artifact
   SERVICE: tem-vaga-mestre-api # cloud run
   REGION: us-central1
 
@@ -56,8 +56,8 @@ jobs:
           # run roda comandos de terminal
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
-          docker build -t us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest .
-          docker push us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
+          docker build -t us-central1-docker.pkg.dev/soujunior-416113/soujunior/dev:latest .
+          docker push us-central1-docker.pkg.dev/soujunior-416113/soujunior/dev:latest
       
 
   deploy-to-gcp-cloud-run:
@@ -81,7 +81,7 @@ jobs:
         
         with:
           service: ${{ env.SERVICE }}
-          image: us-central1-docker.pkg.dev/sou-junior-406812/tem-vaga-mestre-images/dev:latest
+          image: us-central1-docker.pkg.dev/soujunior-416113/soujunior/dev:latest
           region: ${{ env.REGION }}
 
   run-database-migration:
