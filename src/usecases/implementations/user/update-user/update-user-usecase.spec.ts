@@ -1,5 +1,5 @@
 import { type UpdateUserData } from '@/domain/contracts/user'
-import { UpdateUserUseCase } from './udpate-user-usecase'
+import { UpdateUserUseCase } from './update-user-usecase'
 import { formatDateStringToDateTime } from '@/util'
 import type { UpdateUserRepo, UpdateUserRepoData } from '@/usecases/contracts/db/user'
 import { left, right } from '@/shared/either'
