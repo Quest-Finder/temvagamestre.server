@@ -1,24 +1,19 @@
 import { type Either } from '@/shared/either'
-import type { InvalidDateOfBirthError, InvalidFirstNameError, InvalidLastNameError, InvalidPhoneError } from './errors'
-import type { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
+import type { InvalidDateOfBirthError, InvalidNameError, InvalidPronounError, InvalidUsernameError } from './errors'
+import { type User } from './user'
+import { type PronounEnum } from './value-objects'
 
-export type UpdateUserEntityData = {
-  firstName?: string
-  lastName?: string
-  phone?: string
-  dateOfBirth?: string
-  userName?: string
+export type RegisterUserData = {
+  name: string
+  dateOfBirth: string
+  username: string
+  pronoun: PronounEnum
 }
 
-export type UserEntityErrors = InvalidDateOfBirthError | InvalidFirstNameError | InvalidLastNameError | InvalidPhoneError
+export type UserEntityErrors =
+  InvalidDateOfBirthError |
+  InvalidUsernameError |
+  InvalidNameError |
+  InvalidPronounError
 
-type UpdateUserValueResponse = UpdateUserEntityData
-
-export type UpdateUserEntityResponse = Either<UserEntityErrors, UpdateUserValueResponse>
-
-export type UpdateUserEntityValueObjectsResults = {
-  firstName?: Either<InvalidFirstNameError, FirstName>
-  lastName?: Either<InvalidLastNameError, LastName>
-  phone?: Either<InvalidPhoneError, Phone>
-  dateOfBirth?: Either<InvalidDateOfBirthError, DateOfBirth>
-}
+export type UpdateUserResponse = Either<UserEntityErrors, User>
