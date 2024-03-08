@@ -9,12 +9,12 @@ describe('Pronoun ValueObject', () => {
 
   it('Should an Pronoun on success', () => {
     let result = Pronoun.create('he/his')
-    expect(result.value).toEqual({ pronoun: 'he/his' })
+    expect(result.value).toEqual({ props: 'he/his' })
 
     result = Pronoun.create('she/her')
-    expect(result.value).toEqual({ pronoun: 'she/her' })
+    expect(result.value).toEqual({ props: 'she/her' })
 
     result = Pronoun.create('they/theirs')
-    expect(result.value).toEqual({ pronoun: 'they/theirs' })
+    expect(result.value).toEqual({ props: 'they/theirs' })
   })
 })

@@ -28,11 +28,11 @@ describe('Username ValueObject', () => {
 
   it('Should return an Username if username contains hyphen', () => {
     const result = Username.create('user-name')
-    expect(result.value).toEqual({ username: 'user-name' })
+    expect(result.value).toEqual({ props: 'user-name' })
   })
 
   it('Should return an Username if username contains apostrophe', () => {
     const result = Username.create("user'name")
-    expect(result.value).toEqual({ username: "user'name" })
+    expect(result.value).toEqual({ props: "user'name" })
   })
 })

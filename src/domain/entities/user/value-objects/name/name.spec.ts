@@ -4,7 +4,7 @@ import { Name } from './name'
 describe('Name ValueObject', () => {
   it('Should remove the spaces at the beginning and at the end of the name', () => {
     const sut = Name.create(' any name ')
-    expect(sut.value).toEqual({ name: 'any name' })
+    expect(sut.value).toEqual({ props: 'any name' })
   })
 
   it('Should return InvalidNameError if name contains number', () => {
@@ -19,11 +19,11 @@ describe('Name ValueObject', () => {
 
   it('Should remove spaces between words if have any', () => {
     const sut = Name.create('any  name    any  name')
-    expect(sut.value).toEqual({ name: 'any name any name' })
+    expect(sut.value).toEqual({ props: 'any name any name' })
   })
 
   it('Should return an Name if name is valid', () => {
     const sut = Name.create('valid name')
-    expect(sut.value).toEqual({ name: 'valid name' })
+    expect(sut.value).toEqual({ props: 'valid name' })
   })
 })
