@@ -1,10 +1,12 @@
 import { type Either, left, right } from '@/shared/either'
 import { InvalidPronounError } from '../../errors'
+import { ValueObject } from '@/shared/domain'
 
 export type PronounEnum = 'he/his' | 'she/her' | 'they/theirs'
 
-export class Pronoun {
-  private constructor (readonly pronoun: PronounEnum) {
+export class Pronoun extends ValueObject<PronounEnum> {
+  private constructor (pronoun: PronounEnum) {
+    super(pronoun)
     Object.freeze(this)
   }
 

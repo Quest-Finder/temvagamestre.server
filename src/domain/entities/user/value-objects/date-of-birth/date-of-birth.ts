@@ -1,8 +1,10 @@
+import { ValueObject } from '@/shared/domain'
 import { left, right, type Either } from '@/shared/either'
 import { InvalidDateOfBirthError } from '../../errors'
 
-export class DateOfBirth {
-  private constructor (readonly dateOfBirth: string) {
+export class DateOfBirth extends ValueObject {
+  private constructor (dateOfBirth: string) {
+    super(dateOfBirth)
     Object.freeze(this)
   }
 

@@ -1,5 +1,4 @@
 export * from './date-of-birth/date-of-birth'
-export * from './phone/phone'
 export * from './name/name'
-export * from './name/first-name/first-name'
-export * from './name/last-name/last-name'
+export * from './pronoun/pronoun'
+export * from './username/username'
