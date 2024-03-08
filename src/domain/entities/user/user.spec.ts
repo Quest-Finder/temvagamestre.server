@@ -1,104 +1,80 @@
-import { left, right } from '@/shared/either'
+import { left } from '@/shared/either'
 import { InvalidDateOfBirthError, InvalidFirstNameError, InvalidLastNameError, InvalidPhoneError } from './errors'
 import { User } from './user'
 import { type UpdateUserEntityData } from './user-types'
 import { DateOfBirth, FirstName, LastName, Phone } from './value-objects'
 
-jest.mock('@/domain/entities/user/value-objects/name/first-name/first-name', () => ({
-  FirstName: {
-    create: jest.fn(() => { return right({ firstName: 'any_first_name' }) })
-  }
-}))
-
-jest.mock('@/domain/entities/user/value-objects/name/last-name/last-name', () => ({
-  LastName: {
-    create: jest.fn(() => { return right({ lastName: 'any_last_name' }) })
-  }
-}))
-
-jest.mock('@/domain/entities/user/value-objects/phone/phone', () => ({
-  Phone: {
-    create: jest.fn(() => { return right({ phone: 'any_phone' }) })
-  }
-}))
-
-jest.mock('@/domain/entities/user/value-objects/date-of-birth/date-of-birth', () => ({
-  DateOfBirth: {
-    create: jest.fn(() => { return right({ dateOfBirth: 'any_date' }) })
-  }
-}))
-
 const makeFakeUpdateUserEntityData = (): UpdateUserEntityData => ({
-  firstName: 'any_first_name',
-  lastName: 'any_last_name',
-  phone: 'any_phone',
-  dateOfBirth: 'any_date'
+  firstName: 'John',
+  lastName: 'Doe',
+  phone: '11999495599',
+  dateOfBirth: '12-01-2000'
 })
 
 describe('User Entity', () => {
   it('Should call FirstName with correct value firstName', () => {
     const createSpy = jest.spyOn(FirstName, 'create')
     User.update(makeFakeUpdateUserEntityData())
-    expect(createSpy).toHaveBeenCalledWith('any_first_name')
+    expect(createSpy).toHaveBeenCalledWith('John')
   })
 
   it('Should return InvalidFirstNameError if FirstName return InvalidFirstNameError', () => {
     jest.spyOn(FirstName, 'create').mockReturnValueOnce(
-      left(new InvalidFirstNameError('any_first_name'))
+      left(new InvalidFirstNameError('John'))
     )
     const sut = User.update(makeFakeUpdateUserEntityData())
-    expect(sut.value).toEqual(new InvalidFirstNameError('any_first_name'))
+    expect(sut.value).toEqual(new InvalidFirstNameError('John'))
   })
 
   it('Should call LastName with correct value lastName', () => {
     const createSpy = jest.spyOn(LastName, 'create')
     User.update(makeFakeUpdateUserEntityData())
-    expect(createSpy).toHaveBeenCalledWith('any_last_name')
+    expect(createSpy).toHaveBeenCalledWith('Doe')
   })
 
   it('Should return InvalidLastNameError if LastName return InvalidLastNameError', () => {
     jest.spyOn(LastName, 'create').mockReturnValueOnce(
-      left(new InvalidLastNameError('any_last_name'))
+      left(new InvalidLastNameError('Doe'))
     )
     const sut = User.update(makeFakeUpdateUserEntityData())
-    expect(sut.value).toEqual(new InvalidLastNameError('any_last_name'))
+    expect(sut.value).toEqual(new InvalidLastNameError('Doe'))
   })
 
   it('Should call Phone with correct value phone', () => {
     const createSpy = jest.spyOn(Phone, 'create')
     User.update(makeFakeUpdateUserEntityData())
-    expect(createSpy).toHaveBeenCalledWith('any_phone')
+    expect(createSpy).toHaveBeenCalledWith('11999495599')
   })
 
   it('Should return InvalidPhoneError if Phone return InvalidPhoneError', () => {
     jest.spyOn(Phone, 'create').mockReturnValueOnce(
-      left(new InvalidPhoneError('any_phone'))
+      left(new InvalidPhoneError('11999495599'))
     )
     const sut = User.update(makeFakeUpdateUserEntityData())
-    expect(sut.value).toEqual(new InvalidPhoneError('any_phone'))
+    expect(sut.value).toEqual(new InvalidPhoneError('11999495599'))
   })
 
   it('Should call DateOfBirth with correct value dateOfBirth', () => {
     const createSpy = jest.spyOn(DateOfBirth, 'create')
     User.update(makeFakeUpdateUserEntityData())
-    expect(createSpy).toHaveBeenCalledWith('any_date')
+    expect(createSpy).toHaveBeenCalledWith('12-01-2000')
   })
 
   it('Should return InvalidDateOfBirthError if DateOfBirth return InvalidDateOfBirthError', () => {
     jest.spyOn(Phone, 'create').mockReturnValueOnce(
-      left(new InvalidDateOfBirthError('any_date'))
+      left(new InvalidDateOfBirthError('12-01-2000'))
     )
     const sut = User.update(makeFakeUpdateUserEntityData())
-    expect(sut.value).toEqual(new InvalidDateOfBirthError('any_date'))
+    expect(sut.value).toEqual(new InvalidDateOfBirthError('12-01-2000'))
   })
 
   it('Should return valid result on success', () => {
     const sut = User.update(makeFakeUpdateUserEntityData())
     expect(sut.value).toEqual({
-      firstName: 'any_first_name',
-      lastName: 'any_last_name',
-      phone: 'any_phone',
-      dateOfBirth: 'any_date'
+      firstName: 'John',
+      lastName: 'Doe',
+      phone: '11999495599',
+      dateOfBirth: '12-01-2000'
     })
   })
 
@@ -106,9 +82,9 @@ describe('User Entity', () => {
     const { firstName, ...data } = makeFakeUpdateUserEntityData()
     const sut = User.update(data)
     expect(sut.value).toEqual({
-      lastName: 'any_last_name',
-      phone: 'any_phone',
-      dateOfBirth: 'any_date'
+      lastName: 'Doe',
+      phone: '11999495599',
+      dateOfBirth: '12-01-2000'
     })
   })
 })

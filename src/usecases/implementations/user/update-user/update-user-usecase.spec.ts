@@ -64,7 +64,7 @@ describe('UpdateUserUseCase', () => {
     const { sut } = makeSut()
     const updateSpy = jest.spyOn(User, 'update')
     await sut.perform(makeFakeUpdateUserData())
-    const { id, nickname, ...data } = makeFakeUpdateUserData()
+    const { id, ...data } = makeFakeUpdateUserData()
     expect(updateSpy).toHaveBeenCalledWith(data)
   })
 
@@ -75,7 +75,8 @@ describe('UpdateUserUseCase', () => {
     await sut.perform(data)
     expect(updateSpy).toHaveBeenCalledWith({
       dateOfBirth: '12-31-2000',
-      lastName: 'any_last_name'
+      lastName: 'any_last_name',
+      nickname: 'any_nickname'
     })
   })
 

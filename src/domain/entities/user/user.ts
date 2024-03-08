@@ -10,9 +10,11 @@ export class User {
       ...(data.phone && { phone: Phone.create(data.phone) }),
       ...(data.dateOfBirth && { dateOfBirth: DateOfBirth.create(data.dateOfBirth) })
     }
+
     for (const result of Object.values(results)) {
       if (result.isLeft()) return left(result.value)
     }
+
     const values = Object.values(results)
     const userValues = values.map(result => result?.value)
     return right(Object.fromEntries(
