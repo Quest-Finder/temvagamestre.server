@@ -17,4 +17,4 @@ export type UserEntityErrors =
   InvalidNameError |
   InvalidPronounError
 
-export type UpdateUserResponse = Either<UserEntityErrors, User>
+export type RegisterUserResponse = Either<UserEntityErrors, User>

@@ -1,6 +1,6 @@
 import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
-import type { RegisterUserData, UpdateUserResponse } from './user-types'
+import type { RegisterUserData, RegisterUserResponse } from './user-types'
 import { DateOfBirth, Name, Pronoun, type PronounEnum, Username } from './value-objects'
 
 export type UserProps = {
@@ -31,7 +31,7 @@ export class User extends Entity<UserProps> {
     return this.props.dateOfBirth.value
   }
 
-  static register (data: RegisterUserData): UpdateUserResponse {
+  static register (data: RegisterUserData): RegisterUserResponse {
     const { dateOfBirth, pronoun, username, name } = data
 
     const nameOrError = Name.create(name)
