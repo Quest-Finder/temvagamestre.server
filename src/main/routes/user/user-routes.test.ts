@@ -2,7 +2,7 @@
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
 */
 
-import type { ExternalAuthMappingModel, UserModel } from '@/domain/models'
+import type { ExternalAuthMappingModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { AppModule } from '@/main/app.module'
 import env from '@/main/configs/env'
@@ -12,12 +12,16 @@ import type { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
 
-const makeFakeUserModel = (): UserModel => ({
+type PartialUser = {
+  id: string
+  name: string
+  email: string
+}
+
+const makeFakePartialUser = (): PartialUser => ({
   id: 'any_user_id',
   email: 'any_email@mail.com',
-  lastName: 'any_last_name',
-  firstName: 'any_first_name',
-  dateOfBirth: new Date()
+  name: 'any_name'
 })
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
@@ -26,7 +30,7 @@ const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
 })
 
 const makeFakeToken = async (): Promise<string> => {
-  await prisma.user.create({ data: makeFakeUserModel() })
+  await prisma.user.create({ data: makeFakePartialUser() })
   await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
   const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
   return token
@@ -57,18 +61,17 @@ describe('User Routes', () => {
     await PrismaHelper.disconnect()
   })
 
-  describe('PATCH /user', () => {
-    it('Should return 204 when updating a user', async () => {
+  describe('POST /user', () => {
+    it('Should return 204 when register an user', async () => {
       const token = await makeFakeToken()
       await request(app.getHttpServer())
-        .patch('/user')
+        .post('/user')
         .set({ 'x-access-token': token })
         .send({
-          firstName: 'first name',
-          lastName: 'last name',
-          phone: '11991887766',
+          name: 'John Doe',
           dateOfBirth: '12-31-2000',
-          nickname: 'any_nickname'
+          username: 'valid-username',
+          pronoun: 'she/her'
         })
         .expect(204)
     })
