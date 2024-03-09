@@ -1,19 +1,17 @@
+import { type RegisterUserData } from '@/domain/entities/user'
 import { User } from '@/domain/entities/user/user'
 import { left, right } from '@/shared/either'
+import type { RegisterUserRepo } from '@/usecases/contracts/db/user'
 import { RegisterUserUseCase } from './register-user-usecase'
-import { type RegisterUserData } from '@/domain/entities/user'
-
-jest.mock('@/util/format-date-string-to-date-time/format-date-string-to-date-time', () => ({
-  ...jest.requireActual('@/util/format-date-string-to-date-time/format-date-string-to-date-time'),
-  formatDateStringToDateTime: jest.fn().mockReturnValue(
-    new Date('2000-12-31T00:00:00')
-  )
-}))
 
 jest.mock('@/domain/entities/user/user', () => ({
   User: {
     register: jest.fn((data: RegisterUserData) => {
-      return right(data)
+      const { dateOfBirth, ...otherData } = data
+      return right({
+        ...otherData,
+        dateOfBirth: new Date('2000-12-31T00:00:00')
+      })
     })
   }
 }))
@@ -26,13 +24,24 @@ const makeFakeRegisterUserData = (): RegisterUserData => ({
   dateOfBirth: '12-31-2000'
 })
 
+const makeRegisterUserRepo = (): RegisterUserRepo => {
+  class RegisterUserRepoStub implements RegisterUserRepo {
+    async execute (user: User): Promise<void> {
+      await Promise.resolve()
+    }
+  }
+  return new RegisterUserRepoStub()
+}
+
 type SutTypes = {
   sut: RegisterUserUseCase
+  registerUserRepoStub: RegisterUserRepo
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new RegisterUserUseCase()
-  return { sut }
+  const registerUserRepoStub = makeRegisterUserRepo()
+  const sut = new RegisterUserUseCase(registerUserRepoStub)
+  return { sut, registerUserRepoStub }
 }
 
 describe('RegisterUserUseCase', () => {
@@ -50,5 +59,33 @@ describe('RegisterUserUseCase', () => {
     )
     const result = await sut.perform(makeFakeRegisterUserData())
     expect(result.value).toEqual(new Error('any_error'))
+  })
+
+  it('Should call RegisterUserRepo with correct values', async () => {
+    const { sut, registerUserRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(registerUserRepoStub, 'execute')
+    await sut.perform(makeFakeRegisterUserData())
+    expect(executeSpy).toHaveBeenCalledWith({
+      id: 'any_id',
+      name: 'John Doe',
+      username: 'john-doe',
+      pronoun: 'he/his',
+      dateOfBirth: new Date('2000-12-31T00:00:00')
+    })
+  })
+
+  it('Should throw if RegisterUserRepo throws', async () => {
+    const { sut, registerUserRepoStub } = makeSut()
+    jest.spyOn(registerUserRepoStub, 'execute').mockReturnValueOnce(
+      Promise.reject(new Error())
+    )
+    const promise = sut.perform(makeFakeRegisterUserData())
+    await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return right result on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.perform(makeFakeRegisterUserData())
+    expect(result.isRight()).toBe(true)
   })
 })
