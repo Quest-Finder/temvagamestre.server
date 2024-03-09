@@ -27,7 +27,7 @@ export class User extends Entity<UserProps> {
     return this.props.pronoun.value
   }
 
-  get dateOfBirth (): string {
+  get dateOfBirth (): Date {
     return this.props.dateOfBirth.value
   }
 
