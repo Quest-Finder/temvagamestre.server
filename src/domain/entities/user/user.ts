@@ -1,4 +1,4 @@
-import { Entity } from '@/shared/domain'
+import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
 import type { RegisterUserData, UpdateUserResponse } from './user-types'
 import { DateOfBirth, Name, Pronoun, type PronounEnum, Username } from './value-objects'
@@ -10,8 +10,8 @@ export type UserProps = {
   dateOfBirth: DateOfBirth
 }
 export class User extends Entity<UserProps> {
-  private constructor (props: UserProps) {
-    super(props)
+  private constructor (props: UserProps, id?: UniqueEntityId) {
+    super(props, id)
     Object.freeze(this)
   }
 
@@ -45,12 +45,15 @@ export class User extends Entity<UserProps> {
     }
 
     return right(
-      new User({
-        name: nameOrError.value as Name,
-        username: usernameOrError.value as Username,
-        pronoun: pronounOrError.value as Pronoun,
-        dateOfBirth: dateOfBirthOrError.value as DateOfBirth
-      })
+      new User(
+        {
+          name: nameOrError.value as Name,
+          username: usernameOrError.value as Username,
+          pronoun: pronounOrError.value as Pronoun,
+          dateOfBirth: dateOfBirthOrError.value as DateOfBirth
+        },
+        new UniqueEntityId(data.id)
+      )
     )
   }
 }

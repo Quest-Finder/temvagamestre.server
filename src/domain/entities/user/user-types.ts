@@ -4,6 +4,7 @@ import { type User } from './user'
 import { type PronounEnum } from './value-objects'
 
 export type RegisterUserData = {
+  id: string
   name: string
   dateOfBirth: string
   username: string
