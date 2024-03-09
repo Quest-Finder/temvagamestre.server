@@ -15,6 +15,6 @@ describe('User Entity', () => {
     expect(user.name).toBe('John Doe')
     expect(user.username).toBe('john-doe')
     expect(user.pronoun).toBe('he/his')
-    expect(user.dateOfBirth).toBe('12-31-2000')
+    expect(user.dateOfBirth).toBe(new Date())
   })
 })

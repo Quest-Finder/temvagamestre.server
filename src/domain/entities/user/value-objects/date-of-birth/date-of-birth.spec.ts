@@ -34,16 +34,16 @@ describe('DateOfBirth ValueObject', () => {
 
   it('Should remove all spaces between words if have any', () => {
     const sut = DateOfBirth.create(' 12- 31-2000 ')
-    expect(sut.value).toEqual({ props: '12-31-2000' })
+    expect(sut.value).toEqual({ props: new Date('2000-12-31T00:00:00.000Z') })
   })
 
   it('Should return an DateOfBirth if February has 29 days in a leap year', () => {
     const sut = DateOfBirth.create('02-29-2000')
-    expect(sut.value).toEqual({ props: '02-29-2000' })
+    expect(sut.value).toEqual({ props: new Date('2000-02-29T00:00:00.000Z') })
   })
 
   it('Should return an DateOfBirth on success', () => {
     const sut = DateOfBirth.create('12-31-2000')
-    expect(sut.value).toEqual({ props: '12-31-2000' })
+    expect(sut.value).toEqual({ props: new Date('2000-12-31T00:00:00.000Z') })
   })
 })
