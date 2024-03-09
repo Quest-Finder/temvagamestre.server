@@ -1,10 +1,9 @@
 export type UserModel = {
   id: string
-  firstName: string
-  lastName: string
+  name: string
   email: string
-  nickname?: string | null
-  phone?: string | null
-  addressId?: string | null
+  username?: string | null
+  pronoun?: string | null
   dateOfBirth?: Date | null
+  addressId?: string | null
 }

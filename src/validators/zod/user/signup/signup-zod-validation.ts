@@ -7,8 +7,7 @@ export class SignUpZodValidation implements Validation {
   validate (input: any): Either<Error, void> {
     const schema = z.object({
       externalAuthUserId: z.string(),
-      firstName: z.string().min(2).max(25),
-      lastName: z.string().min(2).max(50),
+      name: z.string().min(3).max(30),
       email: z.string().email()
     })
     return ZodHelper.check({ value: input, schema })

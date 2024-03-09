@@ -21,8 +21,7 @@ const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
   email: 'any_email@mail.com',
-  lastName: 'any_last_name',
-  firstName: 'any_first_name',
+  name: 'John Doe',
   dateOfBirth: new Date()
 })
 

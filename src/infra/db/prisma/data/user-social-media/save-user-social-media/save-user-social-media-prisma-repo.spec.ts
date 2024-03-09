@@ -17,13 +17,9 @@ const makeFakeUserSocialMedia = (): UserSocialMediaModel => ({
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
-  lastName: 'any_last_name',
-  firstName: 'any_first_name',
-  nickname: 'any_nick_name',
-  phone: 'any_user_phone',
-  dateOfBirth: new Date(),
-  addressId: 'any_address_id',
-  email: 'any_email'
+  email: 'any_email@mail.com',
+  name: 'John Doe',
+  dateOfBirth: new Date()
 })
 
 const makeFakeSocialMedia = (): SocialMediaModel => ({
