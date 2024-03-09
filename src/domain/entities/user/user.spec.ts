@@ -3,6 +3,7 @@ import { User } from './user'
 describe('User Entity', () => {
   it('Should register an User on success', async () => {
     const result = User.register({
+      id: 'any_id',
       name: 'John Doe',
       username: 'john-doe',
       pronoun: 'he/his',
@@ -10,6 +11,7 @@ describe('User Entity', () => {
     })
 
     const user = result.value as User
+    expect(user.id).toBe('any_id')
     expect(user.name).toBe('John Doe')
     expect(user.username).toBe('john-doe')
     expect(user.pronoun).toBe('he/his')
