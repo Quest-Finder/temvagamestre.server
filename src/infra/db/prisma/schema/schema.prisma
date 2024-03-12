@@ -99,8 +99,9 @@ model UserPreference {
 }
 
 model SocialMedia {
-  id   String @id(map: "pk_social_media") @unique(map: "uq_social_media_id") @db.VarChar(50)
-  name String @db.VarChar(20)
+  id      String @id(map: "pk_social_media") @unique(map: "uq_social_media_id") @db.VarChar(50)
+  name    String @unique(map: "uq_social_media_name") @db.VarChar(20)
+  baseUri String @unique(map: "uq_social_media_base_uri") @db.VarChar(100)
 
   userSocialMedia UserSocialMedia[]
 
