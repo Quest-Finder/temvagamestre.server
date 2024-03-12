@@ -1,9 +1,23 @@
 module.exports =  {
   roots: ['<rootDir>/src'],
   clearMocks: true,
+  coverageProvider:  "v8",
   testEnvironment: 'node',
   transform: {
-    '.+\\.ts$': 'ts-jest'
+    "^.+\\.ts?$":[ 
+      "@swc/jest",
+      {
+        "jsc": {
+          "parser": {
+            "syntax": "typescript",
+            "decorators": true
+          },
+          "transform": {
+            "decoratorMetadata": true
+          }
+        }
+      }
+    ],
   },
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
@@ -11,7 +25,8 @@ module.exports =  {
     '!<rootDir>/src/shared/either.ts',
     '!<rootDir>/src/main/{configs,adapters}/**/*.ts',
     '!<rootDir>/src/main/main.ts',
-    '!<rootDir>/src/validators/**/*.ts'
+    '!<rootDir>/src/validators/**/*.ts',
+    '!<rootDir>/src/**/contracts/**'
   ],
   preset: '@shelf/jest-mongodb',
   moduleNameMapper: {

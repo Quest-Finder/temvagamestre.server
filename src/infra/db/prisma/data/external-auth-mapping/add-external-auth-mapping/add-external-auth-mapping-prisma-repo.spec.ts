@@ -7,10 +7,7 @@ import { PrismockClient } from 'prismock'
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
   email: 'any_email@mail.com',
-  lastName: 'any_last_name',
-  firstName: 'any_first_name',
-  nickname: 'any_nick_name',
-  phone: 'any_user_phone'
+  name: 'John Doe'
 })
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
@@ -63,6 +60,8 @@ describe('FindUserByEmailPrismaRepo', () => {
       ...makeFakeUserModel(),
       addressId: null,
       dateOfBirth: null,
+      pronoun: null,
+      username: null,
       externalAuthMapping: makeFakeExternalAuthMappingModel()
     })
   })

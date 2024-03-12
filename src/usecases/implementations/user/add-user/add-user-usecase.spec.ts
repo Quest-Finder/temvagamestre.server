@@ -8,16 +8,14 @@ import { EmailInUseError } from '@/domain/errors'
 
 const makeFakeAddUserData = (): AddUserData => ({
   externalAuthUserId: 'any_external_auth_user_id',
-  firstName: 'any_first_name',
-  lastName: 'any_last_name',
+  name: 'John Doe',
   email: 'any_email@mail.com'
 })
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
-  firstName: 'any_first_name',
-  lastName: 'any_last_name',
-  email: 'any_email@mail.com'
+  email: 'any_email@mail.com',
+  name: 'John Doe'
 })
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({

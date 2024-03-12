@@ -1,12 +1,12 @@
-import type { UpdateUser } from '@/domain/contracts/user'
+import { type RegisterUser } from '@/domain/contracts/user'
 import type { Controller, Validation } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/presentation/types/http'
 
-export class UpdateUserController implements Controller {
+export class RegisterUserController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly updateUser: UpdateUser
+    private readonly registerUser: RegisterUser
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -15,14 +15,15 @@ export class UpdateUserController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      const updateUserResult = await this.updateUser.perform({
+      const registerUserResult = await this.registerUser.perform({
         id: httpRequest.headers.userId, ...httpRequest.body
       })
-      if (updateUserResult.isLeft()) {
-        return badRequest(updateUserResult.value)
+      if (registerUserResult.isLeft()) {
+        return badRequest(registerUserResult.value)
       }
       return noContent()
     } catch (error: any) {
+      console.log('ERROR', error)
       return serverError(error)
     }
   }

@@ -7,10 +7,8 @@ import { FindExternalAuthMappingByExternalAuthUserIdPrismaRepo } from './find-ex
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
   email: 'any_email@mail.com',
-  lastName: 'any_last_name',
-  firstName: 'any_first_name',
-  nickname: 'any_nick_name',
-  phone: 'any_user_phone'
+  name: 'John Doe',
+  dateOfBirth: new Date()
 })
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
