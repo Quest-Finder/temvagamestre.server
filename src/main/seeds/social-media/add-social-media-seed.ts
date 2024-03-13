@@ -1,5 +1,7 @@
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
+import { makeLogErrorMongoRepo } from '@/main/factories/infra/db/mongodb/log-error-mongo-repo-factory'
 import { makeUuidAdapter } from '@/main/factories/infra/id/uuid-adapter-factory'
-import { PrismaClient, type SocialMedia } from '@prisma/client'
+import { type SocialMedia } from '@prisma/client'
 
 const addSocialMediaSeed = async (): Promise<void> => {
   const socialMedia: SocialMedia[] = [{
@@ -24,10 +26,32 @@ const addSocialMediaSeed = async (): Promise<void> => {
     baseUri: 'facebook.com/'
   }]
 
-  const prisma = new PrismaClient()
-  await prisma.socialMedia.createMany({ data: socialMedia })
+  const prisma = await PrismaHelper.getPrisma()
+  for (const sm of socialMedia) {
+    await prisma.socialMedia.upsert({
+      where: {
+        name: sm.name
+      },
+      update: {},
+      create: {
+        id: sm.id,
+        name: sm.name,
+        baseUri: sm.baseUri
+      }
+    })
+  }
 }
 
 export default addSocialMediaSeed()
-  .then(() => { console.log('Social Media added successfully!') })
-  .catch(console.error)
+  .then(() => {
+    console.log('Social Media added successfully!')
+  })
+  .catch(
+    async (error: any) => {
+      await makeLogErrorMongoRepo().execute({
+        date: new Date(),
+        stack: error.stack
+      })
+      throw new Error('Error when adding social media')
+    }
+  )
