@@ -13,8 +13,9 @@ import jwt from 'jsonwebtoken'
 import request from 'supertest'
 
 const makeFakeSocialMediaModel = (): SocialMediaModel => ({
-  id: 'any_social_media_id',
-  name: 'any_s_m_name'
+  id: 'some_social_media_id',
+  name: 'some_social_media_name',
+  baseUri: 'socialmedia.com/'
 })
 
 const makeFakeUserModel = (): UserModel => ({

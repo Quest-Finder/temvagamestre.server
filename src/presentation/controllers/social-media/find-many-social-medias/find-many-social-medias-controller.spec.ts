@@ -4,11 +4,13 @@ import { ok, serverError } from '@/presentation/helpers/http-helpers'
 import { FindManySocialMediasController } from './find-many-social-medias-controller'
 
 const makeFakeSocialMediasModel = (): SocialMediaModel[] => ([{
-  id: 'any_social_media_id',
-  name: 'any_social_media_name'
+  id: 'any_id',
+  name: 'any_name',
+  baseUri: 'anysocialmedia.com/'
 }, {
-  id: 'other_social_media_id',
-  name: 'other_social_media_name'
+  id: 'other_id',
+  name: 'other_name',
+  baseUri: 'othersocialmedia.com/'
 }])
 
 const makeFindManySocialMedias = (): FindManySocialMedias => {
