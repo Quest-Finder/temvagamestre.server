@@ -13,8 +13,9 @@ import jwt from 'jsonwebtoken'
 import request from 'supertest'
 
 const makeFakeSocialMediaModel = (): SocialMediaModel => ({
-  id: 'any_social_media_id',
-  name: 'any_s_m_name'
+  id: 'any_id',
+  name: 'any_name',
+  baseUri: 'socialmedia.com/'
 })
 
 const makeFakeUserModel = (): UserModel => ({
@@ -69,7 +70,7 @@ describe('UserSocialMedia Routes', () => {
         .post('/user/social-media')
         .set({ 'x-access-token': token })
         .send({
-          socialMediaId: 'any_social_media_id',
+          socialMediaId: 'any_id',
           link: 'any_link'
         })
         .expect(204)

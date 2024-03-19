@@ -4,10 +4,12 @@ import { type SocialMediaModel } from '@/domain/models/social-media/social-media
 
 const makeFakeSocialMedias = (): SocialMediaModel[] => ([{
   id: 'any_id',
-  name: 'any_name'
+  name: 'any_name',
+  baseUri: 'anysocialmedia.com/'
 }, {
   id: 'other_id',
-  name: 'other_name'
+  name: 'other_name',
+  baseUri: 'othersocialmedia.com/'
 }])
 
 const makeFindManySocialMediasRepo = (): FindManySocialMediasRepo => {

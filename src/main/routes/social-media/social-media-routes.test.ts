@@ -12,10 +12,12 @@ import request from 'supertest'
 
 const makeFakeSocialMediasModel = (): SocialMediaModel[] => ([{
   id: 'any_social_media_id_1',
-  name: 'any_name_1'
+  name: 'any_name_1',
+  baseUri: 'any1.com/'
 }, {
   id: 'any_social_media_id_2',
-  name: 'any_name_2'
+  name: 'any_name_2',
+  baseUri: 'any2.com/'
 }])
 
 let prisma: PrismaClient

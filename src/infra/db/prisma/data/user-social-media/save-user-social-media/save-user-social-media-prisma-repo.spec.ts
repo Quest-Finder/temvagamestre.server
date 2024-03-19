@@ -24,7 +24,8 @@ const makeFakeUserModel = (): UserModel => ({
 
 const makeFakeSocialMedia = (): SocialMediaModel => ({
   id: 'any_social_media_id',
-  name: 'any_social_media_name'
+  name: 'any_social_media_name',
+  baseUri: 'socialmedia.com/'
 })
 
 const makeSut = (): SaveUserSocialMediaPrismaRepo => {

@@ -8,7 +8,8 @@ let prismock: PrismaClient
 
 const makeFakeSocialMediaModel = (): SocialMediaModel => ({
   id: 'some_social_media_id',
-  name: 'some_social_media_name'
+  name: 'some_social_media_name',
+  baseUri: 'socialmedia.com/'
 })
 
 const makeSut = (): FindManySocialMediasPrismaRepo => {
