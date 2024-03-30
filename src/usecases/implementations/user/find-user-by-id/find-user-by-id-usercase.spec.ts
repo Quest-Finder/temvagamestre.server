@@ -49,6 +49,13 @@ describe('FindUserByIdUserCase', () => {
     expect(result.value).toEqual(new UserNotExitsError('valid_id'))
   })
 
+  it('should throws if FindUserByIdRepo throws', async () => {
+    const { sut, findUserByIdRepo } = makeSut()
+    jest.spyOn(findUserByIdRepo, 'execute').mockRejectedValueOnce(new Error())
+    const result = sut.perform({ userId: 'valid_id' })
+    await expect(result).rejects.toThrow()
+  })
+
   it('should return user data if userId exits', async () => {
     const { sut } = makeSut()
     const result = await sut.perform({ userId: 'valid_id' })
