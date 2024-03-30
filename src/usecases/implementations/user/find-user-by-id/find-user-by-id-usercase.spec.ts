@@ -1,4 +1,5 @@
 import { type FindUserById } from '@/domain/contracts/user'
+import { UserNotExitsError } from '@/domain/errors'
 import { type UserModel } from '@/domain/models'
 import { type FindUserByIdRepo } from '@/usecases/contracts/db/user'
 import { FindUserByIdUseCase } from './find-user-by-id-usecase'
@@ -39,5 +40,12 @@ describe('FindUserByIdUserCase', () => {
     const findUserByIdRepoSpy = jest.spyOn(findUserByIdRepo, 'execute')
     await sut.perform({ userId: 'valid_id' })
     expect(findUserByIdRepoSpy).toHaveBeenCalledWith('valid_id')
+  })
+
+  it('should return error if UserNotExitsError if FindUserByIdRepo return null', async () => {
+    const { sut, findUserByIdRepo } = makeSut()
+    jest.spyOn(findUserByIdRepo, 'execute').mockResolvedValueOnce(null)
+    const result = await sut.perform({ userId: 'valid_id' })
+    expect(result.value).toEqual(new UserNotExitsError('valid_id'))
   })
 })
