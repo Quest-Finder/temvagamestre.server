@@ -11,7 +11,7 @@ type MakeSutType = {
 class FindUserByIdRepoStub implements FindUserByIdRepo {
   async execute (userId: string): Promise<UserModel | null> {
     return {
-      id: 'string',
+      id: 'valid_id',
       firstName: 'string',
       lastName: 'string',
       email: 'string'
@@ -47,5 +47,17 @@ describe('FindUserByIdUserCase', () => {
     jest.spyOn(findUserByIdRepo, 'execute').mockResolvedValueOnce(null)
     const result = await sut.perform({ userId: 'valid_id' })
     expect(result.value).toEqual(new UserNotExitsError('valid_id'))
+  })
+
+  it('should return user data if userId exits', async () => {
+    const { sut } = makeSut()
+    const result = await sut.perform({ userId: 'valid_id' })
+    expect(result.isRight()).toBe(true)
+    expect(result.value).toEqual(expect.objectContaining({
+      id: 'valid_id',
+      firstName: 'string',
+      lastName: 'string',
+      email: 'string'
+    }))
   })
 })
