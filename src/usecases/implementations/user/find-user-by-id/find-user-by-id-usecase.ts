@@ -11,11 +11,6 @@ export class FindUserByIdUseCase implements FindUserById {
     if (!user) {
       return left(new UserNotExitsError(userId))
     }
-    return right({
-      id: 'string',
-      firstName: 'string',
-      lastName: 'string',
-      email: 'string'
-    })
+    return right(user)
   }
 }
