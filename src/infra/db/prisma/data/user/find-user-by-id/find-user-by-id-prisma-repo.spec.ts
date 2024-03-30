@@ -36,4 +36,11 @@ describe('FindUserByIdRepo', () => {
     const result = await sut.execute('valid_id')
     expect(result).toBeNull()
   })
+
+  it('ensure FindUserByIdPrismaRepo call getPrisma function', async () => {
+    const { sut } = makeSut()
+    const prismockSpy = jest.spyOn(PrismaHelper, 'getPrisma')
+    await sut.execute('valid_id')
+    expect(prismockSpy).toHaveBeenCalledTimes(1)
+  })
 })
