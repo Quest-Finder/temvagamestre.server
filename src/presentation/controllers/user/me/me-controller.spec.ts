@@ -1,8 +1,8 @@
 import { type FindUserById, type FindUserByIdData, type FindUserByIdResponse } from '@/domain/contracts/user'
 import { type Controller } from '@/presentation/contracts'
-import { serverError } from '@/presentation/helpers/http-helpers'
+import { forbidden, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest } from '@/presentation/types/http'
-import { right } from '@/shared/either'
+import { left, right } from '@/shared/either'
 import { MeController } from './me-controller'
 
 type MakeSutType = {
@@ -53,5 +53,12 @@ describe('MeController', () => {
     jest.spyOn(findUserById, 'perform').mockRejectedValueOnce(new Error())
     const response = await sut.handle(makeHttpRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+
+  it('should return 403 if FindUserById fails', async () => {
+    const { sut, findUserById } = makeSut()
+    jest.spyOn(findUserById, 'perform').mockResolvedValueOnce(left(new Error()))
+    const response = await sut.handle(makeHttpRequest())
+    expect(response).toEqual(forbidden(new Error()))
   })
 })
