@@ -1,6 +1,6 @@
 import { type FindUserById } from '@/domain/contracts/user'
 import { type Controller } from '@/presentation/contracts'
-import { serverError } from '@/presentation/helpers/http-helpers'
+import { forbidden, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
 
 export class MeController implements Controller {
@@ -8,9 +8,12 @@ export class MeController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      await this.findUserById.perform({
+      const result = await this.findUserById.perform({
         userId: httpRequest.headers.userId
       })
+      if (result.isLeft()) {
+        return forbidden(result.value)
+      }
       return await Promise.resolve({
         statusCode: 200,
         body: {
