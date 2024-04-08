@@ -1,5 +1,6 @@
 import { type FindUserById, type FindUserByIdData, type FindUserByIdResponse } from '@/domain/contracts/user'
 import { type Controller } from '@/presentation/contracts'
+import { serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest } from '@/presentation/types/http'
 import { right } from '@/shared/either'
 import { MeController } from './me-controller'
@@ -45,5 +46,12 @@ describe('MeController', () => {
     const findUserByIdSpy = jest.spyOn(findUserById, 'perform')
     await sut.handle(makeHttpRequest())
     expect(findUserByIdSpy).toHaveBeenCalledWith({ userId: 'any_user_id' })
+  })
+
+  it('Should return 500 if SaveUserPreferenceGamePlace throws', async () => {
+    const { sut, findUserById } = makeSut()
+    jest.spyOn(findUserById, 'perform').mockRejectedValueOnce(new Error())
+    const response = await sut.handle(makeHttpRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
