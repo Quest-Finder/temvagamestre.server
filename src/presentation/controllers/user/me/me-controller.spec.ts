@@ -1,6 +1,6 @@
 import { type FindUserById, type FindUserByIdData, type FindUserByIdResponse } from '@/domain/contracts/user'
 import { type Controller } from '@/presentation/contracts'
-import { forbidden, serverError } from '@/presentation/helpers/http-helpers'
+import { forbidden, ok, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest } from '@/presentation/types/http'
 import { left, right } from '@/shared/either'
 import { MeController } from './me-controller'
@@ -23,9 +23,9 @@ const makeFindUserById = (): FindUserById => {
     async perform (data: FindUserByIdData): Promise<FindUserByIdResponse> {
       return await Promise.resolve(right({
         id: 'valid_id',
-        firstName: 'string',
-        lastName: 'string',
-        email: 'string'
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'vadid_email@mail.com'
       }))
     }
   }
@@ -60,5 +60,16 @@ describe('MeController', () => {
     jest.spyOn(findUserById, 'perform').mockResolvedValueOnce(left(new Error()))
     const response = await sut.handle(makeHttpRequest())
     expect(response).toEqual(forbidden(new Error()))
+  })
+
+  it('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(makeHttpRequest())
+    expect(response).toEqual(ok({
+      id: 'valid_id',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'vadid_email@mail.com'
+    }))
   })
 })
