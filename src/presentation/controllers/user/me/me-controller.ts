@@ -1,6 +1,6 @@
 import { type FindUserById } from '@/domain/contracts/user'
 import { type Controller } from '@/presentation/contracts'
-import { forbidden, serverError } from '@/presentation/helpers/http-helpers'
+import { forbidden, ok, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
 
 export class MeController implements Controller {
@@ -14,15 +14,7 @@ export class MeController implements Controller {
       if (result.isLeft()) {
         return forbidden(result.value)
       }
-      return await Promise.resolve({
-        statusCode: 200,
-        body: {
-          id: 'valid_id',
-          firstName: 'string',
-          lastName: 'string',
-          email: 'string'
-        }
-      })
+      return ok(result.value)
     } catch (error: any) {
       return serverError(error)
     }
