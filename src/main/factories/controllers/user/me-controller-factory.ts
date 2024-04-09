@@ -3,7 +3,7 @@ import { makeFindUserByIdUseCase } from '@/main/factories/usecases/user/find-use
 import { type Controller } from '@/presentation/contracts'
 import { MeController } from '@/presentation/controllers/user/me/me-controller'
 
-export const meController = (): Controller => {
+export const makeMeController = (): Controller => {
   const controller = new MeController(makeFindUserByIdUseCase())
   return makeLogControllerDecorator(controller)
 }
