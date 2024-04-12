@@ -1,6 +1,6 @@
+import { ValueObject } from '@/shared/domain'
 import { type Either, left, right } from '@/shared/either'
 import { InvalidUsernameError } from '../../errors'
-import { ValueObject } from '@/shared/domain'
 
 export class Username extends ValueObject {
   private constructor (username: string) {
