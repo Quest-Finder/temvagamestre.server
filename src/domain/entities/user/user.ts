@@ -8,6 +8,8 @@ export type UserProps = {
   username: Username
   pronoun: Pronoun
   dateOfBirth: DateOfBirth
+  title?: string
+  bio?: string
 }
 export class User extends Entity<UserProps> {
   private constructor (props: UserProps, id?: UniqueEntityId) {
@@ -31,8 +33,16 @@ export class User extends Entity<UserProps> {
     return this.props.dateOfBirth.value
   }
 
+  get title (): string | null {
+    return this.props.title ?? null
+  }
+
+  get bio (): string | null {
+    return this.props.bio ?? null
+  }
+
   static register (data: RegisterUserData): RegisterUserResponse {
-    const { dateOfBirth, pronoun, username, name } = data
+    const { dateOfBirth, pronoun, username, name, title, bio } = data
 
     const nameOrError = Name.create(name)
     const usernameOrError = Username.create(username)
@@ -50,7 +60,9 @@ export class User extends Entity<UserProps> {
           name: nameOrError.value as Name,
           username: usernameOrError.value as Username,
           pronoun: pronounOrError.value as Pronoun,
-          dateOfBirth: dateOfBirthOrError.value as DateOfBirth
+          dateOfBirth: dateOfBirthOrError.value as DateOfBirth,
+          title,
+          bio
         },
         new UniqueEntityId(data.id)
       )

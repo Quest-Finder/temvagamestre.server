@@ -20,10 +20,18 @@ export class RegisterUserRoutesDto {
   })
     pronoun: string
 
-  constructor (name: string, username: string, dateOfBirth: string, pronoun: string) {
+  @ApiProperty({ example: 'Software Developer' })
+    title?: string
+
+  @ApiProperty({ example: 'I am a software developer' })
+    description?: string
+
+  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, title?: string, description?: string) {
     this.name = name
     this.username = username
     this.dateOfBirth = dateOfBirth
     this.pronoun = pronoun
+    this.title = title
+    this.description = description
   }
 }
