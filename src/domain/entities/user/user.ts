@@ -8,7 +8,7 @@ export type UserProps = {
   username: Username
   pronoun: Pronoun
   dateOfBirth: DateOfBirth
-  socialMedias: SocialMedia[]
+  socialMedias?: SocialMedia[]
 }
 export class User extends Entity<UserProps> {
   private constructor (props: UserProps, id?: UniqueEntityId) {
@@ -32,8 +32,8 @@ export class User extends Entity<UserProps> {
     return this.props.dateOfBirth.value
   }
 
-  get socialMedias (): SocialMediaProps[] {
-    return this.props.socialMedias.map(socialMedia => socialMedia.value)
+  get socialMedias (): SocialMediaProps[] | undefined {
+    return this.props.socialMedias?.map(socialMedia => socialMedia.value)
   }
 
   static register (data: RegisterUserData): RegisterUserResponse {
@@ -43,7 +43,7 @@ export class User extends Entity<UserProps> {
     const usernameOrError = Username.create(username)
     const pronounOrError = Pronoun.create(pronoun)
     const dateOfBirthOrError = DateOfBirth.create(dateOfBirth)
-    const socialMediasOrError = socialMedias.map(socialMedia => SocialMedia.create(socialMedia))
+    const socialMediasOrError = socialMedias ? socialMedias.map(socialMedia => SocialMedia.create(socialMedia)) : []
 
     const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError]
 

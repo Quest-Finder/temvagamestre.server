@@ -1,7 +1,9 @@
 import { type RegisterUserData } from '@/domain/entities/user'
 import { User } from '@/domain/entities/user/user'
+import { type UserSocialMediaModel } from '@/domain/models'
 import { left, right } from '@/shared/either'
 import type { RegisterUserRepo } from '@/usecases/contracts/db/user'
+import type { SaveUserSocialMediaRepo } from '@/usecases/contracts/db/user-social-media'
 import { RegisterUserUseCase } from './register-user-usecase'
 
 jest.mock('@/domain/entities/user/user', () => ({
@@ -33,15 +35,26 @@ const makeRegisterUserRepo = (): RegisterUserRepo => {
   return new RegisterUserRepoStub()
 }
 
+const makeSaveUserSocialMediaRepo = (): SaveUserSocialMediaRepo => {
+  class SaveUserSocialMediaRepoStub implements SaveUserSocialMediaRepo {
+    async execute (data: UserSocialMediaModel): Promise<void> {
+      await Promise.resolve()
+    }
+  }
+  return new SaveUserSocialMediaRepoStub()
+}
+
 type SutTypes = {
   sut: RegisterUserUseCase
   registerUserRepoStub: RegisterUserRepo
+  saveUserSocialMediaRepoStub: SaveUserSocialMediaRepo
 }
 
 const makeSut = (): SutTypes => {
+  const saveUserSocialMediaRepoStub = makeSaveUserSocialMediaRepo()
   const registerUserRepoStub = makeRegisterUserRepo()
-  const sut = new RegisterUserUseCase(registerUserRepoStub)
-  return { sut, registerUserRepoStub }
+  const sut = new RegisterUserUseCase(registerUserRepoStub, saveUserSocialMediaRepoStub)
+  return { sut, registerUserRepoStub, saveUserSocialMediaRepoStub }
 }
 
 describe('RegisterUserUseCase', () => {
@@ -86,6 +99,19 @@ describe('RegisterUserUseCase', () => {
   it('Should return right result on success', async () => {
     const { sut } = makeSut()
     const result = await sut.perform(makeFakeRegisterUserData())
+    expect(result.isRight()).toBe(true)
+  })
+
+  it('Should return right result on success with social medias in data', async () => {
+    const { sut, saveUserSocialMediaRepoStub } = makeSut()
+    const executeSpy = jest.spyOn(saveUserSocialMediaRepoStub, 'execute')
+    const result = await sut.perform({ ...makeFakeRegisterUserData(), socialMedias: [{ socialMediaId: 'any_id', userLink: 'any_link' }] })
+
+    expect(executeSpy).toHaveBeenCalledWith({
+      userId: 'any_id',
+      socialMediaId: 'any_id',
+      link: 'any_link'
+    })
     expect(result.isRight()).toBe(true)
   })
 })

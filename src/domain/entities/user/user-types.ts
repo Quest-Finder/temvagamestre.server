@@ -9,7 +9,7 @@ export type RegisterUserData = {
   dateOfBirth: string
   username: string
   pronoun: PronounEnum
-  socialMedias: SocialMediaProps[]
+  socialMedias?: SocialMediaProps[]
 }
 
 export type UserEntityErrors =

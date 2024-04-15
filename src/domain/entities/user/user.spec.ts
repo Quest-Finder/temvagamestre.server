@@ -17,6 +17,6 @@ describe('User Entity', () => {
     expect(user.username).toBe('john-doe')
     expect(user.pronoun).toBe('he/his')
     expect(user.dateOfBirth).toEqual(new Date('2000-12-31T00:00:00.000Z'))
-    expect(user.socialMedias[0]).toEqual({ socialMediaId: '7e1e51a5-2c45-4d15-bf87-03202dfe4b7e', userLink: 'any_link' })
+    expect(user.socialMedias?.[0]).toEqual({ socialMediaId: '7e1e51a5-2c45-4d15-bf87-03202dfe4b7e', userLink: 'any_link' })
   })
 })
