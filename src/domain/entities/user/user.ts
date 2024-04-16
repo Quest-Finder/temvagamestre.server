@@ -1,15 +1,15 @@
 import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
 import type { RegisterUserData, RegisterUserResponse } from './user-types'
-import { DateOfBirth, Name, Pronoun, type PronounEnum, Username } from './value-objects'
+import { Bio, DateOfBirth, Name, Pronoun, type PronounEnum, Title, Username } from './value-objects'
 
 export type UserProps = {
   name: Name
   username: Username
   pronoun: Pronoun
   dateOfBirth: DateOfBirth
-  title?: string
-  bio?: string
+  title?: Title
+  bio?: Bio
 }
 export class User extends Entity<UserProps> {
   private constructor (props: UserProps, id?: UniqueEntityId) {
@@ -33,12 +33,12 @@ export class User extends Entity<UserProps> {
     return this.props.dateOfBirth.value
   }
 
-  get title (): string | null {
-    return this.props.title ?? null
+  get title (): string | undefined {
+    return this.props.title?.value
   }
 
-  get bio (): string | null {
-    return this.props.bio ?? null
+  get bio (): string | undefined {
+    return this.props.bio?.value
   }
 
   static register (data: RegisterUserData): RegisterUserResponse {
@@ -50,6 +50,13 @@ export class User extends Entity<UserProps> {
     const dateOfBirthOrError = DateOfBirth.create(dateOfBirth)
 
     const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError]
+
+    const titleOrError = title ? Title.create(title) : undefined
+    titleOrError && results.push(titleOrError)
+
+    const bioOrError = bio ? Bio.create(bio) : undefined
+    bioOrError && results.push(bioOrError)
+
     for (const result of results) {
       if (result.isLeft()) return left(result.value)
     }
@@ -61,8 +68,8 @@ export class User extends Entity<UserProps> {
           username: usernameOrError.value as Username,
           pronoun: pronounOrError.value as Pronoun,
           dateOfBirth: dateOfBirthOrError.value as DateOfBirth,
-          title,
-          bio
+          title: titleOrError?.value as Title,
+          bio: bioOrError?.value as Bio
         },
         new UniqueEntityId(data.id)
       )

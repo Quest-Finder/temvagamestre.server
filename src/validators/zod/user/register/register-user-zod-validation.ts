@@ -10,8 +10,8 @@ export class RegisterUserZodValidation implements Validation {
       username: z.string().min(1).max(15),
       pronoun: z.string(),
       dateOfBirth: z.string().min(10).max(10),
-      title: z.string().optional(),
-      bio: z.string().optional()
+      title: z.string().min(3).max(100).optional(),
+      bio: z.string().min(3).max(500).optional()
     })
     return ZodHelper.check({ value: input, schema })
   }
