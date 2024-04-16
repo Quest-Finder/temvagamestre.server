@@ -21,6 +21,6 @@ describe('addRpgStyleSeed', () => {
   it('Should add all RpgStyles', async () => {
     await addRpgStyleSeed
     const rpgStyles = await prisma.rpgStyle.findMany()
-    expect(rpgStyles.length).toBe(1)
+    expect(rpgStyles.length).toBe(10)
   })
 })

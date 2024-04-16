@@ -71,7 +71,8 @@ describe('User Routes', () => {
           name: 'John Doe',
           dateOfBirth: '12-31-2000',
           username: 'valid-username',
-          pronoun: 'she/her'
+          pronoun: 'she/her',
+          rpgStyles: ['7e1e51a5-2c45-4d15-bf87-03202dfe4b7e']
         })
         .expect(204)
     })
