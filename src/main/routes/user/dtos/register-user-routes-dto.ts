@@ -20,10 +20,17 @@ export class RegisterUserRoutesDto {
   })
     pronoun: string
 
-  constructor (name: string, username: string, dateOfBirth: string, pronoun: string) {
+  @ApiProperty({
+    example: ['7e1e51a5-2c45-4d15-bf87-03202dfe4b7e'],
+    description: 'array com os ids dos estilos de jogo do usuario'
+  })
+    rpgStyles: string[]
+
+  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, rpgStyles: string[]) {
     this.name = name
     this.username = username
     this.dateOfBirth = dateOfBirth
     this.pronoun = pronoun
+    this.rpgStyles = rpgStyles
   }
 }
