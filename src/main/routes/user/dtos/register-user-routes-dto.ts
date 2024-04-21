@@ -21,7 +21,7 @@ export class RegisterUserRoutesDto {
     pronoun: string
 
   @ApiProperty({
-    example: ['7e1e51a5-2c45-4d15-bf87-03202dfe4b7e'],
+    example: ['31b66f76-82ff-4719-bad0-48154a04f3c7'],
     description: 'array com os ids dos estilos de jogo do usuario'
   })
     rpgStyles: string[]

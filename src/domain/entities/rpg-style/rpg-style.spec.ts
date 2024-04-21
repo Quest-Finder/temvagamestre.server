@@ -6,13 +6,14 @@ describe('RpgStyle Entity', () => {
     expect(sut).toEqual(['Fantasia',
       'Fantasia Heroica',
       'Fantasia Épica',
-      'Fantasia Mística',
+      'Fantasia Mítica',
       'Fantasia Sombria',
       'Ninja vs Samurai',
       'Espada e Feitiçaria',
       'Intriga',
       'Guerra',
-      'Nave Mãe'
+      'Nave Mãe',
+      'Mistério'
     ])
   })
 })
