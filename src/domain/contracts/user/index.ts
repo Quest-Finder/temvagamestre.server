@@ -1,7 +1,4 @@
-export * from './add-fake-user'
 export * from './add-user'
 export * from './auth'
-export * from './find-user-by-id'
-export * from './update-user'
 export * from './register-user'
 export * from './add-fake-user'
