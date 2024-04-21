@@ -1,13 +1,15 @@
 import { type Either, left, right } from '@/shared/either'
 import { InvalidNameError } from '../../errors'
+import { ValueObject } from '@/shared/domain'
 
-export class Name {
-  private constructor (readonly name: string) {
+export class Name extends ValueObject {
+  private constructor (name: string) {
+    super(name)
     Object.freeze(this)
   }
 
   static create (name: string): Either<InvalidNameError, Name> {
-    if (!Name.validade(name)) {
+    if (!Name.validate(name)) {
       return left(new InvalidNameError(name))
     }
     name = name.trim()
@@ -15,7 +17,10 @@ export class Name {
     return right(new Name(name))
   }
 
-  private static validade (name: string): boolean {
+  private static validate (name: string): boolean {
+    if (name.length < 3 || name.length > 30) {
+      return false
+    }
     const regex = /^.*[!@#$%^&*(),.?":{}|<>0-9_].*$/
     if (regex.test(name)) {
       return false

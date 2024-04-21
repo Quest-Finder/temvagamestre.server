@@ -2,11 +2,6 @@ import { InvalidDateOfBirthError } from '../../errors'
 import { DateOfBirth } from './date-of-birth'
 
 describe('DateOfBirth ValueObject', () => {
-  it('Should remove all spaces between words if have any', () => {
-    const sut = DateOfBirth.create(' 12- 31-2000 ')
-    expect(sut.value).toEqual({ dateOfBirth: '12-31-2000' })
-  })
-
   it('Should return InvalidDateOfBirthError if dateOfBirth is invalid format', () => {
     const sut = DateOfBirth.create(' 12/31/2000 ')
     expect(sut.value).toEqual(new InvalidDateOfBirthError(' 12/31/2000 '))
@@ -37,13 +32,18 @@ describe('DateOfBirth ValueObject', () => {
     expect(sut.value).toEqual(new InvalidDateOfBirthError('02-29-2001'))
   })
 
+  it('Should remove all spaces between words if have any', () => {
+    const sut = DateOfBirth.create(' 12- 31-2000 ')
+    expect(sut.value).toEqual({ props: new Date('2000-12-31T00:00:00.000Z') })
+  })
+
   it('Should return an DateOfBirth if February has 29 days in a leap year', () => {
     const sut = DateOfBirth.create('02-29-2000')
-    expect(sut.value).toEqual({ dateOfBirth: '02-29-2000' })
+    expect(sut.value).toEqual({ props: new Date('2000-02-29T00:00:00.000Z') })
   })
 
   it('Should return an DateOfBirth on success', () => {
     const sut = DateOfBirth.create('12-31-2000')
-    expect(sut.value).toEqual({ dateOfBirth: '12-31-2000' })
+    expect(sut.value).toEqual({ props: new Date('2000-12-31T00:00:00.000Z') })
   })
 })

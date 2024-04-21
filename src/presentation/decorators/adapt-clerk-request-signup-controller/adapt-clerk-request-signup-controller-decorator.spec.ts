@@ -76,8 +76,7 @@ describe('AdaptExternalAuthRequestSignUpControllerDecorator', () => {
     expect(handleSpy).toHaveBeenCalledWith({
       body: {
         externalAuthUserId: 'user_29w83sxmDNGwOuEthce5gg56FcC',
-        firstName: 'any_first_name',
-        lastName: 'any_last_name',
+        name: 'any_first_name any_last_name',
         email: 'example@example.org'
       }
     })

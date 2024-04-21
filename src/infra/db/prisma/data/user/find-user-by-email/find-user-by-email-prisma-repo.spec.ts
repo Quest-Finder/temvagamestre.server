@@ -7,13 +7,9 @@ import { type UserModel } from '@/domain/models'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
-  lastName: 'any_last_name',
-  firstName: 'any_first_name',
-  nickname: 'any_nick_name',
-  phone: 'any_user_phone',
-  dateOfBirth: new Date(),
-  addressId: 'any_address_id',
-  email: 'any_email@mail.com'
+  email: 'any_email@mail.com',
+  name: 'John Doe',
+  dateOfBirth: new Date()
 })
 
 let prismock: PrismaClient
@@ -44,7 +40,12 @@ describe('FindUserByEmailPrismaRepo', () => {
     const sut = makeSut()
     await prismock.user.create({ data: makeFakeUserModel() })
     const user = await sut.execute('any_email@mail.com')
-    expect(user).toEqual(makeFakeUserModel())
+    expect(user).toEqual({
+      ...makeFakeUserModel(),
+      addressId: null,
+      pronoun: null,
+      username: null
+    })
   })
 
   it('Should return null if prisma findUnique() not found an User', async () => {

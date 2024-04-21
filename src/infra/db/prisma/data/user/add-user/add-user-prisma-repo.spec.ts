@@ -8,10 +8,7 @@ import { AddUserPrismaRepo } from './add-user-prisma-repo'
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
   email: 'any_email@mail.com',
-  lastName: 'any_last_name',
-  firstName: 'any_first_name',
-  nickname: 'any_nick_name',
-  phone: 'any_user_phone',
+  name: 'John Doe',
   dateOfBirth: new Date()
 })
 
@@ -43,7 +40,12 @@ describe('AddUserPrismaRepo', () => {
     const sut = makeSut()
     await sut.execute(makeFakeUserModel())
     const user = await prismock.user.findUnique({ where: { id: 'any_user_id' } })
-    expect(user).toEqual({ ...makeFakeUserModel(), addressId: null })
+    expect(user).toEqual({
+      ...makeFakeUserModel(),
+      addressId: null,
+      pronoun: null,
+      username: null
+    })
   })
 
   it('Should throw if Prisma throws', async () => {

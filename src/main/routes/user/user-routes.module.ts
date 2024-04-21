@@ -13,7 +13,7 @@ export class UserRoutesModule implements NestModule {
     consumer
       .apply(AuthNestMiddleware)
       .forRoutes(
-        { path: '/user', method: RequestMethod.PATCH }
+        { path: '/user', method: RequestMethod.POST }
       )
       .apply(AuthNestMiddleware)
       .forRoutes({

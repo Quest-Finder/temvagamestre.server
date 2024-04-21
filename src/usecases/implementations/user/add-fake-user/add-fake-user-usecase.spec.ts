@@ -69,9 +69,8 @@ describe('AddFakeUserUseCase', () => {
     await sut.perform()
     expect(performSpy).toHaveBeenCalledWith({
       externalAuthUserId: 'any_fake_user_id',
-      firstName: 'first_name_123456',
-      lastName: 'last_name_123456',
-      email: 'email_123456@mail.com'
+      name: 'last_name_1234 first_name_1234',
+      email: 'email_1234@mail.com'
     })
   })
 

@@ -1,20 +1,24 @@
+import { ValueObject } from '@/shared/domain'
 import { left, right, type Either } from '@/shared/either'
 import { InvalidDateOfBirthError } from '../../errors'
+import { formatDateStringToDateTime } from '@/util'
 
-export class DateOfBirth {
-  private constructor (readonly dateOfBirth: string) {
+export class DateOfBirth extends ValueObject<Date> {
+  private constructor (dateOfBirth: Date) {
+    super(dateOfBirth)
     Object.freeze(this)
   }
 
   static create (dateOfBirth: string): Either<InvalidDateOfBirthError, DateOfBirth> {
-    if (!DateOfBirth.validade(dateOfBirth)) {
+    if (!DateOfBirth.validate(dateOfBirth)) {
       return left(new InvalidDateOfBirthError(dateOfBirth))
     }
     dateOfBirth = dateOfBirth.replace(/\s+/g, '')
-    return right(new DateOfBirth(dateOfBirth))
+    const date = formatDateStringToDateTime(dateOfBirth)
+    return right(new DateOfBirth(date))
   }
 
-  private static validade (dateOfBirth: string): boolean {
+  private static validate (dateOfBirth: string): boolean {
     dateOfBirth = dateOfBirth.replace(/\s+/g, '')
     const regex = /^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-(\d{4})$/
     if (!regex.test(dateOfBirth)) {

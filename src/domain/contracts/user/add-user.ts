@@ -3,8 +3,7 @@ import type { Either } from '@/shared/either'
 
 export type AddUserData = {
   externalAuthUserId: string
-  firstName: string
-  lastName: string
+  name: string
   email: string
 }
 

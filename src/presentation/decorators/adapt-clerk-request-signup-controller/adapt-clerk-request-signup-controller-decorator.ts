@@ -10,13 +10,12 @@ export class AdaptClerkRequestSignUpControllerDecorator implements Controller {
     const clerkRequest = httpRequest.body as ClerkSignUpEventData
     /* eslint-disable @typescript-eslint/naming-convention */
     const { id, first_name, last_name, email_addresses } = clerkRequest.data
-    const formatedRequest: AddUserData = {
+    const formattedRequest: AddUserData = {
       externalAuthUserId: id,
-      firstName: first_name,
-      lastName: last_name,
+      name: `${first_name} ${last_name}`,
       email: email_addresses[0].email_address
     }
-    httpRequest.body = formatedRequest
+    httpRequest.body = formattedRequest
     return await this.controller.handle(httpRequest)
   }
 }

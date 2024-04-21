@@ -11,12 +11,11 @@ export class AddFakeUserUseCase implements AddFakeUser {
 
   async perform (): Promise<{ token: string }> {
     const id = this.idBuilder.build()
-    const value = Math.random().toString().substring(2, 8)
+    const value = Math.random().toString().substring(2, 6)
     await this.addUser.perform({
       externalAuthUserId: id,
       email: `email_${value}@mail.com`,
-      lastName: `last_name_${value}`,
-      firstName: `first_name_${value}`
+      name: `last_name_${value} first_name_${value}`
     })
     return this.encrypter.execute(id)
   }
