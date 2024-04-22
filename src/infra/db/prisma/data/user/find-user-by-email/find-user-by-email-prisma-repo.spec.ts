@@ -1,9 +1,9 @@
-import type { PrismaClient } from '@prisma/client'
-import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/db/prisma/helpers'
-import { FindUserByEmailPrismaRepo } from './find-user-by-email-prisma-repo'
-import MockDate from 'mockdate'
 import { type UserModel } from '@/domain/models'
+import { PrismaHelper } from '@/infra/db/prisma/helpers'
+import type { PrismaClient } from '@prisma/client'
+import MockDate from 'mockdate'
+import { PrismockClient } from 'prismock'
+import { FindUserByEmailPrismaRepo } from './find-user-by-email-prisma-repo'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -44,7 +44,9 @@ describe('FindUserByEmailPrismaRepo', () => {
       ...makeFakeUserModel(),
       addressId: null,
       pronoun: null,
-      username: null
+      username: null,
+      title: null,
+      bio: null
     })
   })
 
