@@ -1,9 +1,9 @@
-import type { AddUserData, AddUserResponse, AddUser } from '@/domain/contracts/user'
-import type { AddUserRepo, FindUserByEmailRepo } from '@/usecases/contracts/db/user'
-import type { AddExternalAuthMappingRepo } from '@/usecases/contracts/db/external-auth-mapping'
-import type { IdBuilder } from '@/usecases/contracts/id'
+import type { AddUser, AddUserData, AddUserResponse } from '@/domain/contracts/user'
 import { EmailInUseError } from '@/domain/errors'
 import { left, right } from '@/shared/either'
+import type { AddExternalAuthMappingRepo } from '@/usecases/contracts/db/external-auth-mapping'
+import type { AddUserRepo, FindUserByEmailRepo } from '@/usecases/contracts/db/user'
+import type { IdBuilder } from '@/usecases/contracts/id'
 
 export class AddUserUseCase implements AddUser {
   constructor (

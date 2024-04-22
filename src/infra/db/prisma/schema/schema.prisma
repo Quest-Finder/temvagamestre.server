@@ -153,7 +153,7 @@ model UserConfig {
 
 model UserSocialMedia {
   userId        String @map("user_id") @db.VarChar(50)
-  socialMediaId String @map("social_media_id") @db.VarChar(20)
+  socialMediaId String @map("social_media_id") @db.VarChar(50)
   link          String @db.VarChar(100)
 
   socialMedia SocialMedia @relation(fields: [socialMediaId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_social_media_user_social_media")

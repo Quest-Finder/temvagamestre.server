@@ -1,13 +1,15 @@
 import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
 import type { RegisterUserData, RegisterUserResponse } from './user-types'
-import { Bio, DateOfBirth, Name, Pronoun, type PronounEnum, Title, Username } from './value-objects'
+import {Bio,DateOfBirth, Name, Pronoun, SocialMedia, Username, type PronounEnum, type SocialMediaProps, Title } from './value-objects'
+
 
 export type UserProps = {
   name: Name
   username: Username
   pronoun: Pronoun
   dateOfBirth: DateOfBirth
+  socialMedias?: SocialMedia[]
   title?: Title
   bio?: Bio
 }
@@ -33,6 +35,11 @@ export class User extends Entity<UserProps> {
     return this.props.dateOfBirth.value
   }
 
+  get socialMedias (): SocialMediaProps[] | undefined {
+    return this.props.socialMedias?.map(socialMedia => socialMedia.value)
+  }
+
+
   get title (): string | undefined {
     return this.props.title?.value
   }
@@ -42,20 +49,23 @@ export class User extends Entity<UserProps> {
   }
 
   static register (data: RegisterUserData): RegisterUserResponse {
-    const { dateOfBirth, pronoun, username, name, title, bio } = data
+    const { dateOfBirth, pronoun, username, name, title, bio,socialMedias  } = data
+
 
     const nameOrError = Name.create(name)
     const usernameOrError = Username.create(username)
     const pronounOrError = Pronoun.create(pronoun)
     const dateOfBirthOrError = DateOfBirth.create(dateOfBirth)
+    const socialMediasOrError = socialMedias ? socialMedias.map(socialMedia => SocialMedia.create(socialMedia)) : []
 
-    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError]
+    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError]
 
     const titleOrError = title ? Title.create(title) : undefined
     titleOrError && results.push(titleOrError)
 
     const bioOrError = bio ? Bio.create(bio) : undefined
     bioOrError && results.push(bioOrError)
+
 
     for (const result of results) {
       if (result.isLeft()) return left(result.value)
@@ -68,6 +78,7 @@ export class User extends Entity<UserProps> {
           username: usernameOrError.value as Username,
           pronoun: pronounOrError.value as Pronoun,
           dateOfBirth: dateOfBirthOrError.value as DateOfBirth,
+          socialMedias: (socialMediasOrError).map(socialMedia => socialMedia.value) as SocialMedia[]
           title: titleOrError?.value as Title,
           bio: bioOrError?.value as Bio
         },
