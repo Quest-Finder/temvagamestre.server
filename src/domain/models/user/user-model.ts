@@ -6,4 +6,5 @@ export type UserModel = {
   pronoun?: string | null
   dateOfBirth?: Date | null
   addressId?: string | null
+  playerProfileId?: string | null
 }

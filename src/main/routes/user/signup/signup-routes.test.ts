@@ -56,7 +56,7 @@ const bodyData = {
   type: 'user.created'
 }
 
-const secretBytes = Buffer.from(secret.split('_')[1], 'base64')
+const secretBytes = Buffer.from(secret, 'base64')
 const time = Math.floor(timestamp.getTime() / 1000)
 const signedContent = `${svixId}.${time}.${JSON.stringify(bodyData)}`
 const signature = crypto

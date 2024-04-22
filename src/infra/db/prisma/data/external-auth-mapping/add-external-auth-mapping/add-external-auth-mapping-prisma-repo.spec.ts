@@ -1,8 +1,8 @@
 import type { ExternalAuthMappingModel, UserModel } from '@/domain/models'
-import type { PrismaClient } from '@prisma/client'
-import { AddExternalAuthMappingPrismaRepo } from './add-external-auth-mapping-prisma-repo'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
+import type { PrismaClient } from '@prisma/client'
 import { PrismockClient } from 'prismock'
+import { AddExternalAuthMappingPrismaRepo } from './add-external-auth-mapping-prisma-repo'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -62,6 +62,7 @@ describe('FindUserByEmailPrismaRepo', () => {
       dateOfBirth: null,
       pronoun: null,
       username: null,
+      playerProfileId: null,
       externalAuthMapping: makeFakeExternalAuthMappingModel()
     })
   })

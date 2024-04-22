@@ -116,7 +116,7 @@ model User {
   pronoun         String?   @db.VarChar(10)
   addressId       String?   @map("address_id") @db.VarChar(50)
   dateOfBirth     DateTime? @map("date_of_birth") @db.Date()
-  playerProfileId String    @map("player_profile_id") @db.VarChar(50)
+  playerProfileId String?    @map("player_profile_id") @db.VarChar(50)
 
   userPreference      UserPreference?
   userConfig          UserConfig?
@@ -125,7 +125,7 @@ model User {
   userSocialMedia     UserSocialMedia[]
 
   address       Address?      @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
-  playerProfile PlayerProfile @relation(fields: [playerProfileId], references: [id])
+  playerProfile PlayerProfile? @relation(fields: [playerProfileId], references: [id],onDelete: NoAction, onUpdate: NoAction, map: "fk_player_profile_user")
 
   @@map("user")
 }
