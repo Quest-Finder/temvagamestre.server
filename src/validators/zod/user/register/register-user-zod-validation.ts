@@ -13,7 +13,9 @@ export class RegisterUserZodValidation implements Validation {
       socialMedias: z.array(z.object({
         socialMediaId: z.string(),
         userLink: z.string()
-      })).optional()
+      })).optional(),
+      title: z.string().min(3).max(100).optional(),
+      bio: z.string().min(3).max(500).optional()
     })
     return ZodHelper.check({ value: input, schema })
   }

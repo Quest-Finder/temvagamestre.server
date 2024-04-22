@@ -10,6 +10,9 @@ export type RegisterUserData = {
   username: string
   pronoun: PronounEnum
   socialMedias?: SocialMediaProps[]
+  title?: string
+  bio?: string
+
 }
 
 export type UserEntityErrors =
