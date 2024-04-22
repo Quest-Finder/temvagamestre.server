@@ -9,6 +9,8 @@ export type RegisterUserData = {
   dateOfBirth: string
   username: string
   pronoun: PronounEnum
+  title?: string
+  bio?: string
 }
 
 export type UserEntityErrors =

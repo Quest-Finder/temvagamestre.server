@@ -116,6 +116,8 @@ model User {
   pronoun     String?   @db.VarChar(10)
   addressId   String?   @map("address_id") @db.VarChar(50)
   dateOfBirth DateTime? @map("date_of_birth") @db.Date()
+  title       String?   @map("title") @db.VarChar(100)
+  bio         String?   @map("bio") @db.VarChar(500)
 
   userPreference      UserPreference?
   userConfig          UserConfig?

@@ -1,4 +1,6 @@
+export * from './bio/bio'
 export * from './date-of-birth/date-of-birth'
 export * from './name/name'
 export * from './pronoun/pronoun'
+export * from './title/title'
 export * from './username/username'
