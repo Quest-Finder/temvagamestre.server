@@ -1,8 +1,8 @@
 import type { UserModel } from '@/domain/models'
-import type { PrismaClient } from '@prisma/client'
-import { PrismockClient } from 'prismock'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
+import type { PrismaClient } from '@prisma/client'
 import MockDate from 'mockdate'
+import { PrismockClient } from 'prismock'
 import { AddUserPrismaRepo } from './add-user-prisma-repo'
 
 const makeFakeUserModel = (): UserModel => ({
@@ -44,6 +44,8 @@ describe('AddUserPrismaRepo', () => {
       ...makeFakeUserModel(),
       addressId: null,
       pronoun: null,
+      title: null,
+      bio: null,
       username: null
     })
   })
