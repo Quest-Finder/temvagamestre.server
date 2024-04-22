@@ -8,10 +8,10 @@ describe('User Entity', () => {
       username: 'john-doe',
       pronoun: 'he/his',
       dateOfBirth: '12-31-2000',
+      rpgStyles: ['7e1e51a5-2c45-4d15-bf87-03202dfe4b7e'],
       socialMedias: [{ socialMediaId: '7e1e51a5-2c45-4d15-bf87-03202dfe4b7e', userLink: 'any_link' }],
       title: 'any_title',
       bio: 'any_bio'
-
     })
 
     const user = result.value as User
@@ -20,6 +20,7 @@ describe('User Entity', () => {
     expect(user.username).toBe('john-doe')
     expect(user.pronoun).toBe('he/his')
     expect(user.dateOfBirth).toEqual(new Date('2000-12-31T00:00:00.000Z'))
+    expect(user.rpgStyles).toEqual(['7e1e51a5-2c45-4d15-bf87-03202dfe4b7e'])
     expect(user.socialMedias?.[0]).toEqual({ socialMediaId: '7e1e51a5-2c45-4d15-bf87-03202dfe4b7e', userLink: 'any_link' })
     expect(user.title).toBe('any_title')
     expect(user.bio).toBe('any_bio')

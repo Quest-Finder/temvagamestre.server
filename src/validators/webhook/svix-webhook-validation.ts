@@ -14,6 +14,7 @@ export class SvixWebhookValidation implements Validation {
         return left(new InvalidSvixError())
       }
       const wh = new Webhook(env.webhookSecret as string)
+
       wh.verify(payload, {
         'svix-id': headers['svix-id'],
         'svix-timestamp': headers['svix-timestamp'],

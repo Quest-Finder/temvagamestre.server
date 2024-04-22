@@ -43,6 +43,7 @@ describe('User Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
     prisma = await PrismaHelper.getPrisma()
+    await prisma.rpgStyle.create({ data: { id: 'b866459b-63fc-4bd3-a88c-f6d4a7f39cd2', name: 'any_rpg_style' } })
   })
 
   beforeEach(async () => {
@@ -66,12 +67,13 @@ describe('User Routes', () => {
       const token = await makeFakeToken()
       await request(app.getHttpServer())
         .post('/user')
-        .set({ 'x-access-token': token })
+        .set({ 'x-access-token': token, userId: 'any_user_id' })
         .send({
           name: 'John Doe',
           dateOfBirth: '12-31-2000',
           username: 'valid-username',
-          pronoun: 'she/her'
+          pronoun: 'she/her',
+          rpgStyles: ['b866459b-63fc-4bd3-a88c-f6d4a7f39cd2']
         })
         .expect(204)
     })

@@ -85,8 +85,8 @@ model UserPreferenceRpgStyle {
 
 model UserPreference {
   id         String     @id(map: "pk_user_preference") @unique(map: "uq_user_preference_id") @db.VarChar(50)
-  frequency  Frequency
-  activeType ActiveType @map("active_type")
+  frequency  Frequency  @default(weekly)
+  activeType ActiveType @default(player) @map("active_type")
 
   userPreferenceDayPeriod    UserPreferenceDayPeriod?
   userPreferencePlayersRange UserPreferencePlayersRange?

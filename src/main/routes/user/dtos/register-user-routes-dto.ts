@@ -19,18 +19,26 @@ export class RegisterUserRoutesDto {
     description: "Gênero do usuário ('he/his' | 'she/her' | 'they/theirs')"
   })
     pronoun: string
-
+  
+  @ApiProperty({
+    example: ['31b66f76-82ff-4719-bad0-48154a04f3c7'],
+    description: 'array com os ids dos estilos de jogo do usuario'
+  })
+    rpgStyles: string[]
+  
   @ApiProperty({ example: 'Software Developer' })
     title?: string
 
   @ApiProperty({ example: 'I am a software developer' })
     description?: string
 
-  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, title?: string, description?: string) {
+  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, title?: string, description?: string, rpgStyles: string[]) 
+  {
     this.name = name
     this.username = username
     this.dateOfBirth = dateOfBirth
     this.pronoun = pronoun
+    this.rpgStyles = rpgStyles
     this.title = title
     this.description = description
   }
