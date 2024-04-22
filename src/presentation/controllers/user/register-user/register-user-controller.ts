@@ -24,7 +24,6 @@ export class RegisterUserController implements Controller {
       }
       return noContent()
     } catch (error: any) {
-      console.log('ERROR', error)
       return serverError(error)
     }
   }
