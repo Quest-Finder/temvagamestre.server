@@ -1,13 +1,14 @@
 import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
 import type { RegisterUserData, RegisterUserResponse } from './user-types'
-import { DateOfBirth, Name, Pronoun, type PronounEnum, Username } from './value-objects'
+import { DateOfBirth, Name, PlayerProfileId, Pronoun, type PronounEnum, Username } from './value-objects'
 
 export type UserProps = {
   name: Name
   username: Username
   pronoun: Pronoun
   dateOfBirth: DateOfBirth
+  playerProfileId: PlayerProfileId
 }
 export class User extends Entity<UserProps> {
   private constructor (props: UserProps, id?: UniqueEntityId) {
@@ -31,15 +32,20 @@ export class User extends Entity<UserProps> {
     return this.props.dateOfBirth.value
   }
 
+  get playerProfile (): string {
+    return this.props.playerProfileId.value
+  }
+
   static register (data: RegisterUserData): RegisterUserResponse {
-    const { dateOfBirth, pronoun, username, name } = data
+    const { dateOfBirth, pronoun, username, name, playerProfileId } = data
 
     const nameOrError = Name.create(name)
     const usernameOrError = Username.create(username)
     const pronounOrError = Pronoun.create(pronoun)
     const dateOfBirthOrError = DateOfBirth.create(dateOfBirth)
+    const playerProfileIdOrError = PlayerProfileId.create(playerProfileId)
 
-    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError]
+    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, playerProfileIdOrError]
     for (const result of results) {
       if (result.isLeft()) return left(result.value)
     }
@@ -50,7 +56,8 @@ export class User extends Entity<UserProps> {
           name: nameOrError.value as Name,
           username: usernameOrError.value as Username,
           pronoun: pronounOrError.value as Pronoun,
-          dateOfBirth: dateOfBirthOrError.value as DateOfBirth
+          dateOfBirth: dateOfBirthOrError.value as DateOfBirth,
+          playerProfileId: playerProfileIdOrError.value as PlayerProfileId
         },
         new UniqueEntityId(data.id)
       )
