@@ -42,4 +42,11 @@ describe('CheckUsernameUseCase', () => {
     const response = sut.perform('exists_username')
     await expect(response).rejects.toThrow()
   })
+
+  it('should call repository with correct data', async () => {
+    const { sut, findUserByUsernameRepo } = makeSut()
+    const repositorySpy = jest.spyOn(findUserByUsernameRepo, 'execute')
+    await sut.perform('exists_username')
+    expect(repositorySpy).toHaveBeenCalledWith('exists_username')
+  })
 })
