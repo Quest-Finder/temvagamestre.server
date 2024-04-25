@@ -1,0 +1,20 @@
+FROM node:21.1.0-alpine
+
+
+RUN wget -O /usr/local/bin/dockerize https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz \
+  && tar -C /usr/local/bin -xzvf /usr/local/bin/dockerize \
+  && chmod +x /usr/local/bin/dockerize
+
+WORKDIR /app
+
+COPY ../package*.json .
+
+RUN npm install
+
+EXPOSE 3000
+
+COPY ../ . 
+
+ENTRYPOINT ["dockerize", "-wait", "tcp://dbPostgres:5432", "-wait", "tcp://dbMongo:27017"]
+
+CMD ["npm", "run", "start:dev"]
