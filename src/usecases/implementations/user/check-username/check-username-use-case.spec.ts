@@ -24,7 +24,7 @@ const makeSut = (): MakeSut => {
 }
 
 describe('CheckUsernameUseCase', () => {
-  it('should throw if username alread exits', async () => {
+  it('should throw if username already exits', async () => {
     const { sut, findUserByUsernameRepo } = makeSut()
     jest.spyOn(findUserByUsernameRepo, 'execute').mockResolvedValueOnce({
       email: 'valid_email@email.com',
@@ -34,5 +34,12 @@ describe('CheckUsernameUseCase', () => {
     })
     const response = await sut.perform('exists_username')
     expect(response.isLeft()).toBe(true)
+  })
+
+  it('should return throw if FindUserByUsernameRepo throws ', async () => {
+    const { sut, findUserByUsernameRepo } = makeSut()
+    jest.spyOn(findUserByUsernameRepo, 'execute').mockRejectedValueOnce(new Error())
+    const response = sut.perform('exists_username')
+    await expect(response).rejects.toThrow()
   })
 })
