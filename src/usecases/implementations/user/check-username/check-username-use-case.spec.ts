@@ -49,4 +49,10 @@ describe('CheckUsernameUseCase', () => {
     await sut.perform('exists_username')
     expect(repositorySpy).toHaveBeenCalledWith('exists_username')
   })
+
+  it('should return void if username is available', async () => {
+    const { sut } = makeSut()
+    const response = await sut.perform('valid_username')
+    expect(response.isRight()).toBe(true)
+  })
 })
