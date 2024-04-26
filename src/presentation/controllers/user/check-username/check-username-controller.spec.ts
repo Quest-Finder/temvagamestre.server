@@ -1,3 +1,4 @@
+import { type CheckUsername, type CheckUsernameResponse } from '@/domain/contracts/user/check-username'
 import { type Controller } from '@/presentation/contracts'
 import { badRequest } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest } from '@/presentation/types/http'
@@ -8,6 +9,13 @@ import { CheckUsernameController } from './check-username-controller'
 type MakeSutType = {
   validation: Validation
   sut: Controller
+  useCase: CheckUsername
+}
+
+class CheckUsernameUseCaseStub implements CheckUsername {
+  async perform (username: string): Promise<CheckUsernameResponse> {
+    return right()
+  }
 }
 
 class ValidationStub implements Validation {
@@ -26,10 +34,12 @@ const makeHttpRequest = (): HttpRequest => {
 
 const makeSut = (): MakeSutType => {
   const validation = new ValidationStub()
-  const sut = new CheckUsernameController(validation)
+  const useCase = new CheckUsernameUseCaseStub()
+  const sut = new CheckUsernameController(validation, useCase)
   return {
     sut,
-    validation
+    validation,
+    useCase
   }
 }
 
@@ -46,5 +56,12 @@ describe('CheckUsernameController', () => {
     jest.spyOn(validation, 'validate').mockReturnValue(left(new Error('error-message')))
     const response = await sut.handle(makeHttpRequest())
     expect(response).toEqual(badRequest(new Error('error-message')))
+  })
+
+  it('should call findUseByUsernameUseCase with correct value', async () => {
+    const { sut, useCase } = makeSut()
+    const useCaseSpy = jest.spyOn(useCase, 'perform')
+    await sut.handle(makeHttpRequest())
+    expect(useCaseSpy).toHaveBeenCalledWith('valid-username')
   })
 })
