@@ -64,4 +64,11 @@ describe('CheckUsernameController', () => {
     await sut.handle(makeHttpRequest())
     expect(useCaseSpy).toHaveBeenCalledWith('valid-username')
   })
+
+  it('should return 400 if username already exists', async () => {
+    const { sut, useCase } = makeSut()
+    jest.spyOn(useCase, 'perform').mockResolvedValue(left(new Error('Username already exists')))
+    const response = await sut.handle(makeHttpRequest())
+    expect(response).toEqual(badRequest(new Error('Username already exists')))
+  })
 })
