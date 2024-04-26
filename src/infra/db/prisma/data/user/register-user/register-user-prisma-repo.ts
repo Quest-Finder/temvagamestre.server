@@ -11,7 +11,14 @@ export class RegisterUserPrismaRepo implements RegisterUserRepo {
         name: user.name,
         username: user.username,
         pronoun: user.pronoun,
-        dateOfBirth: user.dateOfBirth
+        dateOfBirth: user.dateOfBirth,
+        userPreference: {
+          create: {
+            frequency: 'weekly',
+            activeType: 'player',
+            userPreferenceRpgStyle: { createMany: { data: user.rpgStyles.map(rpgStyleId => ({ rpgStyleId })) } }
+          }
+        }
       }
     })
   }

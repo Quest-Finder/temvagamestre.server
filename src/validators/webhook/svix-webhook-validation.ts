@@ -13,7 +13,8 @@ export class SvixWebhookValidation implements Validation {
       if (!headers?.['svix-id'] || !headers['svix-signature'] || !headers['svix-timestamp']) {
         return left(new InvalidSvixError())
       }
-      const wh = new Webhook(env.webhookSecret)
+      const wh = new Webhook(env.webhookSecret as string)
+
       wh.verify(payload, {
         'svix-id': headers['svix-id'],
         'svix-timestamp': headers['svix-timestamp'],
@@ -21,6 +22,8 @@ export class SvixWebhookValidation implements Validation {
       })
       return right()
     } catch (error: any) {
+      console.log(error)
+
       return left(new VerifyWebhookError())
     }
   }

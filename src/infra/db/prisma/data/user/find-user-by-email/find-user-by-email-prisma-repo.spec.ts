@@ -45,7 +45,9 @@ describe('FindUserByEmailPrismaRepo', () => {
       addressId: null,
       pronoun: null,
       username: null,
-      playerProfileId: null
+      playerProfileId: null,
+      title: null,
+      bio: null
     })
   })
 

@@ -94,7 +94,7 @@ describe('SignUp Routes', () => {
         .post('/user/signup/webhook')
         .set({
           'svix-id': svixId,
-          'svix-timestamp': time,
+          'svix-timestamp': time.toString(),
           'svix-signature': `v1,${signature}`
         })
         .send(bodyData)
