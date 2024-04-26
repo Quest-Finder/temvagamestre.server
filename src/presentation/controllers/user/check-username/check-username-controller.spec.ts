@@ -1,6 +1,6 @@
 import { type CheckUsername, type CheckUsernameResponse } from '@/domain/contracts/user/check-username'
 import { type Controller } from '@/presentation/contracts'
-import { badRequest } from '@/presentation/helpers/http-helpers'
+import { badRequest, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest } from '@/presentation/types/http'
 import { left, right, type Either } from '@/shared/either'
 import { type Validation } from './../../../contracts/validation'
@@ -70,5 +70,12 @@ describe('CheckUsernameController', () => {
     jest.spyOn(useCase, 'perform').mockResolvedValue(left(new Error('Username already exists')))
     const response = await sut.handle(makeHttpRequest())
     expect(response).toEqual(badRequest(new Error('Username already exists')))
+  })
+
+  it('should return 500 when checkUsernameUsecase throws', async () => {
+    const { sut, useCase } = makeSut()
+    jest.spyOn(useCase, 'perform').mockRejectedValueOnce(new Error())
+    const response = await sut.handle(makeHttpRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
