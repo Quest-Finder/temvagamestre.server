@@ -13,7 +13,10 @@ export class CheckUsernameController implements Controller {
       if (result.isLeft()) {
         return badRequest(result.value)
       }
-      await this.checkUsernameUseCase.perform(username)
+      const useCaseResult = await this.checkUsernameUseCase.perform(username)
+      if (useCaseResult.isLeft()) {
+        return badRequest(useCaseResult.value)
+      }
       return noContent()
     } catch (error: any) {
       return serverError(error)
