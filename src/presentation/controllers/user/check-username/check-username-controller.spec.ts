@@ -7,7 +7,7 @@ import { type Validation } from './../../../contracts/validation'
 import { CheckUsernameController } from './check-username-controller'
 
 type MakeSutType = {
-  validation: Validation
+  validations: Validation[]
   sut: Controller
   useCase: CheckUsername
 }
@@ -24,6 +24,12 @@ class ValidationStub implements Validation {
   }
 }
 
+class WordsValidation implements Validation {
+  validate (input: any): Either<Error, void> {
+    return right()
+  }
+}
+
 const makeHttpRequest = (): HttpRequest => {
   return {
     params: {
@@ -34,26 +40,30 @@ const makeHttpRequest = (): HttpRequest => {
 
 const makeSut = (): MakeSutType => {
   const validation = new ValidationStub()
+  const wordValidation = new WordsValidation()
   const useCase = new CheckUsernameUseCaseStub()
-  const sut = new CheckUsernameController(validation, useCase)
+  const sut = new CheckUsernameController([validation, wordValidation], useCase)
   return {
     sut,
-    validation,
+    validations: [validation, wordValidation],
     useCase
   }
 }
 
 describe('CheckUsernameController', () => {
-  it('should call validation with correct values', async () => {
-    const { sut, validation } = makeSut()
+  it('should call all validations with correct value', async () => {
+    const { sut, validations } = makeSut()
+    const [validation, wordValidation] = validations
     const validationStubSpy = jest.spyOn(validation, 'validate')
+    const wordValidationStubSpy = jest.spyOn(wordValidation, 'validate')
     await sut.handle(makeHttpRequest())
     expect(validationStubSpy).toHaveBeenCalledWith('valid-username')
+    expect(wordValidationStubSpy).toHaveBeenCalledWith('valid-username')
   })
 
-  it('should return 400 if validation fails', async () => {
-    const { sut, validation } = makeSut()
-    jest.spyOn(validation, 'validate').mockReturnValue(left(new Error('error-message')))
+  it('should return 400 if any validation fails', async () => {
+    const { sut, validations } = makeSut()
+    jest.spyOn(validations[0], 'validate').mockReturnValue(left(new Error('error-message')))
     const response = await sut.handle(makeHttpRequest())
     expect(response).toEqual(badRequest(new Error('error-message')))
   })
