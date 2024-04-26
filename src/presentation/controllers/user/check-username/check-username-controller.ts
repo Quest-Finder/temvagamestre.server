@@ -1,5 +1,5 @@
 import { type Controller, type Validation } from '@/presentation/contracts'
-import { noContent, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
 
 export class CheckUsernameController implements Controller {
@@ -7,7 +7,10 @@ export class CheckUsernameController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validation.validate(httpRequest.params.username)
+      const result = this.validation.validate(httpRequest.params.username)
+      if (result.isLeft()) {
+        return badRequest(result.value)
+      }
       return noContent()
     } catch (error: any) {
       return serverError(error)
