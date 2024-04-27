@@ -90,7 +90,7 @@ describe('User Routes', () => {
         error: 'Validation error: String must contain at most 15 character(s)'
       }))
     })
-    it('Should return 40 when post to /user/check-username username not exits', async () => {
+    it('Should return 400 when post to /user/check-username username not exits', async () => {
       const token = await makeFakeToken()
       const response = await request(app.getHttpServer())
         .post('/user/check-username')
@@ -102,6 +102,27 @@ describe('User Routes', () => {
       expect(response.body).toEqual(expect.objectContaining({
         error: 'Username not exists'
       }))
+    })
+
+    it('Should return 20 when post to /user/check-username username exits', async () => {
+      await prisma.user.create({
+        data: {
+          id: 'any_user_id_2',
+          email: 'any_email_valid@mail.com',
+          name: 'any_name',
+          username: 'valid-username'
+        }
+      })
+
+      const token = await makeFakeToken()
+      const response = await request(app.getHttpServer())
+        .post('/user/check-username')
+        .set({ 'x-access-token': token })
+        .send({
+          username: 'valid-username'
+        })
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toEqual('Username already exists')
     })
   })
 })
