@@ -4,7 +4,7 @@ import { BadWordValidation } from '@/validators/zod/user/bad-work-validation/bad
 import { CheckUsernameZodValidation } from '@/validators/zod/user/check-username/check-username-zod-validation'
 import { makeCheckUsernameUseCase } from '../../usecases/user/check-user-by-username-usecase-factory'
 
-export const makeUsernameControllerFactory = (): Controller => {
+export const makeCheckUsernameController = (): Controller => {
   const usernameValidation = new CheckUsernameZodValidation()
   const badWordValidation = new BadWordValidation()
   const checkUsernameUseCase = makeCheckUsernameUseCase()
