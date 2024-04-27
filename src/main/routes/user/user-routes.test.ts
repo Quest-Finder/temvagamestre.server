@@ -55,6 +55,8 @@ describe('User Routes', () => {
 
   afterEach(async () => {
     await app.close()
+    await prisma.externalAuthMapping.deleteMany()
+    await prisma.user.deleteMany()
   })
 
   afterAll(async () => {
@@ -74,6 +76,19 @@ describe('User Routes', () => {
           pronoun: 'she/her'
         })
         .expect(204)
+    })
+    it('Should return 400 when post to /user/check-username and validation fails', async () => {
+      const token = await makeFakeToken()
+      const response = await request(app.getHttpServer())
+        .post('/user/check-username')
+        .set({ 'x-access-token': token })
+        .send({
+          username: 'valid-username-valid-username'
+        })
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toEqual(expect.objectContaining({
+        error: 'Validation error: String must contain at most 15 character(s)'
+      }))
     })
   })
 })
