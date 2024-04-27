@@ -32,7 +32,7 @@ class WordsValidation implements Validation {
 
 const makeHttpRequest = (): HttpRequest => {
   return {
-    body: {
+    params: {
       username: 'valid-username'
     }
   }
