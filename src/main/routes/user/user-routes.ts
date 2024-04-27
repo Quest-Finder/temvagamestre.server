@@ -1,4 +1,5 @@
 import { adaptRoute } from '@/main/factories/adapters'
+import { makeCheckUsernameController } from '@/main/factories/controllers/user/check-username-controller-factory'
 import { makeRegisterUserController } from '@/main/factories/controllers/user/register-user-controller-factory'
 import { Controller, Post, Req, Res } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
@@ -21,6 +22,12 @@ export class UserRoutes {
   @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
   async registerUser (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(makeRegisterUserController())
+    await adaptNest.adapt(req, res)
+  }
+
+  @Post('/check-username')
+  async checkUserName (@Req() req: Request, @Res() res: Response): Promise<void> {
+    const adaptNest = adaptRoute(makeCheckUsernameController())
     await adaptNest.adapt(req, res)
   }
 }
