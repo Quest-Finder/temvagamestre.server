@@ -90,5 +90,18 @@ describe('User Routes', () => {
         error: 'Validation error: String must contain at most 15 character(s)'
       }))
     })
+    it('Should return 40 when post to /user/check-username username not exits', async () => {
+      const token = await makeFakeToken()
+      const response = await request(app.getHttpServer())
+        .post('/user/check-username')
+        .set({ 'x-access-token': token })
+        .send({
+          username: 'free-username'
+        })
+      expect(response.statusCode).toBe(404)
+      expect(response.body).toEqual(expect.objectContaining({
+        error: 'Username not exists'
+      }))
+    })
   })
 })
