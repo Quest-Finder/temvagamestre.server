@@ -1,6 +1,6 @@
 import { type CheckUsername } from '@/domain/contracts/user/check-username'
 import { type Controller, type Validation } from '@/presentation/contracts'
-import { badRequest, noContent, ok, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
 
 export class CheckUsernameController implements Controller {
@@ -20,7 +20,7 @@ export class CheckUsernameController implements Controller {
       if (useCaseResult.isLeft()) {
         return ok(useCaseResult.value.message)
       }
-      return noContent()
+      return notFound(new Error('Username not exists'))
     } catch (error: any) {
       return serverError(error)
     }
