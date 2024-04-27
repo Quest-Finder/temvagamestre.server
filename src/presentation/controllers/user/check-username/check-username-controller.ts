@@ -8,7 +8,7 @@ export class CheckUsernameController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { username } = httpRequest.body
+      const { username } = httpRequest.params
 
       for (const validation of this.validations) {
         const result = validation.validate(username)
