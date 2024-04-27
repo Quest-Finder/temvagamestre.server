@@ -1,6 +1,6 @@
 import { type CheckUsername, type CheckUsernameResponse } from '@/domain/contracts/user/check-username'
 import { type Controller } from '@/presentation/contracts'
-import { badRequest, noContent, ok, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest } from '@/presentation/types/http'
 import { left, right, type Either } from '@/shared/either'
 import { type Validation } from './../../../contracts/validation'
@@ -89,9 +89,9 @@ describe('CheckUsernameController', () => {
     expect(response).toEqual(serverError(new Error()))
   })
 
-  it('should return 204 if username is valid', async () => {
+  it('should return 404 if username not exits', async () => {
     const { sut } = makeSut()
     const response = await sut.handle(makeHttpRequest())
-    expect(response).toEqual(noContent())
+    expect(response).toEqual(notFound(new Error('Username not exists')))
   })
 })
