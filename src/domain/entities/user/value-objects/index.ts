@@ -1,6 +1,7 @@
 export * from './bio/bio'
 export * from './date-of-birth/date-of-birth'
 export * from './name/name'
+export * from './player-profile/player-profile'
 export * from './pronoun/pronoun'
 export * from './rpg-style/rpg-style'
 export * from './social-media/social-media'

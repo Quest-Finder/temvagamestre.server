@@ -44,6 +44,8 @@ describe('AddUserPrismaRepo', () => {
       ...makeFakeUserModel(),
       addressId: null,
       pronoun: null,
+      username: null,
+      playerProfileId: null,
       title: null,
       bio: null,
       username: null

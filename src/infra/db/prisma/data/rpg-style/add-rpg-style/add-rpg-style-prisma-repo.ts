@@ -1,6 +1,6 @@
 import { type RpgStyleModel } from '@/domain/models'
-import { type AddRpgStyleRepo } from '@/usecases/contracts/db/rpg-style'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
+import { type AddRpgStyleRepo } from '@/usecases/contracts/db/rpg-style'
 
 export class AddRpgStylePrismaRepo implements AddRpgStyleRepo {
   async execute (data: RpgStyleModel): Promise<void> {

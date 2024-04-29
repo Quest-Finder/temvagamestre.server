@@ -2,7 +2,7 @@
  * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
 */
 
-import type { ExternalAuthMappingModel } from '@/domain/models'
+import type { ExternalAuthMappingModel, PlayerProfileModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { AppModule } from '@/main/app.module'
 import env from '@/main/configs/env'
@@ -35,6 +35,11 @@ const makeFakeToken = async (): Promise<string> => {
   const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
   return token
 }
+const makeFakePlayerProfile = (): PlayerProfileModel => ({
+  id: '9228a9a0-c7e0-4d62-80bb-458dd772c4f9',
+  name: 'any_player_profile_name',
+  description: 'any_player_profile_description'
+})
 
 let prisma: PrismaClient
 let app: INestApplication
@@ -43,6 +48,7 @@ describe('User Routes', () => {
   beforeAll(async () => {
     await PrismaHelper.connect()
     prisma = await PrismaHelper.getPrisma()
+    await prisma.playerProfile.create({ data: makeFakePlayerProfile() })
     await prisma.rpgStyle.create({ data: { id: 'b866459b-63fc-4bd3-a88c-f6d4a7f39cd2', name: 'any_rpg_style' } })
   })
 
@@ -73,6 +79,7 @@ describe('User Routes', () => {
           dateOfBirth: '12-31-2000',
           username: 'valid-username',
           pronoun: 'she/her',
+          playerProfileId: '9228a9a0-c7e0-4d62-80bb-458dd772c4f9',
           rpgStyles: ['b866459b-63fc-4bd3-a88c-f6d4a7f39cd2']
         })
         .expect(204)

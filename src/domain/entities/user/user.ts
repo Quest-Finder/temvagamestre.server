@@ -1,13 +1,15 @@
 import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
 import type { RegisterUserData, RegisterUserResponse } from './user-types'
-import { Bio, DateOfBirth, Name, Pronoun, SocialMedia, Username, type PronounEnum, type SocialMediaProps, Title, RpgStyle } from './value-objects'
+import { Bio, DateOfBirth, Name,PlayerProfileId, Pronoun, SocialMedia, Username, type PronounEnum, type SocialMediaProps, Title, RpgStyle } from './value-objects'
+
 
 export type UserProps = {
   name: Name
   username: Username
   pronoun: Pronoun
   dateOfBirth: DateOfBirth
+  playerProfileId: PlayerProfileId
   rpgStyles: RpgStyle[]
   socialMedias?: SocialMedia[]
   title?: Title
@@ -35,6 +37,10 @@ export class User extends Entity<UserProps> {
     return this.props.dateOfBirth.value
   }
 
+  get playerProfile (): string {
+    return this.props.playerProfileId.value
+  }
+
   get rpgStyles (): string[] {
     return this.props.rpgStyles.map((rpgStyle) => rpgStyle.value)
   }
@@ -52,16 +58,18 @@ export class User extends Entity<UserProps> {
   }
 
   static register (data: RegisterUserData): RegisterUserResponse {
-    const { dateOfBirth, pronoun, username, name, title, bio, socialMedias, rpgStyles } = data
+    const { dateOfBirth, pronoun, username, name, title, bio, socialMedias, rpgStyles,playerProfileId } = data
+
 
     const nameOrError = Name.create(name)
     const usernameOrError = Username.create(username)
     const pronounOrError = Pronoun.create(pronoun)
     const dateOfBirthOrError = DateOfBirth.create(dateOfBirth)
+    const playerProfileIdOrError = PlayerProfileId.create(playerProfileId)
     const rpgStyleOrError = rpgStyles.map((rpgStyle) => RpgStyle.create(rpgStyle))
     const socialMediasOrError = socialMedias ? socialMedias.map(socialMedia => SocialMedia.create(socialMedia)) : []
 
-    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError]
+    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError,playerProfileIdOrError]
 
     const titleOrError = title ? Title.create(title) : undefined
     titleOrError && results.push(titleOrError)
@@ -80,6 +88,7 @@ export class User extends Entity<UserProps> {
           username: usernameOrError.value as Username,
           pronoun: pronounOrError.value as Pronoun,
           dateOfBirth: dateOfBirthOrError.value as DateOfBirth,
+          playerProfileId: playerProfileIdOrError.value as PlayerProfileId,
           rpgStyles: rpgStyleOrError.map((rpgStyle) => rpgStyle.value) as RpgStyle[],
           socialMedias: (socialMediasOrError).map(socialMedia => socialMedia.value) as SocialMedia[],
           title: titleOrError?.value as Title,
