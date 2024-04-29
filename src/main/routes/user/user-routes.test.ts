@@ -101,7 +101,7 @@ describe('User Routes', () => {
       }))
     })
 
-    it('Should return 200 when post to /user/check-username username exits', async () => {
+    it('Should return 400 when post to /user/check-username username exits', async () => {
       await prisma.user.create({
         data: {
           id: 'any_user_id_2',
@@ -116,8 +116,10 @@ describe('User Routes', () => {
         .get('/user/check-username/valid-username')
         .set({ 'x-access-token': token })
 
-      expect(response.statusCode).toBe(200)
-      expect(response.body).toEqual('Username already exists')
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toEqual(expect.objectContaining({
+        error: 'Username already exists'
+      }))
     })
   })
 })
