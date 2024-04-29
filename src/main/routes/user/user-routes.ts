@@ -36,8 +36,8 @@ export class UserRoutes {
     required: true
   })
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Sucesso: Username já esta sendo utilizado' })
-  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
+  @ApiResponse({ status: 200, description: 'Sucesso: Username esta disponivel' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida, username sendo utilizado' })
   @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
   @ApiResponse({ status: 404, description: 'Not Found: Username não foi encontrado' })
   @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
