@@ -62,6 +62,8 @@ describe('User Routes', () => {
 
   afterEach(async () => {
     await app.close()
+    await prisma.externalAuthMapping.deleteMany()
+    await prisma.user.deleteMany()
   })
 
   afterAll(async () => {
@@ -83,6 +85,48 @@ describe('User Routes', () => {
           rpgStyles: ['b866459b-63fc-4bd3-a88c-f6d4a7f39cd2']
         })
         .expect(204)
+    })
+
+    it('Should return 400 when post to /user/check-username and validation fails', async () => {
+      const token = await makeFakeToken()
+      const response = await request(app.getHttpServer())
+        .get('/user/check-username/valid-username-valid-username')
+        .set({ 'x-access-token': token })
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toEqual(expect.objectContaining({
+        error: 'Validation error: String must contain at most 15 character(s)'
+      }))
+    })
+
+    it('Should return 400 when post to /user/check-username username not exits', async () => {
+      const token = await makeFakeToken()
+      const response = await request(app.getHttpServer())
+        .get('/user/check-username/free-username')
+        .set({ 'x-access-token': token })
+
+      expect(response.statusCode).toBe(404)
+      expect(response.body).toEqual(expect.objectContaining({
+        error: 'Username not exists'
+      }))
+    })
+
+    it('Should return 200 when post to /user/check-username username exits', async () => {
+      await prisma.user.create({
+        data: {
+          id: 'any_user_id_2',
+          email: 'any_email_valid@mail.com',
+          name: 'any_name',
+          username: 'valid-username'
+        }
+      })
+
+      const token = await makeFakeToken()
+      const response = await request(app.getHttpServer())
+        .get('/user/check-username/valid-username')
+        .set({ 'x-access-token': token })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toEqual('Username already exists')
     })
   })
 })
