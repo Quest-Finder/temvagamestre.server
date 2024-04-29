@@ -1,6 +1,6 @@
 import { type CheckUsername } from '@/domain/contracts/user/check-username'
 import { type Controller, type Validation } from '@/presentation/contracts'
-import { badRequest, notFound, ok, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, notFound, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
 
 export class CheckUsernameController implements Controller {
@@ -18,7 +18,7 @@ export class CheckUsernameController implements Controller {
       }
       const useCaseResult = await this.checkUsernameUseCase.perform(username)
       if (useCaseResult.isLeft()) {
-        return ok(useCaseResult.value.message)
+        return badRequest(useCaseResult.value)
       }
       return notFound(new Error('Username not exists'))
     } catch (error: any) {
