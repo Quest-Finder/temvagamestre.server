@@ -13,9 +13,10 @@ export class CityStateController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
+      console.log(httpRequest.body)
 
-      const { uf, county } = httpRequest.body
-      const cityStateResult = await this.getCityState.perform(uf, county)
+      const { uf, city } = httpRequest.body
+      const cityStateResult = await this.getCityState.perform(uf, city)
       if (cityStateResult.isLeft()) {
         return badRequest(cityStateResult.value)
       }

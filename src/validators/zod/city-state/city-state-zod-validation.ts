@@ -7,7 +7,7 @@ export class CityStateValidation implements Validation {
   validate (input: any): Either<Error, void> {
     const schema = z.object({
       uf: z.string().length(2),
-      county: z.string()
+      city: z.string()
     })
     return ZodHelper.check({ value: input, schema })
   }

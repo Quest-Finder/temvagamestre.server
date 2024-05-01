@@ -26,7 +26,7 @@ describe('Rpg Style Routes', () => {
     it('Should return 204 if validation success', async () => {
       await request(app.getHttpServer())
         .post('/city-state/validate')
-        .send({ uf: 'SP', county: 'São Paulo' })
+        .send({ uf: 'SP', city: 'São Paulo' })
         .expect(204)
         .expect((res) => {
           expect(res.body).toEqual({})

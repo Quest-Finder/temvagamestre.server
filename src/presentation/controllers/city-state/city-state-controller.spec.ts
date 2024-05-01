@@ -5,64 +5,64 @@ import { left, right } from '@/shared/either'
 import { CityStateValidation } from '@/validators/zod/city-state/city-state-zod-validation'
 import { CityStateController } from './city-state-controller'
 
-const makeCountyState = (error: boolean = false): GetCityState => {
-  class CountyStateStub implements GetCityState {
-    async perform (uf: string, county: string): Promise<CityStateResponse> {
+const makecityState = (error: boolean = false): GetCityState => {
+  class CityStateStub implements GetCityState {
+    async perform (uf: string, city: string): Promise<CityStateResponse> {
       return await Promise.resolve(error ? left(new CityStateError()) : right())
     }
   }
-  return new CountyStateStub()
+  return new CityStateStub()
 }
 
 type SutTypes = {
   sut: CityStateController
-  countyStateStub: GetCityState
+  cityStateStub: GetCityState
 }
 
 const makeSut = (error?: boolean): SutTypes => {
-  const countyStateStub = makeCountyState(error)
-  const sut = new CityStateController(countyStateStub, new CityStateValidation())
-  return { countyStateStub, sut }
+  const cityStateStub = makecityState(error)
+  const sut = new CityStateController(cityStateStub, new CityStateValidation())
+  return { cityStateStub, sut }
 }
 
-describe('CountyStateController', () => {
+describe('cityStateController', () => {
   it('Should call GetCityState without value', async () => {
     const { sut } = makeSut()
-    const response = await sut.handle({ body: { uf: '', county: '' } })
+    const response = await sut.handle({ body: { uf: '', city: '' } })
     expect(response.statusCode).toBe(400)
     expect(response.body.name).toEqual('ValidationError')
   })
 
   it('Should call GetCityState with uf with more two characters', async () => {
     const { sut } = makeSut()
-    const response = await sut.handle({ body: { uf: 'ufa', county: 'county' } })
+    const response = await sut.handle({ body: { uf: 'ufa', city: 'city' } })
     expect(response.statusCode).toBe(400)
     expect(response.body.name).toEqual('ValidationError')
   })
 
   it('Should call GetCityState with uf with less two characters', async () => {
     const { sut } = makeSut()
-    const response = await sut.handle({ body: { uf: 'u', county: 'county' } })
+    const response = await sut.handle({ body: { uf: 'u', city: 'city' } })
     expect(response.statusCode).toBe(400)
     expect(response.body.name).toEqual('ValidationError')
   })
 
-  it('Should call GetCityState with county with type diferent string', async () => {
+  it('Should call GetCityState with city with type diferent string', async () => {
     const { sut } = makeSut()
-    const response = await sut.handle({ body: { uf: 'u', county: true } })
+    const response = await sut.handle({ body: { uf: 'u', city: true } })
     expect(response.statusCode).toBe(400)
     expect(response.body.name).toEqual('ValidationError')
   })
 
   it('Should call GetCityState with Error', async () => {
     const { sut } = makeSut(true)
-    const httpResponse = await sut.handle({ body: { uf: 'uf', county: 'county' } })
-    expect(httpResponse).toEqual(badRequest(new Error('county state')))
+    const httpResponse = await sut.handle({ body: { uf: 'uf', city: 'city' } })
+    expect(httpResponse).toEqual(badRequest(new Error('city state')))
   })
 
   it('Should call GetCityState with success', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle({ body: { uf: 'uf', county: 'county' } })
+    const httpResponse = await sut.handle({ body: { uf: 'uf', city: 'city' } })
     expect(httpResponse).toEqual(noContent())
   })
 })

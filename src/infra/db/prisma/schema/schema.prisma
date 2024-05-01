@@ -187,12 +187,12 @@ model PlayerProfile {
 }
 
 model CityState {
-  id    String @id(map: "pk_city") @unique(map: "uq_city") @db.VarChar(50)
-  city  String @db.VarChar(100)
-  state String @unique(map: "uq_state") @db.VarChar(100)
-  User  User[]
+  id   String @id(map: "pk_city") @unique(map: "uq_city") @db.VarChar(50)
+  city String @db.VarChar(100)
+  uf   String @db.Char(2)
+  User User[]
 
-  @@unique([city, state], map: "uq_city_state")
+  @@unique([city, uf], map: "uq_city_uf")
   @@map("city_state")
 }
 

@@ -1,7 +1,7 @@
 import { ValueObject } from '@/shared/domain'
 import { left, right, type Either } from '@/shared/either'
-import { InvalidDateOfBirthError } from '../../errors'
 import { formatDateStringToDateTime } from '@/util'
+import { InvalidDateOfBirthError } from '../../errors'
 
 export class DateOfBirth extends ValueObject<Date> {
   private constructor (dateOfBirth: Date) {
