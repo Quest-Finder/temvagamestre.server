@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CountyStateRoutesDto {
+export class CityStateRoutesDto {
   @ApiProperty({ example: 'BA' })
     uf: string
 
   @ApiProperty({ example: 'Salvador' })
-    county: string
+    city: string
 
-  constructor (uf: string, county: string) {
+  constructor (uf: string, city: string) {
     this.uf = uf
-    this.county = county
+    this.city = city
   }
 }

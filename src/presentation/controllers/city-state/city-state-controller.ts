@@ -1,11 +1,11 @@
-import { type GetCountyState } from '@/domain/contracts/county-state/get-county-state'
+import { type GetCityState } from '@/domain/contracts/county-state/get-county-state'
 import { type Validation } from '@/presentation/contracts'
 import { type Controller } from '@/presentation/contracts/controller'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
 
-export class CountyStateController implements Controller {
-  constructor (private readonly getCountyState: GetCountyState, private readonly validation: Validation) {}
+export class CityStateController implements Controller {
+  constructor (private readonly getCityState: GetCityState, private readonly validation: Validation) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -15,10 +15,9 @@ export class CountyStateController implements Controller {
       }
 
       const { uf, county } = httpRequest.body
-      const countyStateResult = await this.getCountyState.perform(uf, county)
-      if (countyStateResult.isLeft()) {
-        console.log(uf, county)
-        return badRequest(countyStateResult.value)
+      const cityStateResult = await this.getCityState.perform(uf, county)
+      if (cityStateResult.isLeft()) {
+        return badRequest(cityStateResult.value)
       }
       return noContent()
     } catch (error: any) {

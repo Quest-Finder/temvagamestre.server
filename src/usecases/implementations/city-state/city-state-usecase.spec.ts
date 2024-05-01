@@ -1,11 +1,11 @@
-import { CountyStateError } from '@/domain/errors/county-state-error'
 import { left, right } from '@/shared/either'
 import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-service'
-import { CountyStateUsecase } from './county-state-usecase'
+import { CityStateUsecase } from './city-state-usecase'
+import { CityStateError } from '@/domain/errors'
 
 const makeIBGEService = (): IBGEService => {
   class IBGEServiceStub implements IBGEService {
-    async execute (uf: string, county: string): Promise<boolean> {
+    async execute (uf: string, city: string): Promise<boolean> {
       return await Promise.resolve(true)
     }
   }
@@ -13,13 +13,13 @@ const makeIBGEService = (): IBGEService => {
 }
 
 type SutTypes = {
-  sut: CountyStateUsecase
+  sut: CityStateUsecase
   ibgeService: IBGEService
 }
 
 const makeSut = (): SutTypes => {
   const ibgeService = makeIBGEService()
-  const sut = new CountyStateUsecase(ibgeService)
+  const sut = new CityStateUsecase(ibgeService)
   return {
     sut, ibgeService
   }
@@ -35,6 +35,6 @@ describe('CountyStateUsecase', () => {
     const { sut, ibgeService } = makeSut()
     ibgeService.execute = jest.fn().mockResolvedValueOnce(false)
     const result = await sut.perform('any_uf', 'any_county_error')
-    expect(result).toEqual(left(new CountyStateError()))
+    expect(result).toEqual(left(new CityStateError()))
   })
 })

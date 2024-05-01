@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { CountyStateRoutes } from './county-state-routes'
+import { CityStateRoutes } from './city-state-routes'
 
 @Module({
-  controllers: [CountyStateRoutes]
+  controllers: [CityStateRoutes]
 })
 export class CountyStateRoutesModule {}

@@ -1,3 +1,3 @@
 export interface IBGEService {
-  execute: (uf: string, county: string) => Promise<boolean>
+  execute: (uf: string, city: string) => Promise<boolean>
 }
