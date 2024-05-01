@@ -13,6 +13,7 @@ export type UserProps = {
   socialMedias?: SocialMedia[]
   title?: Title
   bio?: Bio
+
 }
 export class User extends Entity<UserProps> {
   private constructor (props: UserProps, id?: UniqueEntityId) {

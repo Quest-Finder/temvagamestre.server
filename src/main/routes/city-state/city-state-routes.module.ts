@@ -4,4 +4,4 @@ import { CityStateRoutes } from './city-state-routes'
 @Module({
   controllers: [CityStateRoutes]
 })
-export class CountyStateRoutesModule {}
+export class CityStateRoutesModule {}
