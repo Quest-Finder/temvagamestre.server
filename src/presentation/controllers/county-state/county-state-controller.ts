@@ -17,6 +17,7 @@ export class CountyStateController implements Controller {
       const { uf, county } = httpRequest.body
       const countyStateResult = await this.getCountyState.perform(uf, county)
       if (countyStateResult.isLeft()) {
+        console.log(uf, county)
         return badRequest(countyStateResult.value)
       }
       return noContent()

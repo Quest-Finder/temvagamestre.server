@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { CountyStateRoutesModule } from './routes/county-state/county-state-routes.module'
 import { RpgStyleRoutesModule } from './routes/rpg-style/rpg-style-routes.module'
 import { SocialMediaRoutesModule } from './routes/social-media/social-media-routes.module'
 import { UserPreferenceRoutesModule } from './routes/user-preference/user-preference-routes.module'
@@ -11,7 +12,8 @@ import { UserRoutesModule } from './routes/user/user-routes.module'
     SocialMediaRoutesModule,
     UserSocialMediaRoutesModule,
     UserPreferenceRoutesModule,
-    RpgStyleRoutesModule
+    RpgStyleRoutesModule,
+    CountyStateRoutesModule
   ]
 })
 export class AppModule {}
