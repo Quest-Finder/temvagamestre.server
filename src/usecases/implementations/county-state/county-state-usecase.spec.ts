@@ -1,33 +1,27 @@
 import { CountyStateError } from '@/domain/errors/county-state-error'
-import { type HttpResponse } from '@/presentation/types/http'
 import { left, right } from '@/shared/either'
-import { type ExternalRequest } from '@/usecases/contracts/external-request/external-request'
+import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-service'
 import { CountyStateUsecase } from './county-state-usecase'
 
-global.fetch = jest.fn()
-
-const makeExternalRequest = (): ExternalRequest => {
-  class ExternalRequestStub implements ExternalRequest {
-    async execute (): Promise<HttpResponse> {
-      return await Promise.resolve({
-        statusCode: 200,
-        body: [{ nome: 'any_county' }]
-      })
+const makeIBGEService = (): IBGEService => {
+  class IBGEServiceStub implements IBGEService {
+    async execute (uf: string, county: string): Promise<boolean> {
+      return await Promise.resolve(true)
     }
   }
-  return new ExternalRequestStub()
+  return new IBGEServiceStub()
 }
 
 type SutTypes = {
   sut: CountyStateUsecase
-  externalRequest: ExternalRequest
+  ibgeService: IBGEService
 }
 
 const makeSut = (): SutTypes => {
-  const externalRequest = makeExternalRequest()
-  const sut = new CountyStateUsecase(externalRequest)
+  const ibgeService = makeIBGEService()
+  const sut = new CountyStateUsecase(ibgeService)
   return {
-    sut, externalRequest
+    sut, ibgeService
   }
 }
 
@@ -38,7 +32,8 @@ describe('CountyStateUsecase', () => {
     expect(result).toEqual(right())
   })
   it('should be returning Error', async () => {
-    const { sut } = makeSut()
+    const { sut, ibgeService } = makeSut()
+    ibgeService.execute = jest.fn().mockResolvedValueOnce(false)
     const result = await sut.perform('any_uf', 'any_county_error')
     expect(result).toEqual(left(new CountyStateError()))
   })
