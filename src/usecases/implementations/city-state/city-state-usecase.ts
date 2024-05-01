@@ -6,7 +6,7 @@ import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-servic
 export class CityStateUsecase implements GetCityState {
   constructor (private readonly iBGEService: IBGEService) { }
   async perform (uf: string, city: string): Promise<CityStateResponse> {
-    const ibgeResponse = await this.iBGEService.execute(uf, city)
+    const ibgeResponse = await this.iBGEService.execute({ uf, city })
 
     return ibgeResponse ? right() : left(new CityStateError())
   }

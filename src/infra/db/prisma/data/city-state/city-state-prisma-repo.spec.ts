@@ -33,9 +33,10 @@ describe('AddPlayerProfilePrismaRepo', () => {
 
   it('Should create a city state if prisma upsert() is a success', async () => {
     const sut = makeSut()
-    await sut.execute(makeFakeCityStateModel())
-    const cityState = await prismock.cityState.findUnique({ where: { city_uf: makeFakeCityStateModel() }, select: { city: true, uf: true } })
-    expect(cityState).toEqual(makeFakeCityStateModel())
+    const { id, ...cityStateReturn } = await sut.execute(makeFakeCityStateModel())
+    const cityStateInDB = await prismock.cityState.findUnique({ where: { city_uf: makeFakeCityStateModel() }, select: { city: true, uf: true } })
+    expect(cityStateInDB).toEqual(makeFakeCityStateModel())
+    expect(cityStateReturn).toEqual(makeFakeCityStateModel())
   })
 
   it('Should update a city state if data exists', async () => {

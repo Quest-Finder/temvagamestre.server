@@ -1,20 +1,35 @@
 /* eslint-disable @typescript-eslint/return-await */
 import type { RegisterUser, RegisterUserResponse } from '@/domain/contracts/user'
 import { User, type RegisterUserData } from '@/domain/entities/user'
+import { CityStateError } from '@/domain/errors'
 import { left, right } from '@/shared/either'
+import { type CityStateRepo } from '@/usecases/contracts/db/city-state-repo'
 import { type RegisterUserRepo } from '@/usecases/contracts/db/user'
 import { type SaveUserSocialMediaRepo } from '@/usecases/contracts/db/user-social-media'
+import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-service'
 
 export class RegisterUserUseCase implements RegisterUser {
-  constructor (private readonly registerUserRepo: RegisterUserRepo,
-    private readonly saveUserSocialMediaRepo: SaveUserSocialMediaRepo) { }
+  constructor (
+    private readonly registerUserRepo: RegisterUserRepo,
+    private readonly saveUserSocialMediaRepo: SaveUserSocialMediaRepo,
+    private readonly cityStateRepo: CityStateRepo,
+    private readonly iBGEService: IBGEService) { }
 
   async perform (data: RegisterUserData): Promise<RegisterUserResponse> {
     const registerUserResult = User.register(data)
     if (registerUserResult.isLeft()) {
       return left(registerUserResult.value)
     }
-    await this.registerUserRepo.execute(registerUserResult.value)
+
+    const cityStateIsValid = await this.iBGEService.execute({ ...registerUserResult.value.cityState })
+    if (!cityStateIsValid) {
+      return left(new CityStateError())
+    }
+
+    const cityState = await this.cityStateRepo.execute(registerUserResult.value.cityState)
+
+    await this.registerUserRepo.execute({ user: registerUserResult.value, cityStateId: cityState.id })
+
     if (data.socialMedias) {
       const queries = data.socialMedias.map(async socialMedia => this.saveUserSocialMediaRepo.execute({
         userId: registerUserResult.value.id, socialMediaId: socialMedia.socialMediaId, link: socialMedia.userLink

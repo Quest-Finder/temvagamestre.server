@@ -19,14 +19,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('IBGEServiceInfra', () => {
-  it('should be returning void', async () => {
+  it('should be returning true', async () => {
     const { sut } = makeSut()
-    const result = await sut.execute('SP', 'São Paulo')
+    const result = await sut.execute({ uf: 'SP', city: 'São Paulo' })
     expect(result).toBe(true)
   })
   it('should be returning Error', async () => {
     const { sut } = makeSut()
-    const result = await sut.execute('SP', 'Salvador')
+    const result = await sut.execute({ uf: 'SP', city: 'Salvador' })
     expect(result).toBe(false)
   })
 })

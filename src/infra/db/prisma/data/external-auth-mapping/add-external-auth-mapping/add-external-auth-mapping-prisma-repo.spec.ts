@@ -65,7 +65,8 @@ describe('FindUserByEmailPrismaRepo', () => {
       playerProfileId: null,
       title: null,
       bio: null,
-      externalAuthMapping: makeFakeExternalAuthMappingModel()
+      externalAuthMapping: makeFakeExternalAuthMappingModel(),
+      cityStateId: null
     })
   })
 
