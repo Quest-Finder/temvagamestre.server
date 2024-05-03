@@ -7,7 +7,7 @@ import { left, right } from '@/shared/either'
 import { type CityStateRepo } from '@/usecases/contracts/db/city-state-repo'
 import type { RegisterUserRepo, RegisterUserRepoProps } from '@/usecases/contracts/db/user'
 import type { SaveUserSocialMediaRepo } from '@/usecases/contracts/db/user-social-media'
-import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-service'
+import { type IBGEService, type IBGEServiceProps, type IBGEServiceResponse } from '@/usecases/contracts/services/ibge/ibge-service'
 import { RegisterUserUseCase } from './register-user-usecase'
 
 jest.mock('@/domain/entities/user/user', () => ({
@@ -69,8 +69,8 @@ const makeCityStateRepo = (): CityStateRepo => {
 
 const makeIBGEService = (): IBGEService => {
   class IBGEServiceStub implements IBGEService {
-    async execute (data: CityStateProps): Promise<boolean> {
-      return await Promise.resolve(true)
+    async execute ({ uf, city }: IBGEServiceProps): Promise<IBGEServiceResponse> {
+      return await Promise.resolve({ cityFounded: true, cities: ['any_city'] })
     }
   }
   return new IBGEServiceStub()
