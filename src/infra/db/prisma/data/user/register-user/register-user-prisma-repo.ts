@@ -14,7 +14,6 @@ export class RegisterUserPrismaRepo implements RegisterUserRepo {
         cityStateId,
         userPreference: {
           create: {
-            frequency: 'weekly',
             activeType: 'player',
             userPreferenceRpgStyle: { createMany: { data: user.rpgStyles.map(rpgStyleId => ({ rpgStyleId })) } }
           }

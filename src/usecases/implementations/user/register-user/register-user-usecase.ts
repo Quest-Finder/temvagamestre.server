@@ -23,10 +23,12 @@ export class RegisterUserUseCase implements RegisterUser {
     if (registerUserResult.isLeft()) {
       return left(registerUserResult.value)
     }
+    console.log(session)
+    console.log('getCityValidationDone', session.getCityValidationDone)
 
-    const cityStateIsValid = await this.iBGEService.execute({ ...registerUserResult.value.cityState })
-    if (!cityStateIsValid) {
-      return left(new CityStateError())
+    if (!session.getCityValidationDone) {
+      const { cityFounded } = await this.iBGEService.execute({ ...registerUserResult.value.cityState })
+      if (!cityFounded) return left(new CityStateError())
     }
 
     const cityState = await this.cityStateRepo.execute(registerUserResult.value.cityState)

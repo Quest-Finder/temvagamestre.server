@@ -12,6 +12,8 @@ export class RegisterUserController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const validationResult = this.validation.validate(httpRequest.body)
+      console.log(validationResult)
+
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
@@ -19,11 +21,15 @@ export class RegisterUserController implements Controller {
       const registerUserResult = await this.registerUser.perform({
         id: httpRequest.headers.userId, ...httpRequest.body
       }, httpRequest.session)
+      console.log(registerUserResult)
+
       if (registerUserResult.isLeft()) {
         return badRequest(registerUserResult.value)
       }
       return noContent()
     } catch (error: any) {
+      console.log(error)
+
       return serverError(error)
     }
   }
