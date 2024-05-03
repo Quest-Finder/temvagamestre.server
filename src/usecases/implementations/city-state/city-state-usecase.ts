@@ -12,7 +12,6 @@ export class CityStateUsecase implements GetCityState {
     const { cities } = await this.iBGEService.execute({ uf, city: '' })
 
     if (!cities.length) return left(new CityStateError())
-    console.log('teste', session)
 
     session.getCityValidationDone = true
 

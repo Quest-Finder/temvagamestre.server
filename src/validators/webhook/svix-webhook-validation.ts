@@ -22,8 +22,6 @@ export class SvixWebhookValidation implements Validation {
       })
       return right()
     } catch (error: any) {
-      console.log(error)
-
       return left(new VerifyWebhookError())
     }
   }

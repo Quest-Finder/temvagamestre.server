@@ -15,7 +15,6 @@ export class CityStateController implements Controller {
       }
 
       const { uf } = httpRequest.body
-      console.log(httpRequest.session)
 
       const cityStateResult = await this.getCityState.perform(uf, httpRequest.session)
       if (cityStateResult.isLeft()) {
@@ -23,7 +22,6 @@ export class CityStateController implements Controller {
       }
       return ok(cityStateResult.value)
     } catch (error: any) {
-      console.log(error)
       return serverError(error)
     }
   }
