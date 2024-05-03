@@ -1,6 +1,6 @@
 import type { Controller } from '@/presentation/contracts'
 import { type HttpRequest } from '@/presentation/types/http'
-import type { Response, Request } from 'express'
+import type { Request, Response } from 'express'
 
 export class NestRouteAdapter {
   constructor (private readonly controller: Controller) {}
@@ -9,8 +9,10 @@ export class NestRouteAdapter {
     const httpRequest: HttpRequest = {
       body: req.body,
       headers: req.headers,
-      params: req.params
+      params: req.params,
+      session: req.session
     }
+
     const httpResponse = await this.controller.handle(httpRequest)
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       res.status(httpResponse.statusCode).json(httpResponse.body)

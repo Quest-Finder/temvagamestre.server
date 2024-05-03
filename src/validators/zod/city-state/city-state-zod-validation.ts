@@ -6,8 +6,7 @@ import { z } from 'zod'
 export class CityStateValidation implements Validation {
   validate (input: any): Either<Error, void> {
     const schema = z.object({
-      uf: z.string().length(2),
-      city: z.string()
+      uf: z.string().length(2)
     })
     return ZodHelper.check({ value: input, schema })
   }

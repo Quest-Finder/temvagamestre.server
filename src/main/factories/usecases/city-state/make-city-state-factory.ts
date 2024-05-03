@@ -3,5 +3,6 @@ import { CityStateUsecase } from '@/usecases/implementations/city-state/city-sta
 import { makeIbgeService } from '../../service/ibge/make-ibge-service-factory'
 
 export const makeCityStateUsecase = (): GetCityState => {
-  return new CityStateUsecase(makeIbgeService())
+  const ibgeService = makeIbgeService()
+  return new CityStateUsecase(ibgeService)
 }

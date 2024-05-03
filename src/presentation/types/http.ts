@@ -7,4 +7,5 @@ export interface HttpRequest {
   headers?: any
   params?: any
   body?: any
+  session?: any
 }

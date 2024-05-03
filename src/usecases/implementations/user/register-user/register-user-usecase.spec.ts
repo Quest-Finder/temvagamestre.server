@@ -97,7 +97,7 @@ describe('RegisterUserUseCase', () => {
   it('Should call User.register() with correct values', async () => {
     const { sut } = makeSut()
     const registerSpy = jest.spyOn(User, 'register')
-    await sut.perform(makeFakeRegisterUserData())
+    await sut.perform(makeFakeRegisterUserData(), {})
     expect(registerSpy).toHaveBeenCalledWith(makeFakeRegisterUserData())
   })
 
@@ -106,14 +106,14 @@ describe('RegisterUserUseCase', () => {
     jest.spyOn(User, 'register').mockReturnValueOnce(
       left(new Error('any_error'))
     )
-    const result = await sut.perform(makeFakeRegisterUserData())
+    const result = await sut.perform(makeFakeRegisterUserData(), {})
     expect(result.value).toEqual(new Error('any_error'))
   })
 
   it('Should call RegisterUserRepo with correct values', async () => {
     const { sut, registerUserRepoStub } = makeSut()
     const executeSpy = jest.spyOn(registerUserRepoStub, 'execute')
-    await sut.perform(makeFakeRegisterUserData())
+    await sut.perform(makeFakeRegisterUserData(), {})
     expect(executeSpy).toHaveBeenCalledWith({
       user: {
         id: 'any_id',
@@ -137,20 +137,20 @@ describe('RegisterUserUseCase', () => {
     jest.spyOn(registerUserRepoStub, 'execute').mockReturnValueOnce(
       Promise.reject(new Error())
     )
-    const promise = sut.perform(makeFakeRegisterUserData())
+    const promise = sut.perform(makeFakeRegisterUserData(), {})
     await expect(promise).rejects.toThrow()
   })
 
   it('Should return right result on success', async () => {
     const { sut } = makeSut()
-    const result = await sut.perform(makeFakeRegisterUserData())
+    const result = await sut.perform(makeFakeRegisterUserData(), {})
     expect(result.isRight()).toBe(true)
   })
 
   it('Should return right result on success with social medias in data', async () => {
     const { sut, saveUserSocialMediaRepoStub } = makeSut()
     const executeSpy = jest.spyOn(saveUserSocialMediaRepoStub, 'execute')
-    const result = await sut.perform({ ...makeFakeRegisterUserData(), socialMedias: [{ socialMediaId: 'any_id', userLink: 'any_link' }] })
+    const result = await sut.perform({ ...makeFakeRegisterUserData(), socialMedias: [{ socialMediaId: 'any_id', userLink: 'any_link' }] }, {})
 
     expect(executeSpy).toHaveBeenCalledWith({
       userId: 'any_id',
@@ -165,7 +165,7 @@ describe('RegisterUserUseCase', () => {
     jest.spyOn(iBGEServiceStub, 'execute').mockReturnValueOnce(
       Promise.reject(new Error())
     )
-    const promise = sut.perform(makeFakeRegisterUserData())
+    const promise = sut.perform(makeFakeRegisterUserData(), {})
     await expect(promise).rejects.toThrow()
   })
 
@@ -174,7 +174,7 @@ describe('RegisterUserUseCase', () => {
     jest.spyOn(cityStateRepoStub, 'execute').mockReturnValueOnce(
       Promise.reject(new Error())
     )
-    const promise = sut.perform(makeFakeRegisterUserData())
+    const promise = sut.perform(makeFakeRegisterUserData(), {})
     await expect(promise).rejects.toThrow()
   })
 })

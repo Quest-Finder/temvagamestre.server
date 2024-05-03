@@ -14,5 +14,6 @@ export const makeRegisterUserUseCase = (): RegisterUser => {
     registerUserRepo,
     saveUserSocialMediaRepo,
     CityStateRepo,
-    iBGEService)
+    iBGEService
+  )
 }

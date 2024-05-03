@@ -1,5 +1,8 @@
-import { type CityStateProps } from '@/domain/entities/user/value-objects/city-state/city-state'
-
+export type IBGEServiceResponse = { cities: string[], cityFounded: boolean }
+export type IBGEServiceProps = {
+  uf: string
+  city?: string
+}
 export interface IBGEService {
-  execute: ({ uf, city }: CityStateProps) => Promise<boolean>
+  execute: ({ uf, city }: IBGEServiceProps) => Promise<IBGEServiceResponse>
 }

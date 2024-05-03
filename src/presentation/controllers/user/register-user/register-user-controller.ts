@@ -18,7 +18,7 @@ export class RegisterUserController implements Controller {
 
       const registerUserResult = await this.registerUser.perform({
         id: httpRequest.headers.userId, ...httpRequest.body
-      })
+      }, httpRequest.session)
       if (registerUserResult.isLeft()) {
         return badRequest(registerUserResult.value)
       }

@@ -7,15 +7,18 @@ import { type CityStateRepo } from '@/usecases/contracts/db/city-state-repo'
 import { type RegisterUserRepo } from '@/usecases/contracts/db/user'
 import { type SaveUserSocialMediaRepo } from '@/usecases/contracts/db/user-social-media'
 import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-service'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class RegisterUserUseCase implements RegisterUser {
   constructor (
     private readonly registerUserRepo: RegisterUserRepo,
     private readonly saveUserSocialMediaRepo: SaveUserSocialMediaRepo,
     private readonly cityStateRepo: CityStateRepo,
-    private readonly iBGEService: IBGEService) { }
+    private readonly iBGEService: IBGEService
+  ) { }
 
-  async perform (data: RegisterUserData): Promise<RegisterUserResponse> {
+  async perform (data: RegisterUserData, session: any): Promise<RegisterUserResponse> {
     const registerUserResult = User.register(data)
     if (registerUserResult.isLeft()) {
       return left(registerUserResult.value)

@@ -21,12 +21,17 @@ const makeSut = (): SutTypes => {
 describe('IBGEServiceInfra', () => {
   it('should be returning true', async () => {
     const { sut } = makeSut()
-    const result = await sut.execute({ uf: 'SP', city: 'São Paulo' })
-    expect(result).toBe(true)
+    const { cities } = await sut.execute({ uf: 'AC' })
+    expect(cities).toEqual([
+      'acrelândia', 'assis brasil', 'brasiléia', 'bujari', 'capixaba', 'cruzeiro do sul',
+      'epitaciolândia', 'feijó', 'jordão', 'mâncio lima', 'manoel urbano', 'marechal thaumaturgo',
+      'plácido de castro', 'porto walter', 'rio branco', 'rodrigues alves', 'santa rosa do purus',
+      'senador guiomard', 'sena madureira', 'tarauacá', 'xapuri', 'porto acre'
+    ])
   })
   it('should be returning Error', async () => {
     const { sut } = makeSut()
-    const result = await sut.execute({ uf: 'SP', city: 'Salvador' })
-    expect(result).toBe(false)
+    const { cityFounded } = await sut.execute({ uf: 'SP', city: 'Salvador' })
+    expect(cityFounded).toBe(false)
   })
 })

@@ -1,7 +1,7 @@
 import { type GetCityState } from '@/domain/contracts/county-state/get-county-state'
 import { type Validation } from '@/presentation/contracts'
 import { type Controller } from '@/presentation/contracts/controller'
-import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers/http-helpers'
 import { type HttpRequest, type HttpResponse } from '@/presentation/types/http'
 
 export class CityStateController implements Controller {
@@ -13,15 +13,17 @@ export class CityStateController implements Controller {
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
-      console.log(httpRequest.body)
 
-      const { uf, city } = httpRequest.body
-      const cityStateResult = await this.getCityState.perform(uf, city)
+      const { uf } = httpRequest.body
+      console.log(httpRequest.session)
+
+      const cityStateResult = await this.getCityState.perform(uf, httpRequest.session)
       if (cityStateResult.isLeft()) {
         return badRequest(cityStateResult.value)
       }
-      return noContent()
+      return ok(cityStateResult.value)
     } catch (error: any) {
+      console.log(error)
       return serverError(error)
     }
   }

@@ -1,8 +1,8 @@
-import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from '@nestjs/common'
-import { UserRoutes } from './user-routes'
 import { AuthNestMiddleware, WebhookValidatorNestMiddleware } from '@/main/middlewares'
-import { SignUpRoutes } from './signup/signup-routes'
+import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from '@nestjs/common'
 import { FakeUserRoutes } from './fake-user/fake-user-routes'
+import { SignUpRoutes } from './signup/signup-routes'
+import { UserRoutes } from './user-routes'
 
 @Module({
   controllers: [UserRoutes, SignUpRoutes, FakeUserRoutes]
