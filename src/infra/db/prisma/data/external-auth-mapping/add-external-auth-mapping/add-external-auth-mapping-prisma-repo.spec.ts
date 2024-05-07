@@ -60,7 +60,7 @@ describe('FindUserByEmailPrismaRepo', () => {
       ...makeFakeUserModel(),
       addressId: null,
       dateOfBirth: null,
-      pronoun: null,
+      pronoun: "I don't want to share any pronouns",
       username: null,
       playerProfileId: null,
       title: null,

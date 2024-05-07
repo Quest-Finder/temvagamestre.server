@@ -109,18 +109,16 @@ model SocialMedia {
 }
 
 model User {
-
-  id          String    @id(map: "pk_user") @unique(map: "uq_user_id") @db.VarChar(50)
-  name        String    @map("first_name") @db.VarChar(30)
-  email       String    @unique(map: "uq_user_email") @db.VarChar(256)
-  username    String?   @db.VarChar(25)
-  pronoun     String?   @db.VarChar(10)
-  addressId   String?   @map("address_id") @db.VarChar(50)
-  dateOfBirth DateTime? @map("date_of_birth") @db.Date()
-  title       String?   @map("title") @db.VarChar(100)
-  bio         String?   @map("bio") @db.VarChar(500)
-  playerProfileId String?    @map("player_profile_id") @db.VarChar(50)
-
+  id              String    @id(map: "pk_user") @unique(map: "uq_user_id") @db.VarChar(50)
+  name            String    @map("first_name") @db.VarChar(30)
+  email           String    @unique(map: "uq_user_email") @db.VarChar(256)
+  username        String?   @db.VarChar(25)
+  pronoun         String?   @default("I don't want to share any pronouns") @db.VarChar(50)
+  addressId       String?   @map("address_id") @db.VarChar(50)
+  dateOfBirth     DateTime? @map("date_of_birth") @db.Date()
+  title           String?   @map("title") @db.VarChar(100)
+  bio             String?   @map("bio") @db.VarChar(500)
+  playerProfileId String?   @map("player_profile_id") @db.VarChar(50)
 
   userPreference      UserPreference?
   userConfig          UserConfig?
@@ -128,8 +126,8 @@ model User {
   externalAuthMapping ExternalAuthMapping?
   userSocialMedia     UserSocialMedia[]
 
-  address       Address?      @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
-  playerProfile PlayerProfile? @relation(fields: [playerProfileId], references: [id],onDelete: NoAction, onUpdate: NoAction, map: "fk_player_profile_user")
+  address       Address?       @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
+  playerProfile PlayerProfile? @relation(fields: [playerProfileId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_player_profile_user")
 
   @@map("user")
 }

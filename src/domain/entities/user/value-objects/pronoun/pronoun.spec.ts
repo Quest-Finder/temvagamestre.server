@@ -16,5 +16,8 @@ describe('Pronoun ValueObject', () => {
 
     result = Pronoun.create('they/theirs')
     expect(result.value).toEqual({ props: 'they/theirs' })
+
+    result = Pronoun.create("I don't want to share any pronouns")
+    expect(result.value).toEqual({ props: "I don't want to share any pronouns" })
   })
 })

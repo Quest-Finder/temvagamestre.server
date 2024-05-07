@@ -1,8 +1,8 @@
+import { ValueObject } from '@/shared/domain'
 import { type Either, left, right } from '@/shared/either'
 import { InvalidPronounError } from '../../errors'
-import { ValueObject } from '@/shared/domain'
 
-export type PronounEnum = 'he/his' | 'she/her' | 'they/theirs'
+export type PronounEnum = 'he/his' | 'she/her' | 'they/theirs' | "I don't want to share any pronouns"
 
 export class Pronoun extends ValueObject<PronounEnum> {
   private constructor (pronoun: PronounEnum) {
@@ -18,7 +18,7 @@ export class Pronoun extends ValueObject<PronounEnum> {
   }
 
   private static validate (pronoun: string): boolean {
-    if (pronoun !== 'he/his' && pronoun !== 'she/her' && pronoun !== 'they/theirs') {
+    if (pronoun !== 'he/his' && pronoun !== 'she/her' && pronoun !== 'they/theirs' && pronoun !== "I don't want to share any pronouns") {
       return false
     }
     return true
