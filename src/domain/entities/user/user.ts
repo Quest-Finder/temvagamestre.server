@@ -1,8 +1,7 @@
 import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
 import type { RegisterUserData, RegisterUserResponse } from './user-types'
-import { Bio, DateOfBirth, Name,PlayerProfileId, Pronoun, SocialMedia, Username, type PronounEnum, type SocialMediaProps, Title, RpgStyle } from './value-objects'
-
+import { Bio, DateOfBirth, Name, PlayerProfileId, Pronoun, SocialMedia, Username, type PronounEnum, type SocialMediaProps, Title, RpgStyle } from './value-objects'
 
 export type UserProps = {
   name: Name
@@ -58,8 +57,7 @@ export class User extends Entity<UserProps> {
   }
 
   static register (data: RegisterUserData): RegisterUserResponse {
-    const { dateOfBirth, pronoun, username, name, title, bio, socialMedias, rpgStyles,playerProfileId } = data
-
+    const { dateOfBirth, pronoun, username, name, title, bio, socialMedias, rpgStyles, playerProfileId } = data
 
     const nameOrError = Name.create(name)
     const usernameOrError = Username.create(username)
@@ -69,7 +67,7 @@ export class User extends Entity<UserProps> {
     const rpgStyleOrError = rpgStyles.map((rpgStyle) => RpgStyle.create(rpgStyle))
     const socialMediasOrError = socialMedias ? socialMedias.map(socialMedia => SocialMedia.create(socialMedia)) : []
 
-    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError,playerProfileIdOrError]
+    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError, playerProfileIdOrError]
 
     const titleOrError = title ? Title.create(title) : undefined
     titleOrError && results.push(titleOrError)

@@ -1,7 +1,15 @@
 export class RpgStyle {
   private static readonly rpgStyleNames: string[] = [
-    'Fantasia', 'Fantasia Heroica', 'Fantasia Épica', 'Fantasia Mítica', 'Fantasia Sombria', 'Ninja vs Samurai',
-    'Espada e Feitiçaria', 'Intriga', 'Guerra', 'Nave Mãe', 'Mistério'
+    'Fantasia Heroica',
+    'Ninja vs Samurai',
+    'Espada e Feitiçaria',
+    'Fantasia Épica',
+    'Fantasia Mítica',
+    'Fantasia Sombria',
+    'Intriga',
+    'Mistério',
+    'Guerra',
+    'Nave Mãe'
   ]
 
   static getRpgStyles (): string[] {
