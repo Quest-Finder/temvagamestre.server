@@ -43,11 +43,12 @@ describe('AddUserPrismaRepo', () => {
     expect(user).toEqual({
       ...makeFakeUserModel(),
       addressId: null,
-      pronoun: null,
+      pronoun: "I don't want to share any pronouns",
       username: null,
       playerProfileId: null,
       title: null,
-      bio: null
+      bio: null,
+      cityStateId: null
     })
   })
 

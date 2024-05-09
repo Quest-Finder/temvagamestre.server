@@ -1,4 +1,5 @@
 import { type SocialMediaProps } from '@/domain/entities/user/value-objects'
+import { type CityStateProps } from '@/domain/entities/user/value-objects/city-state/city-state'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class RegisterUserRoutesDto {
@@ -17,7 +18,7 @@ export class RegisterUserRoutesDto {
 
   @ApiProperty({
     example: 'she/her',
-    description: "Gênero do usuário ('he/his' | 'she/her' | 'they/theirs')"
+    description: "Gênero do usuário ('he/his' | 'she/her' | 'they/theirs' | 'I don't want to share any pronouns')"
   })
     pronoun: string
 
@@ -39,7 +40,10 @@ export class RegisterUserRoutesDto {
   @ApiProperty({ example: [{ socialMediaId: '31b66f76-82ff-4719-bad0-48154a04f3c7', userLink: '/user_link' }], description: 'array com objetos contendo o id da rede social e o link do usuario (omite-se a parte do link da rede social Ex: https://www.twitter.com)' })
     socialMedias: SocialMediaProps[]
 
-  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, playerProfileId: string, rpgStyles: string[], socialMedias: SocialMediaProps[], title?: string, description?: string) {
+  @ApiProperty({ example: { city: 'São Paulo', uf: 'SP' } })
+    cityState: CityStateProps
+
+  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, playerProfileId: string, rpgStyles: string[], socialMedias: SocialMediaProps[], cityState: CityStateProps, title?: string, description?: string) {
     this.name = name
     this.username = username
     this.dateOfBirth = dateOfBirth
@@ -49,5 +53,6 @@ export class RegisterUserRoutesDto {
     this.title = title
     this.description = description
     this.socialMedias = socialMedias
+    this.cityState = cityState
   }
 }

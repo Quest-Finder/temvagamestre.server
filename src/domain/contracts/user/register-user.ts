@@ -4,5 +4,5 @@ import { type Either } from '@/shared/either'
 export type RegisterUserResponse = Either<UserEntityErrors, void>
 
 export interface RegisterUser {
-  perform: (data: RegisterUserData) => Promise<RegisterUserResponse>
+  perform: (data: RegisterUserData, session?: any) => Promise<RegisterUserResponse>
 }

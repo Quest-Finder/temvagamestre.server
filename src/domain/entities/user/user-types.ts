@@ -2,9 +2,10 @@ import { type Either } from '@/shared/either'
 
 import { type InvalidPlayerProfileIdError } from './errors/invalid-plyer-profile-id-error'
 
-import type { InvalidDateOfBirthError, InvalidNameError, InvalidPronounError, InvalidRpgStyleError, InvalidUsernameError } from './errors'
+import type { InvalidCityStateError, InvalidDateOfBirthError, InvalidNameError, InvalidPronounError, InvalidRpgStyleError, InvalidSocialMediaError, InvalidUsernameError } from './errors'
 import { type User } from './user'
 import { type PronounEnum, type SocialMediaProps } from './value-objects'
+import { type CityStateProps } from './value-objects/city-state/city-state'
 
 export type RegisterUserData = {
   id: string
@@ -17,6 +18,7 @@ export type RegisterUserData = {
   socialMedias?: SocialMediaProps[]
   title?: string
   bio?: string
+  cityState: CityStateProps
 }
 
 export type UserEntityErrors =
@@ -25,6 +27,8 @@ export type UserEntityErrors =
   InvalidNameError |
   InvalidPronounError |
   InvalidPlayerProfileIdError |
-  InvalidRpgStyleError
+  InvalidRpgStyleError |
+  InvalidCityStateError |
+  InvalidSocialMediaError
 
 export type RegisterUserResponse = Either<UserEntityErrors, User>

@@ -6,11 +6,18 @@ import type { ExternalAuthMappingModel, PlayerProfileModel } from '@/domain/mode
 import { PrismaHelper } from '@/infra/db/prisma/helpers'
 import { AppModule } from '@/main/app.module'
 import env from '@/main/configs/env'
-import type { INestApplication } from '@nestjs/common'
+import { type INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import type { PrismaClient } from '@prisma/client'
+import session, { type SessionOptions } from 'express-session'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
+
+const sessionConfig: SessionOptions = {
+  secret: 'any_secret_key',
+  resave: false,
+  saveUninitialized: false
+}
 
 type PartialUser = {
   id: string
@@ -57,6 +64,7 @@ describe('User Routes', () => {
       imports: [AppModule]
     }).compile()
     app = module.createNestApplication()
+    app.use(session(sessionConfig))
     await app.init()
   })
 
@@ -82,7 +90,8 @@ describe('User Routes', () => {
           username: 'valid-username',
           pronoun: 'she/her',
           playerProfileId: '9228a9a0-c7e0-4d62-80bb-458dd772c4f9',
-          rpgStyles: ['b866459b-63fc-4bd3-a88c-f6d4a7f39cd2']
+          rpgStyles: ['b866459b-63fc-4bd3-a88c-f6d4a7f39cd2'],
+          cityState: { uf: 'BA', city: 'Salvador' }
         })
         .expect(204)
     })

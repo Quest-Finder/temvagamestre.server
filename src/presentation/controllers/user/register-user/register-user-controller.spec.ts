@@ -1,10 +1,10 @@
+import type { RegisterUser, RegisterUserResponse } from '@/domain/contracts/user'
+import { type RegisterUserData } from '@/domain/entities/user'
 import type { Validation } from '@/presentation/contracts'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helpers'
 import type { HttpRequest } from '@/presentation/types/http'
 import { left, right, type Either } from '@/shared/either'
 import { RegisterUserController } from './register-user-controller'
-import type { RegisterUser, RegisterUserResponse } from '@/domain/contracts/user'
-import { type RegisterUserData } from '@/domain/entities/user'
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
@@ -15,7 +15,8 @@ const makeFakeRequest = (): HttpRequest => ({
     pronoun: 'he/his',
     dateOfBirth: '12-31-2000',
     username: 'any_username'
-  }
+  },
+  session: {}
 })
 
 const makeValidation = (): Validation => {
@@ -29,7 +30,7 @@ const makeValidation = (): Validation => {
 
 const makeFakeRegisterUser = (): RegisterUser => {
   class RegisterUserStub implements RegisterUser {
-    async perform (data: RegisterUserData): Promise<RegisterUserResponse> {
+    async perform (data: RegisterUserData, session: any): Promise<RegisterUserResponse> {
       return await Promise.resolve(right())
     }
   }
@@ -82,7 +83,7 @@ describe('RegisterUserController', () => {
     expect(performSpy).toHaveBeenCalledWith({
       id: 'any_user_id',
       ...makeFakeRequest().body
-    })
+    }, makeFakeRequest().session)
   })
 
   it('Should return 400 if RegisterUser fails', async () => {
