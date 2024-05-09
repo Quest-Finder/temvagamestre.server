@@ -48,7 +48,7 @@ describe('AddUserPrismaRepo', () => {
       playerProfileId: null,
       title: null,
       bio: null,
-      username: null
+      cityStateId: null
     })
   })
 

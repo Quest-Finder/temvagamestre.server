@@ -1,5 +1,5 @@
-import { UuidAdapter } from './uuid-adapter'
 import * as uuid from 'uuid'
+import { UuidAdapter } from './uuid-adapter'
 
 jest.mock('uuid')
 

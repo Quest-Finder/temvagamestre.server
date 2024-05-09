@@ -17,7 +17,11 @@ export class RegisterUserZodValidation implements Validation {
         userLink: z.string()
       })).optional(),
       title: z.string().min(3).max(100).optional(),
-      bio: z.string().min(3).max(500).optional()
+      bio: z.string().min(3).max(500).optional(),
+      cityState: z.object({
+        uf: z.string().length(2),
+        city: z.string()
+      })
     })
     return ZodHelper.check({ value: input, schema })
   }
