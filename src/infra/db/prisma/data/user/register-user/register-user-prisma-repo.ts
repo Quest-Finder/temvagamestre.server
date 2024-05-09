@@ -9,7 +9,7 @@ export class RegisterUserPrismaRepo implements RegisterUserRepo {
       data: {
         name: user.name,
         username: user.username,
-        pronoun: user.pronoun,
+        pronoun: user.pronoun || "I don't want to share any pronouns",
         dateOfBirth: user.dateOfBirth,
         cityStateId,
         userPreference: {

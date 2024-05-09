@@ -18,7 +18,7 @@ export class RegisterUserRoutesDto {
 
   @ApiProperty({
     example: 'she/her',
-    description: "Gênero do usuário ('he/his' | 'she/her' | 'they/theirs')"
+    description: "Gênero do usuário ('he/his' | 'she/her' | 'they/theirs' | 'I don't want to share any pronouns')"
   })
     pronoun: string
 
