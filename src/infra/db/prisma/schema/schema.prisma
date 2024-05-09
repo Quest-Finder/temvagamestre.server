@@ -85,7 +85,7 @@ model UserPreferenceRpgStyle {
 
 model UserPreference {
   id         String     @id(map: "pk_user_preference") @unique(map: "uq_user_preference_id") @db.VarChar(50)
-  frequency  Frequency  @default(weekly)
+  frequency  Frequency?
   activeType ActiveType @default(player) @map("active_type")
 
   userPreferenceDayPeriod    UserPreferenceDayPeriod?
@@ -119,6 +119,8 @@ model User {
   title           String?   @map("title") @db.VarChar(100)
   bio             String?   @map("bio") @db.VarChar(500)
   playerProfileId String?   @map("player_profile_id") @db.VarChar(50)
+  cityStateId     String?   @map("city_state_id") @db.VarChar(50)
+
 
   userPreference      UserPreference?
   userConfig          UserConfig?
@@ -128,6 +130,7 @@ model User {
 
   address       Address?       @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
   playerProfile PlayerProfile? @relation(fields: [playerProfileId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_player_profile_user")
+  cityState     CityState?     @relation(fields: [cityStateId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_city_state_user")
 
   @@map("user")
 }
@@ -182,6 +185,16 @@ model PlayerProfile {
   User        User[]
 
   @@map("player_profile")
+}
+
+model CityState {
+  id   String @id(map: "pk_city") @unique(map: "uq_city") @db.VarChar(50)
+  city String @db.VarChar(100)
+  uf   String @db.Char(2)
+  User User[]
+
+  @@unique([city, uf], map: "uq_city_uf")
+  @@map("city_state")
 }
 
 enum ActiveType {

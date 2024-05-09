@@ -12,13 +12,15 @@ export class RegisterUserController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const validationResult = this.validation.validate(httpRequest.body)
+
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)
       }
 
       const registerUserResult = await this.registerUser.perform({
         id: httpRequest.headers.userId, ...httpRequest.body
-      })
+      }, httpRequest.session)
+
       if (registerUserResult.isLeft()) {
         return badRequest(registerUserResult.value)
       }

@@ -4,6 +4,6 @@ export type ActiveType = 'player' | 'gameMaster'
 
 export type UserPreferenceModel = {
   id: string
-  frequency: Frequency
+  frequency: Frequency | null
   activeType: ActiveType
 }

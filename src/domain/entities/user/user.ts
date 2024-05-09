@@ -1,8 +1,8 @@
 import { Entity, UniqueEntityId } from '@/shared/domain'
 import { left, right } from '@/shared/either'
 import type { RegisterUserData, RegisterUserResponse } from './user-types'
-import { Bio, DateOfBirth, Name,PlayerProfileId, Pronoun, SocialMedia, Username, type PronounEnum, type SocialMediaProps, Title, RpgStyle } from './value-objects'
-
+import { Bio, DateOfBirth, Name, PlayerProfileId, Pronoun, RpgStyle, SocialMedia, Title, Username, type PronounEnum, type SocialMediaProps } from './value-objects'
+import { CityState, type CityStateProps } from './value-objects/city-state/city-state'
 
 export type UserProps = {
   name: Name
@@ -14,6 +14,7 @@ export type UserProps = {
   socialMedias?: SocialMedia[]
   title?: Title
   bio?: Bio
+  cityState: CityState
 }
 export class User extends Entity<UserProps> {
   private constructor (props: UserProps, id?: UniqueEntityId) {
@@ -57,9 +58,12 @@ export class User extends Entity<UserProps> {
     return this.props.bio?.value
   }
 
-  static register (data: RegisterUserData): RegisterUserResponse {
-    const { dateOfBirth, pronoun, username, name, title, bio, socialMedias, rpgStyles,playerProfileId } = data
+  get cityState (): CityStateProps {
+    return this.props.cityState.value
+  }
 
+  static register (data: RegisterUserData): RegisterUserResponse {
+    const { dateOfBirth, pronoun, username, name, title, bio, socialMedias, rpgStyles, playerProfileId, cityState } = data
 
     const nameOrError = Name.create(name)
     const usernameOrError = Username.create(username)
@@ -68,8 +72,9 @@ export class User extends Entity<UserProps> {
     const playerProfileIdOrError = PlayerProfileId.create(playerProfileId)
     const rpgStyleOrError = rpgStyles.map((rpgStyle) => RpgStyle.create(rpgStyle))
     const socialMediasOrError = socialMedias ? socialMedias.map(socialMedia => SocialMedia.create(socialMedia)) : []
+    const cityStateOrError = CityState.create(cityState)
 
-    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError,playerProfileIdOrError]
+    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError, playerProfileIdOrError, cityStateOrError]
 
     const titleOrError = title ? Title.create(title) : undefined
     titleOrError && results.push(titleOrError)
@@ -92,7 +97,8 @@ export class User extends Entity<UserProps> {
           rpgStyles: rpgStyleOrError.map((rpgStyle) => rpgStyle.value) as RpgStyle[],
           socialMedias: (socialMediasOrError).map(socialMedia => socialMedia.value) as SocialMedia[],
           title: titleOrError?.value as Title,
-          bio: bioOrError?.value as Bio
+          bio: bioOrError?.value as Bio,
+          cityState: cityStateOrError.value as CityState
         },
         new UniqueEntityId(data.id)
       )

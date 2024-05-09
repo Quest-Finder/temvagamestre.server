@@ -18,6 +18,7 @@ const makeFakePlayerProfileModel = (): PlayerProfileModel => ({
 
 const makeIdBuilder = (): IdBuilder => {
   class IdBuilderStub implements IdBuilder {
+    validate (id: string): boolean { return true }
     build (): string { return 'any_player_profile_id' }
   }
   return new IdBuilderStub()
