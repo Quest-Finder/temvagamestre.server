@@ -101,8 +101,7 @@ jobs:
         - name: Run migrations development
           run: |
             # Comandos migrations
-            npx prisma migrate dev
-            npx prisma migrate deploy
+            npx prisma db push
           env:
             #VARIAVEIS DE AMBIENTE  
             DATABASE_URL: '${{ secrets.DATABASE_URL }}'
