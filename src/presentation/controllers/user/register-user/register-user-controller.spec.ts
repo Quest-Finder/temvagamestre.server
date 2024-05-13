@@ -14,7 +14,8 @@ const makeFakeRequest = (): HttpRequest => ({
     name: 'any_name',
     pronoun: 'he/his',
     dateOfBirth: '12-31-2000',
-    username: 'any_username'
+    username: 'any_username',
+    bio: 'any_bio'
   },
   session: {}
 })
