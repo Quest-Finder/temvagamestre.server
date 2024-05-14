@@ -40,10 +40,10 @@ export class RegisterUserRoutesDto {
   @ApiProperty({ example: [{ socialMediaId: '31b66f76-82ff-4719-bad0-48154a04f3c7', userLink: '/user_link' }], description: 'array com objetos contendo o id da rede social e o link do usuario (omite-se a parte do link da rede social Ex: https://www.twitter.com)' })
     socialMedias: SocialMediaProps[]
 
-  @ApiProperty({ example: { city: 'São Paulo', uf: 'SP' } })
-    cityState: CityStateProps
+  @ApiProperty({ example: { city: 'São Paulo', uf: 'SP', lifeInBrazil: true }, description: 'Cidade e estado do usuário, caso o usuário não seja brasileiro, os campos uf e city devem ser vazios e lifeInBrazil deve ser falso' })
+    cityState?: CityStateProps
 
-  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, playerProfileId: string, rpgStyles: string[], socialMedias: SocialMediaProps[], cityState: CityStateProps, title?: string, description?: string) {
+  constructor (name: string, username: string, dateOfBirth: string, pronoun: string, playerProfileId: string, rpgStyles: string[], socialMedias: SocialMediaProps[], cityState?: CityStateProps, title?: string, description?: string) {
     this.name = name
     this.username = username
     this.dateOfBirth = dateOfBirth

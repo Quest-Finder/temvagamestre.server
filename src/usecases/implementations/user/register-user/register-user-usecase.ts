@@ -24,7 +24,7 @@ export class RegisterUserUseCase implements RegisterUser {
       return left(registerUserResult.value)
     }
 
-    const cityStateValue = registerUserResult.value.cityState
+    const cityStateValue = data.cityState ?? null
     if (!session.getCityValidationDone && cityStateValue?.city && cityStateValue?.uf) {
       const { cityFounded } = await this.iBGEService.execute({ city: cityStateValue.city, uf: cityStateValue.uf })
       if (!cityFounded) return left(new CityStateError())

@@ -4,7 +4,6 @@ import type { RegisterUserData, RegisterUserResponse } from './user-types'
 import { Bio, DateOfBirth, Name, PlayerProfileId, Pronoun, RpgStyle, SocialMedia, Title, Username, type PronounEnum, type SocialMediaProps } from './value-objects'
 import { CityState, type CityStateProps } from './value-objects/city-state/city-state'
 
-
 export type UserProps = {
   name: Name
   username: Username
@@ -66,7 +65,6 @@ export class User extends Entity<UserProps> {
   static register (data: RegisterUserData): RegisterUserResponse {
     const { dateOfBirth, pronoun, username, name, title, bio, socialMedias, rpgStyles, playerProfileId, cityState } = data
 
-
     const nameOrError = Name.create(name)
     const usernameOrError = Username.create(username)
     const pronounOrError = Pronoun.create(pronoun)
@@ -74,11 +72,11 @@ export class User extends Entity<UserProps> {
     const playerProfileIdOrError = PlayerProfileId.create(playerProfileId)
     const rpgStyleOrError = rpgStyles.map((rpgStyle) => RpgStyle.create(rpgStyle))
     const socialMediasOrError = socialMedias ? socialMedias.map(socialMedia => SocialMedia.create(socialMedia)) : []
-    const cityStateOrError = CityState.create(cityState)
 
+    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError, playerProfileIdOrError]
 
-    const results = [usernameOrError, pronounOrError, dateOfBirthOrError, nameOrError, ...socialMediasOrError, ...rpgStyleOrError, playerProfileIdOrError, cityStateOrError]
-
+    const cityStateOrError = cityState ? CityState.create(cityState) : undefined
+    cityStateOrError && results.push(cityStateOrError as any)
 
     const titleOrError = title ? Title.create(title) : undefined
     titleOrError && results.push(titleOrError)
@@ -102,7 +100,7 @@ export class User extends Entity<UserProps> {
           socialMedias: (socialMediasOrError).map(socialMedia => socialMedia.value) as SocialMedia[],
           title: titleOrError?.value as Title,
           bio: bioOrError?.value as Bio,
-          cityState: cityStateOrError.value as CityState
+          cityState: cityStateOrError?.value as CityState
         },
         new UniqueEntityId(data.id)
       )

@@ -1,5 +1,6 @@
 export type CityStateModel = {
   id: string
-  uf: string
-  city: string
+  uf: string | null
+  city: string | null
+  lifeInBrazil: boolean
 }

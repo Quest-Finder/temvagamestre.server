@@ -91,7 +91,6 @@ describe('User Routes', () => {
           pronoun: 'she/her',
           playerProfileId: '9228a9a0-c7e0-4d62-80bb-458dd772c4f9',
           rpgStyles: ['b866459b-63fc-4bd3-a88c-f6d4a7f39cd2']
-          // cityState: { uf: 'BA', city: 'Salvador' }
         })
         .expect(204)
     })
