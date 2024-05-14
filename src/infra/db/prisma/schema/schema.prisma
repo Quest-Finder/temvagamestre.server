@@ -121,7 +121,6 @@ model User {
   playerProfileId String?   @map("player_profile_id") @db.VarChar(50)
   cityStateId     String?   @map("city_state_id") @db.VarChar(50)
 
-
   userPreference      UserPreference?
   userConfig          UserConfig?
   userBadge           UserBadge[]
@@ -188,10 +187,11 @@ model PlayerProfile {
 }
 
 model CityState {
-  id   String @id(map: "pk_city") @unique(map: "uq_city") @db.VarChar(50)
-  city String @db.VarChar(100)
-  uf   String @db.Char(2)
-  User User[]
+  id           String  @id(map: "pk_city") @unique(map: "uq_city") @db.VarChar(50)
+  city         String? @db.VarChar(100)
+  uf           String? @db.Char(2)
+  lifeInBrazil Boolean @map("life_in_brazil")
+  User         User[]
 
   @@unique([city, uf], map: "uq_city_uf")
   @@map("city_state")
