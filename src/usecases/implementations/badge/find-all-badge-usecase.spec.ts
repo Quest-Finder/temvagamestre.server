@@ -7,4 +7,11 @@ describe('FindAllBadgeUseCase', () => {
     await sut.perform()
     expect(sutSpy).toHaveBeenCalled()
   })
+
+  it('should throws if usecase throws', async () => {
+    const sut = new FindAllBadgesUseCase()
+    jest.spyOn(sut, 'perform').mockRejectedValueOnce(new Error())
+    const reponse = sut.perform()
+    await expect(reponse).rejects.toThrow()
+  })
 })
