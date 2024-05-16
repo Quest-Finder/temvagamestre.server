@@ -26,7 +26,7 @@ describe('FindAllBadgePrismaRepo', () => {
   })
 
   beforeEach(async () => {
-    await prismock.user.deleteMany()
+    await prismock.badge.deleteMany()
   })
 
   afterAll(async () => {
@@ -38,5 +38,39 @@ describe('FindAllBadgePrismaRepo', () => {
     jest.spyOn(sut, 'execute').mockRejectedValueOnce(new Error())
     const response = sut.execute()
     await expect(response).rejects.toThrow()
+  })
+
+  it('should return a list with icons data', async () => {
+    await prismock.badge.create({
+      data: {
+        id: 'some_id',
+        name: 'some-name',
+        description: 'some-description',
+        icon: 'https://some-server/some-name.png',
+        type: 'any',
+        criteria: 'any'
+      }
+    })
+    await prismock.badge.create({
+      data: {
+        id: 'some_id-2',
+        name: 'some-name-2',
+        description: 'some-description-2',
+        icon: 'https://some-server/some-name-2.png',
+        type: 'any-2',
+        criteria: 'any-2'
+      }
+    })
+    const { sut } = makeSut()
+    const response = await sut.execute()
+    expect(response.length).toBe(2)
+    expect(response).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        name: 'some-name'
+      }),
+      expect.objectContaining({
+        name: 'some-name-2'
+      })
+    ]))
   })
 })
