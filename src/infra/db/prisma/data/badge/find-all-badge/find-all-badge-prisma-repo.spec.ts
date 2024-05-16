@@ -73,4 +73,10 @@ describe('FindAllBadgePrismaRepo', () => {
       })
     ]))
   })
+
+  it('should return a empty list ', async () => {
+    const { sut } = makeSut()
+    const response = await sut.execute()
+    expect(response.length).toBe(0)
+  })
 })
