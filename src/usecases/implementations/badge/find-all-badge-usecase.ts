@@ -6,7 +6,7 @@ export class FindAllBadgesUseCase implements FindAllBadge {
   constructor (private readonly findAllBadgesRepository: FindAllBadgeRepo) {}
 
   async perform (): Promise<FindAllBadgeResponse> {
-    await this.findAllBadgesRepository.execute()
-    return right([])
+    const result = await this.findAllBadgesRepository.execute()
+    return right(result)
   }
 }
