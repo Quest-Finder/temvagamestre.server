@@ -10,7 +10,24 @@ type MakeSutType = {
 
 class FindAllBadgesRepoStub implements FindAllBadgeRepo {
   async execute (): Promise<BadgeModel[]> {
-    return await Promise.resolve([])
+    return await Promise.resolve([
+      {
+        id: 'some-id',
+        name: 'some-icon',
+        type: 'some-type',
+        description: 'description',
+        criteria: 'some-criteria',
+        icon: 'https://server/some-icon.png'
+      },
+      {
+        id: 'some-id-2',
+        name: 'some-icon-2',
+        type: 'some-type-2',
+        description: 'description 2',
+        criteria: 'some-criteria-2',
+        icon: 'https://server/some-icon-2.png'
+      }
+    ])
   }
 }
 
@@ -51,5 +68,18 @@ describe('FindAllBadgeUseCase', () => {
     jest.spyOn(repository, 'execute').mockRejectedValueOnce(new Error())
     const reponse = sut.perform()
     await expect(reponse).rejects.toThrow()
+  })
+
+  it('should return a list with icons data', async () => {
+    const { sut } = makeSut()
+    const response = await sut.perform()
+    expect(response.isRight()).toBe(true)
+    expect(response.value).toEqual(expect.arrayContaining([expect.objectContaining({
+      name: 'some-icon',
+      type: 'some-type',
+      description: 'description',
+      criteria: 'some-criteria',
+      icon: 'https://server/some-icon.png'
+    })]))
   })
 })
