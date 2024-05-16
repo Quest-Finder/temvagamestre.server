@@ -45,4 +45,11 @@ describe('FindAllBadgeUseCase', () => {
     await sut.perform()
     expect(repositorySpy).toHaveBeenCalledTimes(1)
   })
+
+  it('should throws if repository throws', async () => {
+    const { sut, repository } = makeSut()
+    jest.spyOn(repository, 'execute').mockRejectedValueOnce(new Error())
+    const reponse = sut.perform()
+    await expect(reponse).rejects.toThrow()
+  })
 })
