@@ -11,6 +11,6 @@ export class FindAllBadgeController implements Controller {
     if (response.isLeft()) {
       return serverError(response.value)
     }
-    return ok([])
+    return ok(response.value)
   }
 }
