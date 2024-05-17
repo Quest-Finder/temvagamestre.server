@@ -1,6 +1,7 @@
 import { type FindAllBadge, type FindAllBadgeResponse } from '@/domain/contracts/badge/find-all-badge'
+import { type BadgeModel } from '@/domain/models/badge/badge-model'
 import { type Controller } from '@/presentation/contracts'
-import { serverError } from '@/presentation/helpers/http-helpers'
+import { ok, serverError } from '@/presentation/helpers/http-helpers'
 import { left, right } from '@/shared/either'
 import { FindAllBadgeController } from './find-all-badge-controller'
 
@@ -9,9 +10,29 @@ type MakeSutType = {
   useCase: FindAllBadge
 }
 
+const makeFakeBadgeList = (): BadgeModel[] => {
+  return [
+    {
+      id: 'some_id',
+      name: 'some-name',
+      description: 'some-description',
+      icon: 'https://some-server/some-name.png',
+      type: 'any',
+      criteria: 'any'
+    }, {
+      id: 'some_id-2',
+      name: 'some-name-2',
+      description: 'some-description-2',
+      icon: 'https://some-server/some-name-2.png',
+      type: 'any-2',
+      criteria: 'any-2'
+    }
+  ]
+}
+
 class FindAllBadgeStub implements FindAllBadge {
   async perform (): Promise<FindAllBadgeResponse> {
-    return await Promise.resolve(right([]))
+    return await Promise.resolve(right(makeFakeBadgeList()))
   }
 }
 
@@ -37,5 +58,11 @@ describe('FindAllBadgeController', () => {
     jest.spyOn(useCase, 'perform').mockResolvedValue(left(new Error('any error')))
     const response = await sut.handle({})
     expect(response).toEqual(serverError(new Error('Server error')))
+  })
+
+  it('should return 200 with a valid data when exits', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle({})
+    expect(response).toEqual(ok(makeFakeBadgeList()))
   })
 })
