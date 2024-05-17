@@ -65,4 +65,10 @@ describe('FindAllBadgeController', () => {
     const response = await sut.handle({})
     expect(response).toEqual(ok(makeFakeBadgeList()))
   })
+  it('should return 200 with a empty list when no badges found', async () => {
+    const { sut, useCase } = makeSut()
+    jest.spyOn(useCase, 'perform').mockResolvedValue(right([]))
+    const response = await sut.handle({})
+    expect(response).toEqual(ok([]))
+  })
 })
