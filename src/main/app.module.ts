@@ -5,6 +5,7 @@ import { SocialMediaRoutesModule } from './routes/social-media/social-media-rout
 import { UserPreferenceRoutesModule } from './routes/user-preference/user-preference-routes.module'
 import { UserSocialMediaRoutesModule } from './routes/user-social-media/user-social-media-routes.module'
 import { UserRoutesModule } from './routes/user/user-routes.module'
+import { BadgeModule } from './routes/badge/badge-routes.module'
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { UserRoutesModule } from './routes/user/user-routes.module'
     UserSocialMediaRoutesModule,
     UserPreferenceRoutesModule,
     RpgStyleRoutesModule,
-    CityStateRoutesModule
+    CityStateRoutesModule,
+    BadgeModule
   ]
 })
 export class AppModule {}
