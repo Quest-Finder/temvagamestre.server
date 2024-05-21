@@ -1,4 +1,4 @@
-import { InvalidDateOfBirthError } from '../../errors'
+import { InvalidDateOfBirthError, InvalidDateOfBirthleesThan18Error } from '../../errors'
 import { DateOfBirth } from './date-of-birth'
 
 describe('DateOfBirth ValueObject', () => {
@@ -30,6 +30,11 @@ describe('DateOfBirth ValueObject', () => {
   it('Should return InvalidDateOfBirthError if February has 29 days in a non-leap year', () => {
     const sut = DateOfBirth.create('02-29-2001')
     expect(sut.value).toEqual(new InvalidDateOfBirthError('02-29-2001'))
+  })
+
+  it('Should return InvalidDateOfBirthError if dateOfBirth is less than 18', () => {
+    const sut = DateOfBirth.create(' 12-31-2020 ')
+    expect(sut.value).toEqual(new InvalidDateOfBirthleesThan18Error(' 12-31-2020 '))
   })
 
   it('Should remove all spaces between words if have any', () => {
