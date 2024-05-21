@@ -15,7 +15,8 @@ describe('User Entity', () => {
       bio: 'any_bio',
       cityState: {
         city: 'any_city',
-        uf: 'uf'
+        uf: 'uf',
+        lifeInBrazil: true
       }
     })
 
@@ -30,6 +31,6 @@ describe('User Entity', () => {
     expect(user.socialMedias?.[0]).toEqual({ socialMediaId: '7e1e51a5-2c45-4d15-bf87-03202dfe4b7e', userLink: 'any_link' })
     expect(user.title).toBe('any_title')
     expect(user.bio).toBe('any_bio')
-    expect(user.cityState).toEqual({ city: 'any_city', uf: 'uf' })
+    expect(user.cityState).toEqual({ city: 'any_city', uf: 'uf', lifeInBrazil: true })
   })
 })

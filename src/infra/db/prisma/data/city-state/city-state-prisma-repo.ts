@@ -7,12 +7,14 @@ import { type IdBuilder } from './../../../../../usecases/contracts/id/id-builde
 export class CityStatePrismaRepo implements CityStateRepo {
   constructor (private readonly idBuilder: IdBuilder) { }
   async execute (data: CityStateProps): Promise<CityStateModel> {
+    const city = data.city ?? ''
+    const uf = data.uf ?? ''
     const prisma = await PrismaHelper.getPrisma()
     return await prisma.cityState.upsert({
       where: {
-        city_uf: { ...data }
+        city_uf: { city, uf }
       },
-      create: { id: this.idBuilder.build(), ...data },
+      create: { id: this.idBuilder.build(), city, uf, lifeInBrazil: data.lifeInBrazil },
       update: {}
     })
   }

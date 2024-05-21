@@ -14,6 +14,8 @@ export class RegisterUserController implements Controller {
       const validationResult = this.validation.validate(httpRequest.body)
 
       if (validationResult.isLeft()) {
+        console.log(validationResult.value)
+
         return badRequest(validationResult.value)
       }
 
@@ -21,11 +23,16 @@ export class RegisterUserController implements Controller {
         id: httpRequest.headers.userId, ...httpRequest.body
       }, httpRequest.session)
 
+      console.log(httpRequest.body)
       if (registerUserResult.isLeft()) {
+        console.log(registerUserResult.value)
+
         return badRequest(registerUserResult.value)
       }
       return noContent()
     } catch (error: any) {
+      console.log(error)
+
       return serverError(error)
     }
   }

@@ -11,6 +11,7 @@ export class RegisterUserPrismaRepo implements RegisterUserRepo {
         username: user.username,
         pronoun: user.pronoun || "I don't want to share any pronouns",
         dateOfBirth: user.dateOfBirth,
+        playerProfileId: user.playerProfile,
         cityStateId,
         userPreference: {
           create: {

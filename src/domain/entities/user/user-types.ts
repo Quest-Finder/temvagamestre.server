@@ -18,7 +18,7 @@ export type RegisterUserData = {
   socialMedias?: SocialMediaProps[]
   title?: string
   bio?: string
-  cityState: CityStateProps
+  cityState?: CityStateProps
 }
 
 export type UserEntityErrors =

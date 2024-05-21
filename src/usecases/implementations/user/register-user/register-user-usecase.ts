@@ -24,14 +24,15 @@ export class RegisterUserUseCase implements RegisterUser {
       return left(registerUserResult.value)
     }
 
-    if (!session.getCityValidationDone) {
-      const { cityFounded } = await this.iBGEService.execute({ ...registerUserResult.value.cityState })
+    const cityStateValue = data.cityState ?? null
+    if (!session.getCityValidationDone && cityStateValue?.city && cityStateValue?.uf) {
+      const { cityFounded } = await this.iBGEService.execute({ city: cityStateValue.city, uf: cityStateValue.uf })
       if (!cityFounded) return left(new CityStateError())
     }
 
-    const cityState = await this.cityStateRepo.execute(registerUserResult.value.cityState)
+    const cityState = cityStateValue && await this.cityStateRepo.execute(cityStateValue)
 
-    await this.registerUserRepo.execute({ user: registerUserResult.value, cityStateId: cityState.id })
+    await this.registerUserRepo.execute({ user: registerUserResult.value, cityStateId: cityState?.id })
 
     if (data.socialMedias) {
       const queries = data.socialMedias.map(async socialMedia => this.saveUserSocialMediaRepo.execute({
