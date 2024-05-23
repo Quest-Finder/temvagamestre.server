@@ -43,9 +43,7 @@ export class RegisterUserRoutesDto {
   @ApiProperty({ example: { city: 'São Paulo', uf: 'SP', lifeInBrazil: true }, description: 'Cidade e estado do usuário, caso o usuário não seja brasileiro, os campos uf e city devem ser vazios e lifeInBrazil deve ser falso' })
     cityState?: CityStateProps
 
-
   constructor (name: string, username: string, dateOfBirth: string, pronoun: string, playerProfileId: string, rpgStyles: string[], socialMedias: SocialMediaProps[], cityState: CityStateProps, title?: string, bio?: string) {
-
     this.name = name
     this.username = username
     this.dateOfBirth = dateOfBirth

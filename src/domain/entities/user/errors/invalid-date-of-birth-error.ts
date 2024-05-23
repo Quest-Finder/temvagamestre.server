@@ -4,3 +4,10 @@ export class InvalidDateOfBirthError extends Error {
     this.name = 'InvalidDateOfBirthError'
   }
 }
+
+export class InvalidDateOfBirthleesThan18Error extends Error {
+  constructor (dateOfBirth: string) {
+    super(`The dateOfBirth '${dateOfBirth}' must be at least 18 years old.`)
+    this.name = 'InvalidDateOfBirthLengthError'
+  }
+}
