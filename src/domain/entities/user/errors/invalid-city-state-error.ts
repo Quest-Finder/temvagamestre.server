@@ -6,3 +6,10 @@ export class InvalidCityStateError extends Error {
     this.name = 'InvalidCityStateError'
   }
 }
+
+export class InvalidCityStateInBrazilError extends Error {
+  constructor () {
+    super('Uf and city should not be sent by residents outside Brazil')
+    this.name = 'InvalidCityStateInBrazilError'
+  }
+}
