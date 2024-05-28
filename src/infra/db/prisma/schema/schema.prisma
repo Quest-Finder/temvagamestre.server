@@ -130,6 +130,7 @@ model User {
   address       Address?       @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
   playerProfile PlayerProfile? @relation(fields: [playerProfileId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_player_profile_user")
   cityState     CityState?     @relation(fields: [cityStateId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_city_state_user")
+  Master        Master?
 
   @@map("user")
 }
@@ -195,6 +196,57 @@ model CityState {
 
   @@unique([city, uf], map: "uq_city_uf")
   @@map("city_state")
+}
+
+model Master {
+  id                    String          @id(map: "pk_master") @unique(map: "uq_master") @db.VarChar(50)
+  experienceLevel       ExperienceLevel @map("experience_level")
+  playerExperienceLevel ExperienceLevel @map("player_experience_level")
+
+  user              User                @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_master")
+  MasterGameSystems MasterGameSystems[]
+  GameTable         GameTable[]
+
+  @@map("master")
+}
+
+model MasterGameSystems {
+  masterId     String @map("master_id") @db.VarChar(50)
+  gameSystemId String @map("game_system_id") @db.VarChar(50)
+
+  master     Master      @relation(fields: [masterId], references: [id])
+  gameSystem GameSystems @relation(fields: [gameSystemId], references: [id])
+
+  @@id([masterId, gameSystemId], map: "pk_master_game_systems")
+  @@map("master_game_systems")
+}
+
+model GameSystems {
+  id                String              @id(map: "pk_game_systems") @unique(map: "uq_game_systems") @db.VarChar(50)
+  name              String
+  MasterGameSystems MasterGameSystems[]
+
+  @@map("game_systems")
+}
+
+model GameTable {
+  id          String @id(map: "pk_game_table") @unique(map: "uq_game_table") @db.VarChar(50)
+  masterId    String @map("master_id") @db.VarChar(50)
+  name        String @db.VarChar(50)
+  description String @db.VarChar(500)
+
+  master Master @relation(fields: [masterId], references: [id])
+
+  @@map("game_table")
+}
+
+enum ExperienceLevel {
+  beginner
+  experient
+  consecratedWarrior @map("consecrated_warrior")
+  epico
+
+  @@map("experience_level")
 }
 
 enum ActiveType {
