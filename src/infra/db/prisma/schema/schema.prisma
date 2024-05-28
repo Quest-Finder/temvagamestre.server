@@ -24,7 +24,7 @@ model Badge {
   type        String @db.VarChar(10)
   description String @db.VarChar(150)
   criteria    String @db.VarChar(50)
-  icon        String @db.VarChar(30)
+  icon        String @db.VarChar(255)
 
   userBadge UserBadge[]
 
@@ -120,7 +120,6 @@ model User {
   bio             String?   @map("bio") @db.VarChar(500)
   playerProfileId String?   @map("player_profile_id") @db.VarChar(50)
   cityStateId     String?   @map("city_state_id") @db.VarChar(50)
-
 
   userPreference      UserPreference?
   userConfig          UserConfig?
