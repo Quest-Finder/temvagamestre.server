@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "badge" ALTER COLUMN "icon" SET DATA TYPE VARCHAR(255);
