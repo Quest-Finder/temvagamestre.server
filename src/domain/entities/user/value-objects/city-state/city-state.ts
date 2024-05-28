@@ -1,6 +1,7 @@
 import { ValueObject } from '@/shared/domain'
 import { type Either, left, right } from '@/shared/either'
 import { InvalidCityStateError } from '../../errors'
+import { InvalidCityStateInBrazilError } from './../../errors/invalid-city-state-error'
 
 export type CityStateProps = {
   uf?: string
@@ -14,11 +15,11 @@ export class CityState extends ValueObject <CityStateProps> {
     Object.freeze(this)
   }
 
-  static create ({ uf, city, lifeInBrazil }: CityStateProps): Either<InvalidCityStateError, CityState> {
+  static create ({ uf, city, lifeInBrazil }: CityStateProps): Either<InvalidCityStateError | InvalidCityStateInBrazilError, CityState> {
     const data = { uf: uf?.trim(), city: city?.trim(), lifeInBrazil }
 
     if (!CityState.validate(data)) {
-      return left(new InvalidCityStateError(data))
+      return ((!lifeInBrazil && (uf ?? city)) ? left(new InvalidCityStateInBrazilError()) : left(new InvalidCityStateError(data)))
     }
     return right(new CityState(data))
   }

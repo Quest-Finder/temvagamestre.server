@@ -1,4 +1,4 @@
-import { InvalidCityStateError } from '../../errors'
+import { InvalidCityStateError, InvalidCityStateInBrazilError } from '../../errors'
 import { CityState } from './city-state'
 
 const props = {
@@ -23,7 +23,7 @@ describe('Username ValueObject', () => {
   it("Should return InvalidCityStateError if lifeInBrazil is false but uf and city aren't empty", () => {
     const newProps = { ...props, lifeInBrazil: false }
     const result = CityState.create(newProps)
-    expect(result.value).toEqual(new InvalidCityStateError(newProps))
+    expect(result.value).toEqual(new InvalidCityStateInBrazilError())
   })
 
   it('Should return success if lifeInBrazil is false and uf and city are empty', () => {
