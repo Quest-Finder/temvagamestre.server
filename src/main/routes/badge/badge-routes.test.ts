@@ -42,14 +42,22 @@ describe('BadgeRoutesController', () => {
     await PrismaHelper.disconnect()
   })
 
-  describe('POST /user/social-media', () => {
-    it('Should return 204 when adding a Social Media to the User', async () => {
+  describe('GET /badge', () => {
+    it('Should return 200 when search badges and body is not empty', async () => {
       await prisma.badge.create({
         data: makeFakeBadge()
       })
-      await request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .get('/badge')
-        .expect(200)
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          description: 'some description',
+          icon: 'http://some-badge-url.com/badge.png',
+          name: 'some name',
+          type: 'some-type'
+        })
+      ]))
     })
   })
 })
