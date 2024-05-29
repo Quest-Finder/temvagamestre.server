@@ -3,6 +3,7 @@ import { makeFindAllBadgesController } from '@/main/factories/controllers/badge/
 import { Controller, Get, Req, Res } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
+import { BadgeDto } from './dtos/badge-dto'
 
 @ApiTags('Badge')
 @Controller('/badge')
@@ -12,7 +13,7 @@ export class BadgeRoutesController {
     summary: 'Retorna lista de badges',
     description: 'Retorna lista de badges'
   })
-  @ApiResponse({ status: 200, description: 'Sucesso: retorna lista de badges' })
+  @ApiResponse({ status: 200, description: 'Sucesso: retorna lista de badges', type: BadgeDto, isArray: true })
   @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
   async getAllBadges (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(makeFindAllBadgesController())
