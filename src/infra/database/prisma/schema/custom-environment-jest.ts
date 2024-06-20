@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import NodeEnvironment from 'jest-environment-node'
 
 dotenv.config({
-  path: resolve(__dirname, '../../../../.env')
+  path: resolve(__dirname, '../../../../../.env')
 })
 
 const baseUrl = process.env.DATABASE_TEST_URL
