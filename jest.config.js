@@ -23,8 +23,8 @@ module.exports =  {
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/index.ts',
     '!<rootDir>/src/shared/either.ts',
-    '!<rootDir>/src/main/{configs,adapters}/**/*.ts',
-    '!<rootDir>/src/main/main.ts',
+    '!<rootDir>/src/{configs,adapters}/**/*.ts',
+    '!<rootDir>/src/main.ts',
     '!<rootDir>/src/validators/**/*.ts',
     '!<rootDir>/src/**/contracts/**'
   ],
