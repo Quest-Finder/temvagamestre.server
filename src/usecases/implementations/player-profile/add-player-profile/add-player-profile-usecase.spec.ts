@@ -4,7 +4,7 @@ import { type AddPlayerProfileRepo } from '@/usecases/contracts/db/player-profil
 import { type IdBuilder } from '@/usecases/contracts/id'
 import { AddPlayerProfileUsecase } from './add-player-profile-usecase'
 
-jest.mock('@/domain/entities/player-profile/player-profile', () => ({
+jest.mock('@/entities/player-profile/player-profile', () => ({
   PlayerProfile: {
     getPlayerProfiles: jest.fn(() => [{ name: 'any_player_profile', description: 'any_player_profile_description' }])
   }

@@ -10,7 +10,7 @@ import type { SaveUserSocialMediaRepo } from '@/usecases/contracts/db/user-socia
 import { type IBGEService, type IBGEServiceProps, type IBGEServiceResponse } from '@/usecases/contracts/services/ibge/ibge-service'
 import { RegisterUserUseCase } from './register-user-usecase'
 
-jest.mock('@/domain/entities/user/user', () => ({
+jest.mock('@/entities/user/user', () => ({
   User: {
     register: jest.fn((data: RegisterUserData) => {
       const { dateOfBirth, ...otherData } = data

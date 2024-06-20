@@ -83,7 +83,7 @@
     "typescript": "*"
   },
   "prisma": {
-    "schema": "./src/infra/db/prisma/schema/schema.prisma"
+    "schema": "./src/infra/database/prisma/schema/schema.prisma"
   },
   "_moduleAliases": {
     "@": "src"

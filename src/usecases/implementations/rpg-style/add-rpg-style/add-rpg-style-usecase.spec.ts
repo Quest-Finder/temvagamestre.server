@@ -4,7 +4,7 @@ import { type AddRpgStyleRepo, type FindRpgStyleByNameRepo } from '@/usecases/co
 import { type IdBuilder } from '@/usecases/contracts/id'
 import { AddRpgStyleUsecase } from './add-rpg-style-usecase'
 
-jest.mock('@/domain/entities/rpg-style/rpg-style', () => ({
+jest.mock('@/entities/rpg-style/rpg-style', () => ({
   RpgStyle: {
     getRpgStyles: jest.fn(() => ['any_rpg_style'])
   }

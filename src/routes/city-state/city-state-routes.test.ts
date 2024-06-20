@@ -1,5 +1,5 @@
 /**
- * @jest-environment ./src/main/configs/db-test/custom-environment-jest.ts
+ * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
 */
 
 import { AppModule } from '@/app.module'
