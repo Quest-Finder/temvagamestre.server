@@ -1,5 +1,5 @@
-import { type CityStateProps } from '@/domain/entities/user/value-objects/city-state/city-state'
-import { CityStateError } from '@/domain/errors'
+import { type CityStateProps } from '@/entities/user/value-objects/city-state/city-state'
+import { CityStateError } from '@/errors'
 import { left, right } from '@/shared/either'
 import { type IBGEService, type IBGEServiceResponse } from '@/usecases/contracts/services/ibge/ibge-service'
 import { CityStateUsecase } from './city-state-usecase'

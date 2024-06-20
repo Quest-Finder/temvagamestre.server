@@ -1,4 +1,4 @@
-import { type CheckUsername, type CheckUsernameResponse } from '@/domain/contracts/user/check-username'
+import { type CheckUsername, type CheckUsernameResponse } from '@/contracts/user/check-username'
 import { left, right } from '@/shared/either'
 import { type FindUserByUsernameRepo } from '@/usecases/contracts/db/user/find-user-by-username-repo'
 

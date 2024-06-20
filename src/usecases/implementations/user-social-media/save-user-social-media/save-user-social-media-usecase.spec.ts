@@ -1,8 +1,8 @@
-import { type SaveUserSocialMediaData } from '@/domain/contracts/user-social-media'
-import type { UserSocialMediaModel, SocialMediaModel } from '@/domain/models'
+import { type SaveUserSocialMediaData } from '@/contracts/user-social-media'
+import type { UserSocialMediaModel, SocialMediaModel } from '@/models'
 import { type SaveUserSocialMediaRepo } from '@/usecases/contracts/db/user-social-media'
 import { SaveUserSocialMediaUseCase } from './save-user-social-media-usecase'
-import { InvalidSocialMediaIdError } from '@/domain/errors'
+import { InvalidSocialMediaIdError } from '@/errors'
 import { type FindSocialMediaByIdRepo } from '@/usecases/contracts/db/social-media'
 
 const makeFakeSaveUserSocialMediaData = (): SaveUserSocialMediaData => ({

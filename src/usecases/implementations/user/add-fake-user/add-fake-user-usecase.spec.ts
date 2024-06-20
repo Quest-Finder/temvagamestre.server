@@ -1,4 +1,4 @@
-import type { AddUser, AddUserData, AddUserResponse } from '@/domain/contracts/user'
+import type { AddUser, AddUserData, AddUserResponse } from '@/contracts/user'
 import { AddFakeUserUseCase } from './add-fake-user-usecase'
 import { right } from '@/shared/either'
 import { type IdBuilder } from '@/usecases/contracts/id'

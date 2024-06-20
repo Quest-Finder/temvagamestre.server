@@ -1,5 +1,5 @@
-import { type AddPlayerProfile } from '@/domain/contracts/player-profile/add-player-profile'
-import { PlayerProfile } from '@/domain/entities/player-profile/player-profile'
+import { type AddPlayerProfile } from '@/contracts/player-profile/add-player-profile'
+import { PlayerProfile } from '@/entities/player-profile/player-profile'
 import { type AddPlayerProfileRepo } from '@/usecases/contracts/db/player-profile/add-player-profile/add-player-profile-repo'
 import { type IdBuilder } from '@/usecases/contracts/id'
 

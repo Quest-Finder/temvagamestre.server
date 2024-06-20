@@ -1,4 +1,4 @@
-import { type RpgStyleModel } from '@/domain/models'
+import { type RpgStyleModel } from '@/models'
 
 export interface AddRpgStyleRepo {
   execute: (data: RpgStyleModel) => Promise<void>

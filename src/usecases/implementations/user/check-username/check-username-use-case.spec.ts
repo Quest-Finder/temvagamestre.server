@@ -1,5 +1,5 @@
-import { type CheckUsername } from '@/domain/contracts/user/check-username'
-import { type UserModel } from '@/domain/models'
+import { type CheckUsername } from '@/contracts/user/check-username'
+import { type UserModel } from '@/models'
 import { type FindUserByUsernameRepo } from '@/usecases/contracts/db/user/find-user-by-username-repo'
 import { CheckUsernameUseCase } from './check-username-use-case'
 

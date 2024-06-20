@@ -1,10 +1,10 @@
-import type { AddUserData } from '@/domain/contracts/user'
-import type { ExternalAuthMappingModel, UserModel } from '@/domain/models'
+import type { AddUserData } from '@/contracts/user'
+import type { ExternalAuthMappingModel, UserModel } from '@/models'
 import type { AddUserRepo, FindUserByEmailRepo } from '@/usecases/contracts/db/user'
 import type { IdBuilder } from '@/usecases/contracts/id'
 import type { AddExternalAuthMappingRepo } from '@/usecases/contracts/db/external-auth-mapping'
 import { AddUserUseCase } from './add-user-usecase'
-import { EmailInUseError } from '@/domain/errors'
+import { EmailInUseError } from '@/errors'
 
 const makeFakeAddUserData = (): AddUserData => ({
   externalAuthUserId: 'any_external_auth_user_id',

@@ -1,7 +1,7 @@
-import type { UserPreferenceDayPeriodModel, UserPreferenceModel } from '@/domain/models'
+import type { UserPreferenceDayPeriodModel, UserPreferenceModel } from '@/models'
 import { SaveUserPreferenceDayPeriodUsecase } from './save-user-preference-day-period-usecase'
-import { NonExistentUserPreferenceError } from '@/domain/errors'
-import type { SaveUserPreferenceDayPeriodData } from '@/domain/contracts/user-preference-day-period'
+import { NonExistentUserPreferenceError } from '@/errors'
+import type { SaveUserPreferenceDayPeriodData } from '@/contracts/user-preference-day-period'
 import type { SaveUserPreferenceDayPeriodRepo } from '@/usecases/contracts/db/user-preference-day-period'
 import type { FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 

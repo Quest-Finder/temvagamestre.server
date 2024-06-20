@@ -1,4 +1,4 @@
-import { type UserPreferenceModel } from '@/domain/models'
+import { type UserPreferenceModel } from '@/models'
 
 export interface AddUserPreferenceRepo {
   execute: (data: UserPreferenceModel) => Promise<void>

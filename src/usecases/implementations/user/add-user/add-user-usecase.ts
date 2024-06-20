@@ -1,5 +1,5 @@
-import type { AddUser, AddUserData, AddUserResponse } from '@/domain/contracts/user'
-import { EmailInUseError } from '@/domain/errors'
+import type { AddUser, AddUserData, AddUserResponse } from '@/contracts/user'
+import { EmailInUseError } from '@/errors'
 import { left, right } from '@/shared/either'
 import type { AddExternalAuthMappingRepo } from '@/usecases/contracts/db/external-auth-mapping'
 import type { AddUserRepo, FindUserByEmailRepo } from '@/usecases/contracts/db/user'

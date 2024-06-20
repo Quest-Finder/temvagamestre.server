@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/return-await */
-import type { RegisterUser, RegisterUserResponse } from '@/domain/contracts/user'
-import { User, type RegisterUserData } from '@/domain/entities/user'
-import { CityStateError } from '@/domain/errors'
+import type { RegisterUser, RegisterUserResponse } from '@/contracts/user'
+import { User, type RegisterUserData } from '@/entities/user'
+import { CityStateError } from '@/errors'
 import { left, right } from '@/shared/either'
 import { type CityStateRepo } from '@/usecases/contracts/db/city-state-repo'
 import { type RegisterUserRepo } from '@/usecases/contracts/db/user'

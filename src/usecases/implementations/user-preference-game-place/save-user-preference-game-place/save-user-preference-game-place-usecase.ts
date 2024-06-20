@@ -1,5 +1,5 @@
-import type { SaveUserPreferenceGamePlace, SaveUserPreferenceGamePlaceData, SaveUserPreferenceGamePlaceResponse } from '@/domain/contracts/user-preference-game-place'
-import { NonExistentUserPreferenceError } from '@/domain/errors'
+import type { SaveUserPreferenceGamePlace, SaveUserPreferenceGamePlaceData, SaveUserPreferenceGamePlaceResponse } from '@/contracts/user-preference-game-place'
+import { NonExistentUserPreferenceError } from '@/errors'
 import { left, right } from '@/shared/either'
 import { type FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 import { type SaveUserPreferenceGamePlaceRepo } from '@/usecases/contracts/db/user-preference-game-place'

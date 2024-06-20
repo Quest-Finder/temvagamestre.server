@@ -1,4 +1,4 @@
-import type { ExternalAuthMappingModel } from '@/domain/models'
+import type { ExternalAuthMappingModel } from '@/models'
 
 export interface AddExternalAuthMappingRepo {
   execute: (data: ExternalAuthMappingModel) => Promise<void>

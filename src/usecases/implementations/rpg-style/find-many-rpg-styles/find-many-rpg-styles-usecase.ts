@@ -1,5 +1,5 @@
-import type { FindManyRpgStyles } from '@/domain/contracts/rpg-style'
-import { type RpgStyleModel } from '@/domain/models'
+import type { FindManyRpgStyles } from '@/contracts/rpg-style'
+import { type RpgStyleModel } from '@/models'
 import { type FindManyRpgStylesRepo } from '@/usecases/contracts/db/rpg-style'
 
 export class FindManyRpgStylesUsecase implements FindManyRpgStyles {

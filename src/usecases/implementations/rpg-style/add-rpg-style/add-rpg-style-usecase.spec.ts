@@ -1,5 +1,5 @@
-import { RpgStyle } from '@/domain/entities/rpg-style/rpg-style'
-import { type RpgStyleModel } from '@/domain/models'
+import { RpgStyle } from '@/entities/rpg-style/rpg-style'
+import { type RpgStyleModel } from '@/models'
 import { type AddRpgStyleRepo, type FindRpgStyleByNameRepo } from '@/usecases/contracts/db/rpg-style'
 import { type IdBuilder } from '@/usecases/contracts/id'
 import { AddRpgStyleUsecase } from './add-rpg-style-usecase'

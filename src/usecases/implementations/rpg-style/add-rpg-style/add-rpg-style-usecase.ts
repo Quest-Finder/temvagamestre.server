@@ -1,5 +1,5 @@
-import { type AddRpgStyle } from '@/domain/contracts/rpg-style'
-import { RpgStyle } from '@/domain/entities/rpg-style/rpg-style'
+import { type AddRpgStyle } from '@/contracts/rpg-style'
+import { RpgStyle } from '@/entities/rpg-style/rpg-style'
 import type { AddRpgStyleRepo, FindRpgStyleByNameRepo } from '@/usecases/contracts/db/rpg-style'
 import { type IdBuilder } from '@/usecases/contracts/id'
 

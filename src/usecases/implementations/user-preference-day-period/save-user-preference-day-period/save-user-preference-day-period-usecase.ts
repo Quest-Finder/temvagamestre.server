@@ -1,5 +1,5 @@
-import type { SaveUserPreferenceDayPeriod, SaveUserPreferenceDayPeriodData, SaveUserPreferenceDayPeriodResponse } from '@/domain/contracts/user-preference-day-period'
-import { NonExistentUserPreferenceError } from '@/domain/errors'
+import type { SaveUserPreferenceDayPeriod, SaveUserPreferenceDayPeriodData, SaveUserPreferenceDayPeriodResponse } from '@/contracts/user-preference-day-period'
+import { NonExistentUserPreferenceError } from '@/errors'
 import { left, right } from '@/shared/either'
 import type { FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 import type { SaveUserPreferenceDayPeriodRepo } from '@/usecases/contracts/db/user-preference-day-period'

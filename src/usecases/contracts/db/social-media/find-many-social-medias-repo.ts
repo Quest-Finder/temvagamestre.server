@@ -1,4 +1,4 @@
-import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
+import { type SocialMediaModel } from '@/models/social-media-model'
 
 export interface FindManySocialMediasRepo {
   execute: () => Promise<SocialMediaModel[]>

@@ -1,4 +1,4 @@
-import type { AddFakeUser, AddUser } from '@/domain/contracts/user'
+import type { AddFakeUser, AddUser } from '@/contracts/user'
 import { type Encrypter } from '@/usecases/contracts/cryptography/encrypter'
 import { type IdBuilder } from '@/usecases/contracts/id'
 
