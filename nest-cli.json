@@ -4,6 +4,12 @@
   "sourceRoot": "src",
   "entryFile": "main/main",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "assets": [
+      {
+        "include": "infra/db/prisma/client",
+        "watchAssets": true
+      }
+    ]
   }
 }
