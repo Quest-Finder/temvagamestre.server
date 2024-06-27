@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "start": "nest start",
+    "dev": "npm run services:up",
     "start:dev": "npm run pre-run:prepare-database && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main/main.js",
@@ -27,7 +28,12 @@
     "seed:addPlayerProfile": "ts-node -r tsconfig-paths/register src/main/seeds/player-profile/add-player-profile-seed.ts",
     "lint": "eslint '**/*.ts'",
     "pre-run:apply-seeds": "npm run seed:addSocialMedia && npm run seed:addRpgStyle && npm run seed:addPlayerProfile ",
-    "pre-run:prepare-database": "npm run prisma:generate-client-definition && npm run prisma:apply-migration && npm run pre-run:apply-seeds"
+    "pre-run:prepare-database": "npm run prisma:generate-client-definition && npm run prisma:apply-migration && npm run pre-run:apply-seeds",
+    "docker:compose": "docker compose -f docker/docker-compose.dev.yaml",
+    "services:seed": "",
+    "services:up": "npm run docker:compose -- up",
+    "services:stop": "npm run docker:compose -- stop",
+    "services:down": "npm run docker:compose -- down"
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^4.13.1",
