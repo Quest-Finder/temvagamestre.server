@@ -1,22 +1,21 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
-    build: 
-      context: '../'
-      dockerfile: 'docker/Dockerfile.dev'
+    build:
+      context: "../"
+      dockerfile: "docker/Dockerfile.dev"
     ports:
       - 3000:3000
     depends_on:
       - dbPostgres
       - dbMongo
     environment:
-      MONGO_URI: mongodb://dbMongo:27017
+      MONGO_URI: mongodb://dbMongo:27017/rpg-log
       DATABASE_URL: postgres://postgres:postgres@dbPostgres:5432/postgres
-    volumes:
-      - '../:/app'
-    
-  
+      DATABASE_TEST_URL: postgres://postgres:postgres@dbPostgres:5432/postgres
+      PORT: 3000
+
   dbPostgres:
     image: postgres
     ports:
@@ -25,13 +24,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-    volumes:
-      - ./postgres/data:/var/lib/postgresql/data
-    
+
   dbMongo:
     image: mongo
     ports:
       - 27017:27017
-    volumes:
-      - ./mongo/data:/data/db
-    
