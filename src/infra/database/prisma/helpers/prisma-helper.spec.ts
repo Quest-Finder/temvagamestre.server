@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../client'
 import { PrismaHelper as sut } from './prisma-helper'
 
 let prisma: PrismaClient

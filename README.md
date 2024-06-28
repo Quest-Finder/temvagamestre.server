@@ -13,6 +13,7 @@
   <a href="#pastas">Estrutura de Pastas 📁</a><br>
   <a href="#descricao">Descrição dos Módulos 🖥️</a><br>
   <a href="#diagrama">Diagrama Entidade-Relacionamento (ER) 📚</a><br>
+  <a href="#rodar">Instalar e rodar o projeto 🛠️</a><br>
 </p>
 
 ---
@@ -137,5 +138,45 @@ O ponto de entrada da aplicação, onde o servidor é inicializado e a aplicaç�
 <h2 id="descricao">Diagrama Entidade-Relacionamento (ER) 📚</h2>
 
 <img src="https://images2.imgbox.com/bc/4a/UhhOaGuJ_o.png">
+
+---
+
+<h2 id="rodar">Instalar e rodar o projeto 🛠️</h2>
+
+Rodar o Tem Vaga Mestre em sua máquina local é uma tarefa extremamente simples.
+
+### Dependências globais 🌍
+
+Você precisa ter duas principais dependências instaladas:
+
+- Node.js LTS v18 (ou qualquer versão superior)
+- Docker Engine v17.12.0 com Docker Compose v1.29.2 (ou qualquer versão superior)
+
+### Dependências locais 📦
+
+Com o repositório clonado e as dependências globais instaladas, você pode instalar as dependências locais do projeto:
+
+```bash
+npm install
+```
+
+### Rodar o projeto ▶️
+
+Para rodar o projeto localmente.
+
+```bash
+npm run dev
+```
+
+Isto irá automaticamente rodar serviços como Banco de dados (incluindo as Migrations), Mongo DB e irá expor um Serviço de APO (Swagger e API) no seguinte endereço:
+
+```bash
+http://localhost:3000/api
+```
+
+Observações:
+
+- Para derrubar todos os serviços, basta utilizar as teclas `CTRL+C`, que é o padrão dos terminais para matar processos.
+- Você pode conferir o endereço dos outros serviços dentro do arquivo `docker-compose.yaml` na past `docker` projeto, como por exemplo o endereço e credenciais do Banco de Dados local.
 
 ---

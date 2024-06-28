@@ -17,7 +17,8 @@
     "**.js",
     "src/**/*.sql",
     "src/**/*.toml",
-    "src/**/*.prisma"
+    "src/**/*.prisma",
+    "src/infra/db/prisma/client/*"
   ],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "off",

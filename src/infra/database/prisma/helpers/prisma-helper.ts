@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../client'
 
 export class PrismaHelper {
   private static prisma: null | PrismaClient
