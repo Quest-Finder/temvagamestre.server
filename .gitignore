@@ -1,5 +1,5 @@
 # prisma client
-/src/infra/db/prisma/client
+/src/infra/database/prisma/client
 
 # compiled output
 /dist

@@ -7,7 +7,7 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "infra/db/prisma/client",
+        "include": "infra/database/prisma/client",
         "watchAssets": true
       }
     ]
