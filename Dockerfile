@@ -26,4 +26,4 @@ RUN npm install --ignore-scripts
 
 COPY  --from=build /home/node/app/dist /app
 
-ENTRYPOINT [ "node", "/app/main/main.js" ]
+ENTRYPOINT [ "node", "/app/main.js" ]
