@@ -171,7 +171,7 @@ npm run dev
 Isto irá automaticamente rodar serviços como Banco de dados (incluindo as Migrations), Mongo DB e irá expor um Serviço de APO (Swagger e API) no seguinte endereço:
 
 ```bash
-http://localhost:3000/api
+http://localhost:3009/api
 ```
 
 Observações:
