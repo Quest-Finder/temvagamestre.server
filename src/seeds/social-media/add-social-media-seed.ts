@@ -1,6 +1,6 @@
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { makeUuidAdapter } from '@/factories/infra/id/uuid-adapter-factory'
-import { type SocialMedia } from '@prisma/client'
+import { type SocialMedia } from '@/infra/database/prisma/client'
 
 export const addSocialMediaSeed = async (): Promise<void> => {
   const socialMedia: SocialMedia[] = [{
