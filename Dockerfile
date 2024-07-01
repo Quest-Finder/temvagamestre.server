@@ -13,7 +13,7 @@ RUN npx prisma generate
 
 RUN npm run build
 
-FROM node:18.10.0-slim as production
+FROM node:20-slim as production
 
 ENV NODE_ENV=production
 
