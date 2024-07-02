@@ -1,8 +1,8 @@
-import { AccessDeniedError, InvalidTokenError } from '@/domain/errors'
+import { AccessDeniedError, InvalidTokenError } from '@/errors'
 import type { Decrypter } from '@/usecases/contracts/cryptography/decrypter'
 import { AuthUseCase } from './auth-usecase'
 import { type FindExternalAuthMappingByExternalAuthUserIdRepo } from '@/usecases/contracts/db/external-auth-mapping'
-import { type ExternalAuthMappingModel } from '@/domain/models'
+import { type ExternalAuthMappingModel } from '@/models'
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
   userId: 'any_user_id',

@@ -1,4 +1,4 @@
-import type { ActiveType, Frequency } from '@/domain/models'
+import type { ActiveType, Frequency } from '@/models'
 
 export type UpdateUserPreferenceRepoData = {
   id: string

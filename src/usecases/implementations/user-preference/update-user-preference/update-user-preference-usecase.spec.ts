@@ -1,8 +1,8 @@
-import { NonExistentUserPreferenceError } from '@/domain/errors'
-import { type UserPreferenceModel } from '@/domain/models'
+import { NonExistentUserPreferenceError } from '@/errors'
+import { type UserPreferenceModel } from '@/models'
 import { UpdateUserPreferenceUseCase } from './update-user-preference-usecase'
 import { type UpdateUserPreferenceRepo, type FindUserPreferenceByIdRepo, type UpdateUserPreferenceRepoData } from '@/usecases/contracts/db/user-preference'
-import { type UpdateUserPreferenceData } from '@/domain/contracts/user-preference'
+import { type UpdateUserPreferenceData } from '@/contracts/user-preference'
 
 const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
   id: 'any_user_id',

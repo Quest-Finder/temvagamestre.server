@@ -1,8 +1,8 @@
-import { type RegisterUserData } from '@/domain/entities/user'
-import { User } from '@/domain/entities/user/user'
-import { type CityStateProps } from '@/domain/entities/user/value-objects/city-state/city-state'
-import { type UserSocialMediaModel } from '@/domain/models'
-import { type CityStateModel } from '@/domain/models/city-state/city-state'
+import { type RegisterUserData } from '@/entities/user'
+import { User } from '@/entities/user/user'
+import { type CityStateProps } from '@/entities/user/value-objects/city-state/city-state'
+import { type UserSocialMediaModel } from '@/models'
+import { type CityStateModel } from '@/models/city-state'
 import { left, right } from '@/shared/either'
 import { type CityStateRepo } from '@/usecases/contracts/db/city-state-repo'
 import type { RegisterUserRepo, RegisterUserRepoProps } from '@/usecases/contracts/db/user'
@@ -10,7 +10,7 @@ import type { SaveUserSocialMediaRepo } from '@/usecases/contracts/db/user-socia
 import { type IBGEService, type IBGEServiceProps, type IBGEServiceResponse } from '@/usecases/contracts/services/ibge/ibge-service'
 import { RegisterUserUseCase } from './register-user-usecase'
 
-jest.mock('@/domain/entities/user/user', () => ({
+jest.mock('@/entities/user/user', () => ({
   User: {
     register: jest.fn((data: RegisterUserData) => {
       const { dateOfBirth, ...otherData } = data

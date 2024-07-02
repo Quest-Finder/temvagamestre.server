@@ -1,6 +1,6 @@
-import { type AddUserPreferenceData } from '@/domain/contracts/user-preference'
-import { ExistentUserPreferenceError } from '@/domain/errors'
-import { type UserPreferenceModel } from '@/domain/models'
+import { type AddUserPreferenceData } from '@/contracts/user-preference'
+import { ExistentUserPreferenceError } from '@/errors'
+import { type UserPreferenceModel } from '@/models'
 import type { AddUserPreferenceRepo, FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 import { AddUserPreferenceUsecase } from './add-user-preference-usecase'
 

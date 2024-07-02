@@ -1,6 +1,6 @@
 import { type ExternalRequest } from '@/usecases/contracts/external-request/external-request'
 
-import { FetchRequestAdapter } from '@/infra/external-request/fetch-adapter/fetch-request-adapter'
+import { FetchRequestAdapter } from '@/infra/http/fetch-adapter/fetch-request-adapter'
 import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-service'
 import { IBGEServiceInfra } from './ibge-service-infra'
 

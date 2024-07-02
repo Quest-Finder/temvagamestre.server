@@ -1,8 +1,8 @@
-import { NonExistentUserPreferenceError } from '@/domain/errors'
-import type { UserPreferenceGamePlaceModel, UserPreferenceModel } from '@/domain/models'
+import { NonExistentUserPreferenceError } from '@/errors'
+import type { UserPreferenceGamePlaceModel, UserPreferenceModel } from '@/models'
 import { type SaveUserPreferenceGamePlaceRepo } from '@/usecases/contracts/db/user-preference-game-place'
 import { SaveUserPreferenceGamePlaceUsecase } from './save-user-preference-game-place-usecase'
-import { type SaveUserPreferenceGamePlaceData } from '@/domain/contracts/user-preference-game-place'
+import { type SaveUserPreferenceGamePlaceData } from '@/contracts/user-preference-game-place'
 import { type FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 
 const makeFakeSaveUserPreferenceGamePlaceData = (): SaveUserPreferenceGamePlaceData => ({

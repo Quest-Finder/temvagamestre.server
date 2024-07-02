@@ -1,5 +1,5 @@
-import { type CityStateResponse, type GetCityState } from '@/domain/contracts/county-state/get-county-state'
-import { CityStateError } from '@/domain/errors'
+import { type CityStateResponse, type GetCityState } from '@/contracts/county-state/get-county-state'
+import { CityStateError } from '@/errors'
 import { left, right } from '@/shared/either'
 import { type IBGEService } from '@/usecases/contracts/services/ibge/ibge-service'
 import { Injectable } from '@nestjs/common'

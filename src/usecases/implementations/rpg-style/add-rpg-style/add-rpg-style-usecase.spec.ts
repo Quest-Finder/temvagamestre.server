@@ -1,10 +1,10 @@
-import { RpgStyle } from '@/domain/entities/rpg-style/rpg-style'
-import { type RpgStyleModel } from '@/domain/models'
+import { RpgStyle } from '@/entities/rpg-style/rpg-style'
+import { type RpgStyleModel } from '@/models'
 import { type AddRpgStyleRepo, type FindRpgStyleByNameRepo } from '@/usecases/contracts/db/rpg-style'
 import { type IdBuilder } from '@/usecases/contracts/id'
 import { AddRpgStyleUsecase } from './add-rpg-style-usecase'
 
-jest.mock('@/domain/entities/rpg-style/rpg-style', () => ({
+jest.mock('@/entities/rpg-style/rpg-style', () => ({
   RpgStyle: {
     getRpgStyles: jest.fn(() => ['any_rpg_style'])
   }

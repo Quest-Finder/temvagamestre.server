@@ -1,4 +1,4 @@
-import { type HttpResponse } from '@/presentation/types/http'
+import { type HttpResponse } from '@/types/http'
 
 export type Options = {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'

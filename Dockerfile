@@ -1,18 +1,29 @@
-FROM node:18.10.0-slim
-
-USER node
-
-RUN mkdir -p /home/node/app
+FROM node:18.10.0-slim as build 
 
 WORKDIR /home/node/app
 
-COPY --chown=node:node . .
+COPY package.json .
+COPY package-lock.json .
 
+RUN npm install
 
-RUN npm  install
+COPY . .
 
-RUN npm run  build
+RUN npx prisma generate
+
+RUN npm run build
+
+FROM node:20-slim as production
 
 ENV NODE_ENV=production
 
-CMD ["npm","run", "start:prod"]  
+WORKDIR /app
+
+COPY package.json .
+COPY package-lock.json .
+
+RUN npm install --ignore-scripts
+
+COPY  --from=build /home/node/app/dist /app
+
+ENTRYPOINT [ "node", "/app/main.js" ]

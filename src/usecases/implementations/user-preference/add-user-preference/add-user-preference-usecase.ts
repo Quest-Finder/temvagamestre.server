@@ -1,5 +1,5 @@
-import type { AddUserPreference, AddUserPreferenceData, AddUserPreferenceResponse } from '@/domain/contracts/user-preference'
-import { ExistentUserPreferenceError } from '@/domain/errors'
+import type { AddUserPreference, AddUserPreferenceData, AddUserPreferenceResponse } from '@/contracts/user-preference'
+import { ExistentUserPreferenceError } from '@/errors'
 import { left, right } from '@/shared/either'
 import type { AddUserPreferenceRepo, FindUserPreferenceByIdRepo } from '@/usecases/contracts/db/user-preference'
 

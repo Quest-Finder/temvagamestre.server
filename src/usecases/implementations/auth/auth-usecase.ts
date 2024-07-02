@@ -1,8 +1,8 @@
 import type { FindExternalAuthMappingByExternalAuthUserIdRepo } from '@/usecases/contracts/db/external-auth-mapping'
-import type { AuthResponse, Auth } from '@/domain/contracts/user'
+import type { AuthResponse, Auth } from '@/contracts/user'
 import type { Decrypter } from '@/usecases/contracts/cryptography/decrypter'
 import { left, right } from '@/shared/either'
-import { AccessDeniedError, InvalidTokenError } from '@/domain/errors'
+import { AccessDeniedError, InvalidTokenError } from '@/errors'
 
 export class AuthUseCase implements Auth {
   constructor (

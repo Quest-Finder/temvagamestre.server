@@ -1,4 +1,4 @@
-import { type RpgStyleModel } from '@/domain/models'
+import { type RpgStyleModel } from '@/models'
 import { type FindManyRpgStylesRepo } from '@/usecases/contracts/db/rpg-style'
 import { FindManyRpgStylesUsecase } from './find-many-rpg-styles-usecase'
 

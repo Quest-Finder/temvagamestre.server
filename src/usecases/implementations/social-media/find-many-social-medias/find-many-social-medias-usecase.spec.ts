@@ -1,6 +1,6 @@
 import { type FindManySocialMediasRepo } from '@/usecases/contracts/db/social-media'
 import { FindManySocialMediasUsecase } from './find-many-social-medias-usecase'
-import { type SocialMediaModel } from '@/domain/models/social-media/social-media-model'
+import { type SocialMediaModel } from '@/models/social-media-model'
 
 const makeFakeSocialMedias = (): SocialMediaModel[] => ([{
   id: 'any_id',

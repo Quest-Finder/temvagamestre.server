@@ -1,3 +1,6 @@
+# prisma client
+/src/infra/database/prisma/client
+
 # compiled output
 /dist
 /node_modules
