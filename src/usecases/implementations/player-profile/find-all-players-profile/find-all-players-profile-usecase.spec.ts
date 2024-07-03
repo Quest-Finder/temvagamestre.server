@@ -46,4 +46,14 @@ describe('FindAllPlayersProfileUseCase', () => {
     jest.spyOn(repository, 'execute').mockRejectedValue(new Error())
     await expect(sut.perform()).rejects.toThrow()
   })
+
+  it('should return a array with player profile', async () => {
+    const { sut } = makeSut()
+    const response = await sut.perform()
+    expect(response).not.toBeNull()
+    expect(response.length).toBe(1)
+    expect(response).toEqual(expect.arrayContaining([
+      expect.objectContaining({ name: 'some-name', description: 'some description' })
+    ]))
+  })
 })
