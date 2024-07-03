@@ -56,4 +56,12 @@ describe('FindAllPlayersProfileUseCase', () => {
       expect.objectContaining({ name: 'some-name', description: 'some description' })
     ]))
   })
+
+  it('should return a empty array when player profile do not exits', async () => {
+    const { sut, repository } = makeSut()
+    jest.spyOn(repository, 'execute').mockResolvedValueOnce([])
+    const response = await sut.perform()
+    expect(response).not.toBeNull()
+    expect(response.length).toBe(0)
+  })
 })
