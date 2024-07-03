@@ -6,7 +6,7 @@ export class FindAllPlayersProfileUseCase implements FindAllPlayerProfile {
   constructor (private readonly findAllPlayersRepository: FindAllPlayerProfileRepo) {}
 
   async perform (): Promise<PlayerProfileModel[]> {
-    await this.findAllPlayersRepository.execute()
-    return await Promise.resolve([])
+    const result = await this.findAllPlayersRepository.execute()
+    return result
   }
 }
