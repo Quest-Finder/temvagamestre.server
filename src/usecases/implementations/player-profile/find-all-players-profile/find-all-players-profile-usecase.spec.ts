@@ -40,4 +40,10 @@ describe('FindAllPlayersProfileUseCase', () => {
     await sut.perform()
     expect(repositorySpy).toHaveBeenCalledTimes(1)
   })
+
+  it('should throws when repository throws', async () => {
+    const { sut, repository } = makeSut()
+    jest.spyOn(repository, 'execute').mockRejectedValue(new Error())
+    await expect(sut.perform()).rejects.toThrow()
+  })
 })
