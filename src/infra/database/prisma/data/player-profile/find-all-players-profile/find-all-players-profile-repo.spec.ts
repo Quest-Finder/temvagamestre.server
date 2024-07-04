@@ -46,6 +46,13 @@ describe('FindAllPlayerProfilePrismaRepo', () => {
     expect(result.length).toBe(2)
   })
 
+  it('should return a empty array when players profile is not find', async () => {
+    const { sut } = makeSut()
+    const result = await sut.execute()
+    expect(result).not.toBeNull()
+    expect(result.length).toBe(0)
+  })
+
   it('should throw if repository throws', async () => {
     const { sut } = makeSut()
     jest.spyOn(prismock.playerProfile, 'findMany').mockRejectedValue(
