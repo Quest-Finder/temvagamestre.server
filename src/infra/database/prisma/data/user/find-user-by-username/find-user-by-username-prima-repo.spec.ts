@@ -1,10 +1,11 @@
-import { type UserModel } from '@/models'
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
+import { type UserModel } from '@/models'
 import { type FindUserByUsernameRepo } from '@/usecases/contracts/db/user/find-user-by-username-repo'
-import type { PrismaClient } from '@prisma/client'
 import MockDate from 'mockdate'
-import { PrismockClient } from 'prismock'
 import { FindUserByUsernamePrismaRepo } from './find-user-by-username-prisma-repo'
+
+import { createPrismock } from 'prismock'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -14,6 +15,7 @@ const makeFakeUserModel = (): UserModel => ({
   dateOfBirth: new Date()
 })
 
+const PrismockClient = createPrismock(Prisma)
 let prismock: PrismaClient
 
 const makeSut = (): FindUserByUsernameRepo => {

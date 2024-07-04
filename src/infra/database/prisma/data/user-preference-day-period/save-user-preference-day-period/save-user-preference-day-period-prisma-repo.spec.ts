@@ -1,9 +1,12 @@
-import type { UserPreferenceDayPeriodModel, UserModel, UserPreferenceModel } from '@/models'
-import { type PrismaClient } from '@prisma/client'
-import { SaveUserPreferenceDayPeriodPrismaRepo } from './save-user-preference-day-period-prisma-repo'
-import MockDate from 'mockdate'
-import { PrismockClient } from 'prismock'
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
+import type { UserModel, UserPreferenceDayPeriodModel, UserPreferenceModel } from '@/models'
+import MockDate from 'mockdate'
+import { SaveUserPreferenceDayPeriodPrismaRepo } from './save-user-preference-day-period-prisma-repo'
+
+import { createPrismock } from 'prismock'
+
+const PrismockClient = createPrismock(Prisma)
 
 let prismock: PrismaClient
 

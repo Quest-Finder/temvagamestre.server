@@ -1,8 +1,11 @@
-import { type PrismaClient } from '@prisma/client'
-import { FindSocialMediaByIdPrismaRepo } from './find-social-media-by-id-prisma-repo'
-import { PrismockClient } from 'prismock'
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { type SocialMediaModel } from '@/models/social-media-model'
+import { FindSocialMediaByIdPrismaRepo } from './find-social-media-by-id-prisma-repo'
+
+import { createPrismock } from 'prismock'
+
+const PrismockClient = createPrismock(Prisma)
 
 let prismock: PrismaClient
 
