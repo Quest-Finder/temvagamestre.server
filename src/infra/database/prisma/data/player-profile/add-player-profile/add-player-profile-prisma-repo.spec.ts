@@ -1,9 +1,11 @@
-import { type PlayerProfileModel } from '@/models'
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
-import { type PrismaClient } from '@prisma/client'
-import { PrismockClient } from 'prismock'
+import { type PlayerProfileModel } from '@/models'
 import { AddPlayerProfilePrismaRepo } from './add-player-profile-prisma-repo'
 
+import { createPrismock } from 'prismock'
+
+const PrismockClient = createPrismock(Prisma)
 let prismock: PrismaClient
 
 const makeFakePlayerProfileModel = (): PlayerProfileModel => ({
