@@ -45,4 +45,13 @@ describe('FindAllPlayerProfilePrismaRepo', () => {
     expect(result).not.toBeNull()
     expect(result.length).toBe(2)
   })
+
+  it('should throw if repository throws', async () => {
+    const { sut } = makeSut()
+    jest.spyOn(prismock.playerProfile, 'findMany').mockRejectedValue(
+      new Error('any_error_message')
+    )
+    const result = sut.execute()
+    await expect(result).rejects.toThrow()
+  })
 })
