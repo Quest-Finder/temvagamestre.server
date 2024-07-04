@@ -1,8 +1,10 @@
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
+import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { type RpgStyleModel } from '@/models'
 import { AddRpgStylePrismaRepo } from './add-rpg-style-prisma-repo'
-import { PrismockClient } from 'prismock'
-import { PrismaHelper } from '@/infra/database/prisma/helpers'
-import { type PrismaClient } from '@prisma/client'
+
+import { createPrismock } from 'prismock'
+const PrismockClient = createPrismock(Prisma)
 
 let prismock: PrismaClient
 
