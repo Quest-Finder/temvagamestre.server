@@ -53,4 +53,10 @@ describe('FindAllPlayerProfileController', () => {
     const result = await sut.handle({})
     expect(result).toEqual(ok(makeFakePlayerProfileList()))
   })
+  it('should return a status code 200 with a empty list', async () => {
+    const { sut, findAllPlayerProfile } = makeSut()
+    jest.spyOn(findAllPlayerProfile, 'perform').mockResolvedValueOnce([])
+    const result = await sut.handle({})
+    expect(result).toEqual(ok([]))
+  })
 })
