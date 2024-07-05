@@ -1,5 +1,5 @@
 import { type FindAllPlayerProfile } from '@/contracts/player-profile/find-all-player-profile'
-import { serverError } from '@/helpers/http/http-helpers'
+import { ok, serverError } from '@/helpers/http/http-helpers'
 import { type PlayerProfileModel } from '@/models'
 import { FindAllPlayerProfileController } from './find-all-player-profile-controller'
 
@@ -8,13 +8,17 @@ type MakeSutType = {
   findAllPlayerProfile: FindAllPlayerProfile
 }
 
+const makeFakePlayerProfileList = (): PlayerProfileModel[] => {
+  return [
+    { id: 'valid-id-1', name: 'player-profile-1', description: 'player-profile-1-description' },
+    { id: 'valid-id-2', name: 'player-profile-2', description: 'player-profile-2-description' }
+  ]
+}
+
 const makeFindAllPlayerProfileStubUseCase = (): FindAllPlayerProfile => {
   class FindAllPlayerProfileStubUseCase implements FindAllPlayerProfile {
     async perform (): Promise<PlayerProfileModel[]> {
-      return await Promise.resolve([
-        { id: 'valid-id-1', name: 'player-profile-1', description: 'player-profile-1-description' },
-        { id: 'valid-id-2', name: 'player-profile-2', description: 'player-profile-2-description' }
-      ])
+      return await Promise.resolve(makeFakePlayerProfileList())
     }
   }
 
@@ -42,5 +46,11 @@ describe('FindAllPlayerProfileController', () => {
     jest.spyOn(findAllPlayerProfile, 'perform').mockRejectedValueOnce(new Error())
     const result = await sut.handle({})
     expect(result).toEqual(serverError(new Error()))
+  })
+
+  it('should return a status code 200 with a players profile list', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle({})
+    expect(result).toEqual(ok(makeFakePlayerProfileList()))
   })
 })
