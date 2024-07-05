@@ -8,8 +8,8 @@ export class FindAllPlayerProfileController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      await this.findAllPlayerProfile.perform()
-      return ok([])
+      const result = await this.findAllPlayerProfile.perform()
+      return ok(result)
     } catch (error: any) {
       return serverError(error)
     }
