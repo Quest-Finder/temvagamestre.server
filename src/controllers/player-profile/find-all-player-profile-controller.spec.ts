@@ -1,4 +1,5 @@
 import { type FindAllPlayerProfile } from '@/contracts/player-profile/find-all-player-profile'
+import { serverError } from '@/helpers/http/http-helpers'
 import { type PlayerProfileModel } from '@/models'
 import { FindAllPlayerProfileController } from './find-all-player-profile-controller'
 
@@ -35,5 +36,11 @@ describe('FindAllPlayerProfileController', () => {
     const findAllPlayerProfileSpy = jest.spyOn(findAllPlayerProfile, 'perform')
     await sut.handle({})
     expect(findAllPlayerProfileSpy).toHaveBeenCalledTimes(1)
+  })
+  it('should return a status code 500 when FindAllPlayerProfile throws', async () => {
+    const { sut, findAllPlayerProfile } = makeSut()
+    jest.spyOn(findAllPlayerProfile, 'perform').mockRejectedValueOnce(new Error())
+    const result = await sut.handle({})
+    expect(result).toEqual(serverError(new Error()))
   })
 })
