@@ -36,7 +36,7 @@ describe('Rpg Style Routes', () => {
   describe('GET /player-profile', () => {
     it('Should return 200 with a empty player profile list', async () => {
       await request(app.getHttpServer())
-        .get('/players-profile')
+        .get('/player-profile')
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual(
@@ -52,7 +52,7 @@ describe('Rpg Style Routes', () => {
         ]
       })
       await request(app.getHttpServer())
-        .get('/players-profile')
+        .get('/player-profile')
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual(
