@@ -6,7 +6,7 @@ import { Request, Response } from 'express'
 import { PlayerProfileDTO } from './dtos/player-profile-dto'
 
 @ApiTags('Player-Profile')
-@Controller('/players-profile')
+@Controller('/player-profile')
 export class PlayerProfileRoutes {
   @Get()
   @ApiOperation({

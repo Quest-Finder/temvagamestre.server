@@ -8,6 +8,6 @@ export class PlayerProfileRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply()
-      .forRoutes({ path: '/players-profile', method: RequestMethod.GET })
+      .forRoutes({ path: '/player-profile', method: RequestMethod.GET })
   }
 }
