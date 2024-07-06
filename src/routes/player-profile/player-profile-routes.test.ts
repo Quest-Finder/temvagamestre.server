@@ -30,6 +30,7 @@ describe('Rpg Style Routes', () => {
   })
 
   afterAll(async () => {
+    await prisma.playerProfile.deleteMany()
     await PrismaHelper.disconnect()
   })
 
