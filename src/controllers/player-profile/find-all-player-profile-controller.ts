@@ -11,7 +11,10 @@ export class FindAllPlayerProfileController implements Controller {
       const result = await this.findAllPlayerProfile.perform()
       return ok(result)
     } catch (error: unknown) {
-      return serverError(error as Error)
+      if (error instanceof Error) {
+        return serverError(error)
+      }
+      return serverError(new Error('Server Error'))
     }
   }
 }
