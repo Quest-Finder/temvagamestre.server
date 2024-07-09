@@ -20,7 +20,7 @@ export class PlayerProfileRoutes {
     isArray: true
   })
   @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
-  async findManyRpgStyles (@Req() req: Request, @Res() res: Response): Promise<void> {
+  async findAllPlayerProfile (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(makeFindAllPlayerProfileController())
     await adaptNest.adapt(req, res)
   }
