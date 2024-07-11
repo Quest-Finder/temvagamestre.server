@@ -1,8 +1,9 @@
-import type { ExternalAuthMappingModel, UserModel } from '@/models'
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
-import type { PrismaClient } from '@prisma/client'
-import { PrismockClient } from 'prismock'
+import type { ExternalAuthMappingModel, UserModel } from '@/models'
+import { createPrismock } from 'prismock'
 import { AddExternalAuthMappingPrismaRepo } from './add-external-auth-mapping-prisma-repo'
+const PrismockClient = createPrismock(Prisma)
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',

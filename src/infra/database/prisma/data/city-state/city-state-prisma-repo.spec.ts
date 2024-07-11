@@ -1,9 +1,11 @@
 import { type CityStateProps } from '@/entities/user/value-objects/city-state/city-state'
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
-import { type PrismaClient } from '@prisma/client'
-import { PrismockClient } from 'prismock'
+import { createPrismock } from 'prismock'
 import { CityStatePrismaRepo } from './city-state-prisma-repo'
+
+const PrismockClient = createPrismock(Prisma)
 
 let prismock: PrismaClient
 

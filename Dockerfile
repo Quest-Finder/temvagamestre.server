@@ -1,4 +1,8 @@
-FROM node:18.10.0-slim as build 
+FROM node:lts-buster-slim AS base
+RUN apt-get update && apt-get install libssl-dev ca-certificates -y
+WORKDIR /app
+
+FROM base as build 
 
 WORKDIR /home/node/app
 
@@ -13,7 +17,7 @@ RUN npx prisma generate
 
 RUN npm run build
 
-FROM node:20-slim as production
+FROM base as production
 
 ENV NODE_ENV=production
 
@@ -26,4 +30,14 @@ RUN npm install --ignore-scripts
 
 COPY  --from=build /home/node/app/dist /app
 
-ENTRYPOINT [ "node", "/app/main.js" ]
+RUN echo "npx prisma generate --schema /app/infra/database/prisma/schema/schema.prisma \
+  && npx prisma migrate deploy --schema /app/infra/database/prisma/schema/schema.prisma \
+  && node /app/seeds/player-profile/add-player-profile-seed.js \
+  && node /app/seeds/rpg-style/add-rpg-style-seed.js \
+  && node /app/seeds/seed.js \
+  && node /app/main.js" > run-server.sh
+
+RUN chmod +x run-server.sh
+
+CMD ["./run-server.sh"]
+

@@ -1,11 +1,14 @@
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
+import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { type UserModel } from '@/models'
 import { type SocialMediaModel } from '@/models/social-media-model'
 import { type UserSocialMediaModel } from '@/models/user-social-media-model'
-import { PrismaHelper } from '@/infra/database/prisma/helpers'
-import { type PrismaClient } from '@prisma/client'
 import MockDate from 'mockdate'
-import { PrismockClient } from 'prismock'
 import { SaveUserSocialMediaPrismaRepo } from './save-user-social-media-prisma-repo'
+
+import { createPrismock } from 'prismock'
+
+const PrismockClient = createPrismock(Prisma)
 
 let prismock: PrismaClient
 

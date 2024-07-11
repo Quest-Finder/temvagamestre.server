@@ -1,8 +1,8 @@
-import { type UserModel } from '@/models'
+import { Prisma, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
-import type { PrismaClient } from '@prisma/client'
+import { type UserModel } from '@/models'
 import MockDate from 'mockdate'
-import { PrismockClient } from 'prismock'
+import { createPrismock } from 'prismock'
 import { FindUserByEmailPrismaRepo } from './find-user-by-email-prisma-repo'
 
 const makeFakeUserModel = (): UserModel => ({
@@ -11,6 +11,8 @@ const makeFakeUserModel = (): UserModel => ({
   name: 'John Doe',
   dateOfBirth: new Date()
 })
+
+const PrismockClient = createPrismock(Prisma)
 
 let prismock: PrismaClient
 
