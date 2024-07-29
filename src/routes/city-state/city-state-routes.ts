@@ -5,15 +5,15 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 import { CityStateRoutesDto } from './dtos/county-state-dto'
 
-@ApiTags('City-state')
+@ApiTags('City-State')
 @Controller('/city-state')
 export class CityStateRoutes {
   @Post()
   @ApiOperation({
-    description: 'Busca os municipios do estado informado.'
+    description: 'Busca os municípios do estado informado.'
   })
   @ApiBody({ type: CityStateRoutesDto })
-  @ApiResponse({ status: 200, description: 'Sucesso: retorna todos os municipios do estado solicitado' })
+  @ApiResponse({ status: 200, description: 'Sucesso: retorna todos os municípios do estado solicitado' })
   @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
   @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
   async validateCityState (@Req() req: Request, @Res() res: Response): Promise<void> {
