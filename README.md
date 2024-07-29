@@ -7,7 +7,6 @@
 </br>
 </div>
 
-
 <p align="center">
   <a href="#introducao">Introdução 📄</a><br>
   <a href="#pastas">Estrutura de Pastas 📁</a><br>
@@ -168,10 +167,10 @@ Para rodar o projeto localmente.
 npm run dev
 ```
 
-Isto irá automaticamente rodar serviços como Banco de dados (incluindo as Migrations), Mongo DB e irá expor um Serviço de APO (Swagger e API) no seguinte endereço:
+Isto irá automaticamente rodar serviços como Banco de dados (incluindo as Migrations), Mongo DB e irá expor um Serviço de API (Swagger e API) no seguinte endereço:
 
 ```bash
-http://localhost:3009/api
+http://localhost:3000/api
 ```
 
 Observações:
