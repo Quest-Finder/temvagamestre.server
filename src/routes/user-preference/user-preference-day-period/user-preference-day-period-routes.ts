@@ -11,7 +11,7 @@ export class UserPreferenceDayPeriodRoutes {
   @Post()
   @ApiOperation({
     summary: 'Salva períodos do dia para o usuário',
-    description: 'Adiciona períodos do dia preferidos para o usuário logado caso ele não tenha um salva e atualiza caso ele possua algum cadastrado'
+    description: 'Adiciona períodos do dia preferidos para o usuário logado caso ele não tenha um salvo, e atualiza caso ele possua algum cadastrado'
   })
   @ApiBearerAuth()
   @ApiBody({ type: SaveUserPreferenceDayPeriodRoutesDto })
