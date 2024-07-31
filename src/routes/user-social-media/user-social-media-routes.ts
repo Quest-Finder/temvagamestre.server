@@ -11,7 +11,7 @@ export class UserSocialMediaRoutes {
   @Post()
   @ApiOperation({
     summary: 'Salva uma rede social para o usuário',
-    description: 'Adiciona um rede social para o usuário logado caso ele não tenha uma, e atualiza o link caso ele possua a mesma cadastrada'
+    description: 'Adiciona uma rede social para o usuário logado caso ele não tenha uma, e atualiza o link caso ele possua a mesma cadastrada'
   })
   @ApiBearerAuth()
   @ApiBody({ type: SaveUserSocialMediaRoutesDto })
