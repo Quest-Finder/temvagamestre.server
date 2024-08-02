@@ -1,5 +1,5 @@
 import { adaptRoute } from '@/factories/adapters/nest-route-adapter-factory'
-import { makeSignUpController } from '@/factories/controllers/user/signup-controller-factory'
+import { makeSignUpWithClerkController } from '@/factories/controllers/user/signup-controller-factory'
 import { makeAdaptClerkRequestSignUpControllerDecorator } from '@/factories/decorators'
 import { Controller, Post, Req, Res } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
@@ -16,7 +16,7 @@ export class SignUpRoutes {
   async signUpWebhook (@Req() req: Request, @Res() res: Response): Promise<void> {
     const adaptNest = adaptRoute(
       makeAdaptClerkRequestSignUpControllerDecorator(
-        makeSignUpController()
+        makeSignUpWithClerkController()
       )
     )
     await adaptNest.adapt(req, res)

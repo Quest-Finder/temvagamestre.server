@@ -3,7 +3,7 @@ import type { Controller, Validation } from '@/contracts'
 import { badRequest, noContent, serverError } from '@/helpers/http/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/types/http'
 
-export class SignUpController implements Controller {
+export class SignUpWithClerkController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly addUser: AddUser
