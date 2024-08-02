@@ -1,11 +1,11 @@
 import { adaptRoute } from '@/factories/adapters/nest-route-adapter-factory'
-import { makeSignUpWithClerkController } from '@/factories/controllers/user/signup-controller-factory'
+import { makeSignUpWithClerkController } from '@/factories/controllers/user/signup-with-clerk-controller-factory'
 import { makeAdaptClerkRequestSignUpControllerDecorator } from '@/factories/decorators'
 import { Controller, Post, Req, Res } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
-@ApiTags('SignUp-Clerk')
+@ApiTags('SignUp-With-Clerk')
 @Controller('/user/signup')
 export class SignUpRoutes {
   @Post('/webhook')

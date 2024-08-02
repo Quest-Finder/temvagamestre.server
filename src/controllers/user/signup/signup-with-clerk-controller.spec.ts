@@ -3,7 +3,7 @@ import type { Validation } from '@/contracts'
 import type { HttpRequest } from '@/types/http'
 import { badRequest, noContent, serverError } from '@/helpers/http/http-helpers'
 import { left, right, type Either } from '@/shared/either'
-import { SignUpWithClerkController } from './signup-controller'
+import { SignUpWithClerkController } from './signup-with-clerk-controller'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
