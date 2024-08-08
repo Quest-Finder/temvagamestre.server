@@ -33,7 +33,7 @@ jobs:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           CLERK_JWT_SECRET_KEY: ${{ secrets.CLERK_JWT_SECRET_KEY}}
           SECRET_KEY_SESSION: ${{secrets.SECRET_KEY_SESSION}}
-          MONGO_URI: ${{secret.MONGO_URI}}
-          DATABASE_URL: ${{secret.DATABASE_URL}}
-          DATABASE_TEST_URL: ${{secret.DATABASE_TEST_URL}}
+          MONGO_URI: ${{secrets.MONGO_URI}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          DATABASE_TEST_URL: ${{secrets.DATABASE_TEST_URL}}
           PORT: 3000
