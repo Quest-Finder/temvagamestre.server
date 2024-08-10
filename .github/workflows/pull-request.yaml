@@ -10,7 +10,7 @@ jobs:
   run-test-ci: 
     runs-on: ubuntu-latest
     steps:
-      - name: Chekout git files
+      - name: Checkout git files
         uses: actions/checkout@v3
         
       - name: Run docker-compose
