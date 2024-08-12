@@ -1,6 +1,5 @@
 import { Entity, UniqueEntityId } from '@/shared'
-import { Email } from './value-objects/email/email'
-import { Password } from './value-objects/password/password'
+import { Email, Password } from './value-objects'
 import { type EmailSignUpUserResponse, type EmailSignUpUserData } from './user-with-email-types'
 import { left, right } from '@/shared/either'
 
