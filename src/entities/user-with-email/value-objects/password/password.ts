@@ -1,5 +1,6 @@
 import { ValueObject } from '@/shared'
 import { left, right, type Either } from '@/shared/either'
+import { InvalidPasswordError } from '../../errors/invalid-password-error'
 
 export class Password extends ValueObject {
   private constructor (password: string) {
@@ -9,7 +10,7 @@ export class Password extends ValueObject {
 
   static create (password: string): Either<InvalidPasswordError, Password> {
     if (!Password.validate(password)) {
-      return left(new InvalidPasswordError(password))
+      return left(new InvalidPasswordError())
     }
     return right(new Password(password))
   }
