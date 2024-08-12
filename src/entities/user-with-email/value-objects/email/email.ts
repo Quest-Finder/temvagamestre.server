@@ -7,11 +7,10 @@ export class Email extends ValueObject {
     Object.freeze(this)
   }
 
-  static create (email: string): Either <InvalidEmailError, Email> {
+  static create (email: string): Either<InvalidEmailError, Email> {
     if (!Email.validate(email)) {
       return left(new InvalidEmailError(email))
     }
-
     email = email.trim()
     email = email.toLowerCase()
     email = email.replace(/\s+/g, '')
