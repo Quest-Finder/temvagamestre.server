@@ -1,5 +1,6 @@
 import { ValueObject } from '@/shared'
 import { type Either, left, right } from '@/shared/either'
+import { InvalidEmailError } from '../../errors/invalid-email'
 
 export class Email extends ValueObject {
   private constructor (email: string) {
