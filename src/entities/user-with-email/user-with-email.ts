@@ -19,23 +19,18 @@ export class UserWithEmail extends Entity<UserWithEmailProps> {
   }
 
   static register (data: EmailSignUpUserData): EmailSignUpUserResponse {
-    const { email, password } = data
+    const emailOrError = Email.create(data.email)
+    if (emailOrError.isLeft()) return left(emailOrError.value)
 
-    const emailOrError = Email.create(email)
-    const passwordOrError = Password.create(password)
+    const passwordOrError = Password.create(data.password)
+    if (passwordOrError.isLeft()) return left(passwordOrError.value)
 
-    const results = [emailOrError, passwordOrError]
-
-    for (const result of results) {
-      if (result.isLeft()) return left(result.value)
-    }
+    const email = emailOrError.value
+    const password = passwordOrError.value
 
     return right(
       new UserWithEmail(
-        {
-          email: emailOrError.value as Email,
-          password: passwordOrError.value as Password
-        },
+        { email, password },
         new UniqueEntityId(data.id)
       )
     )

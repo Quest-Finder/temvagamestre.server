@@ -19,7 +19,6 @@ export class Password extends ValueObject {
     if (password.length < 6 || password.length > 30) {
       return false
     }
-    // It is necessary to validate if this regex matches the requirements of the project
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,30}$/
     if (!regex.test(password)) {
       return false
