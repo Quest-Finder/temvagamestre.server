@@ -3,14 +3,14 @@ import { type InvalidEmailError } from './errors/invalid-email-error'
 import { type InvalidPasswordError } from './errors/invalid-password-error'
 import { type UserWithEmail } from './user-with-email'
 
-export type EmailSignUpUserData = {
+export type SignUpWithEmailData = {
   id: string
   email: string
   password: string
 }
 
-export type EmailSignUpUserErrors =
+export type SignUpWithEmailErrors =
   InvalidEmailError |
   InvalidPasswordError
 
-export type EmailSignUpUserResponse = Either<EmailSignUpUserErrors, UserWithEmail>
+export type SignUpWithEmailResponse = Either<SignUpWithEmailErrors, UserWithEmail>

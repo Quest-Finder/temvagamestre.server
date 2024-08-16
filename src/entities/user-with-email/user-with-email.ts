@@ -1,6 +1,6 @@
 import { Entity, UniqueEntityId } from '@/shared'
 import { Email, Password } from './value-objects'
-import { type EmailSignUpUserResponse, type EmailSignUpUserData } from './user-with-email-types'
+import { type SignUpWithEmailResponse, type SignUpWithEmailData } from './user-with-email-types'
 import { left, right } from '@/shared/either'
 
 export type UserWithEmailProps = {
@@ -18,7 +18,7 @@ export class UserWithEmail extends Entity<UserWithEmailProps> {
     return this.props.email.value
   }
 
-  static register (data: EmailSignUpUserData): EmailSignUpUserResponse {
+  static register (data: SignUpWithEmailData): SignUpWithEmailResponse {
     const emailOrError = Email.create(data.email)
     if (emailOrError.isLeft()) return left(emailOrError.value)
 
