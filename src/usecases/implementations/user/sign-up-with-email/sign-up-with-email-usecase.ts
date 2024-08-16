@@ -1,16 +1,23 @@
 import { UserWithEmail } from '@/entities/user-with-email/user-with-email'
-import { type SignUpWithEmailData, type SignUpWithEmailResponse } from '@/entities/user-with-email/user-with-email-types'
+import type { SignUpWithEmailData, SignUpWithEmailResponse } from '@/entities/user-with-email/user-with-email-types'
+import { EmailInUseError } from '@/errors'
 import { left, right } from '@/shared/either'
+import { FindUserByEmailRepo } from '@/usecases/contracts/db/user'
 import { SignUpWithEmailRepo } from '@/usecases/contracts/db/user/sign-up-with-email-repo'
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class SignUpWithEmailUseCase {
   constructor (
+    private readonly findUserByEmailRepo: FindUserByEmailRepo,
     private readonly signUpWithEmailRepo: SignUpWithEmailRepo
   ) { }
 
   async perform (data: SignUpWithEmailData): Promise<SignUpWithEmailResponse> {
+    const userOrNull = await this.findUserByEmailRepo.execute(data.email)
+    if (userOrNull) {
+      return left(new EmailInUseError(data.email))
+    }
     const signUpWithEmailResult = UserWithEmail.register(data)
     if (signUpWithEmailResult.isLeft()) {
       return left(signUpWithEmailResult.value)
