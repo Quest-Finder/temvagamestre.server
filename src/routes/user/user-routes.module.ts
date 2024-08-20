@@ -10,7 +10,7 @@ import { UserRoutes } from './user-routes'
 export class UserRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
-      .apply(AuthNestMiddleware)
+      .apply()
       .forRoutes({ path: '/user/signup/email', method: RequestMethod.POST })
       .apply(AuthNestMiddleware)
       .forRoutes({ path: '/user', method: RequestMethod.POST })
