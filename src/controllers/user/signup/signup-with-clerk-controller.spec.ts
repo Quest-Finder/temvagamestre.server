@@ -3,7 +3,7 @@ import type { Validation } from '@/contracts'
 import type { HttpRequest } from '@/types/http'
 import { badRequest, noContent, serverError } from '@/helpers/http/http-helpers'
 import { left, right, type Either } from '@/shared/either'
-import { SignUpController } from './signup-controller'
+import { SignUpWithClerkController } from './signup-with-clerk-controller'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -33,7 +33,7 @@ const makeAddUser = (): AddUser => {
 }
 
 type SutTypes = {
-  sut: SignUpController
+  sut: SignUpWithClerkController
   validationStub: Validation
   addUserStub: AddUser
 }
@@ -41,11 +41,11 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
   const addUserStub = makeAddUser()
-  const sut = new SignUpController(validationStub, addUserStub)
+  const sut = new SignUpWithClerkController(validationStub, addUserStub)
   return { sut, validationStub, addUserStub }
 }
 
-describe('SignUpController', () => {
+describe('SignUpWithClerkController', () => {
   it('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
