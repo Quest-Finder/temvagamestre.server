@@ -1,5 +1,4 @@
 export type SignUpWithEmailRepoProps = {
-  id: string
   email: string
   password: string
 }

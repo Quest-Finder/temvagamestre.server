@@ -1,4 +1,4 @@
-import { Entity, UniqueEntityId } from '@/shared'
+import { Entity, type UniqueEntityId } from '@/shared'
 import { Email, Password } from './value-objects'
 import { type SignUpWithEmailResponse, type SignUpWithEmailData } from './user-with-email-types'
 import { left, right } from '@/shared/either'
@@ -29,10 +29,10 @@ export class UserWithEmail extends Entity<UserWithEmailProps> {
     const password = passwordOrError.value
 
     return right(
-      new UserWithEmail(
-        { email, password },
-        new UniqueEntityId(data.id)
-      )
+      new UserWithEmail({
+        email,
+        password
+      })
     )
   }
 }

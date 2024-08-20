@@ -4,7 +4,6 @@ import { type InvalidPasswordError } from './errors/invalid-password-error'
 import { type UserWithEmail } from './user-with-email'
 
 export type SignUpWithEmailData = {
-  id: string
   email: string
   password: string
 }

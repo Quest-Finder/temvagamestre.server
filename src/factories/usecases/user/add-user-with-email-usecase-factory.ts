@@ -8,6 +8,5 @@ export const makeAddUserWithEmailUseCase = (): SignUpWithEmail => {
   return new SignUpWithEmailUseCase(
     makeFindUserByEmailPrismaRepo(),
     makeSignUpWithEmailPrismaRepo()
-    // makeAddExternalAuthMappingPrismaRepo() // This line is the only difference between this file and add-user-usecase-factory.ts, which I have no idea what it does exactly
   )
 }
