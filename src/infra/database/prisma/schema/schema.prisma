@@ -214,7 +214,8 @@ enum Frequency {
 }
 
 model UserWithEmail {
-  id       String @id(map: "pk_user_with_email") @unique(map: "uq_user_with_email_id") @db.VarChar(50)
+  // id       String @id(map: "pk_user_with_email") @unique(map: "uq_user_with_email_id") @db.Uuid()
+  id       String @id @default(uuid()) @db.VarChar(36)
   email    String @unique(map: "uq_user_with_email_email") @db.VarChar(256)
   password String @db.VarChar(100)
 
