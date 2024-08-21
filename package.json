@@ -26,7 +26,7 @@
     "seed:addSocialMedia": "ts-node -r tsconfig-paths/register src/seeds/seed.ts",
     "seed:addRpgStyle": "ts-node -r tsconfig-paths/register src/seeds/rpg-style/add-rpg-style-seed.ts",
     "seed:addPlayerProfile": "ts-node -r tsconfig-paths/register src/seeds/player-profile/add-player-profile-seed.ts",
-    "lint": "eslint '**/*.ts'",
+    "lint": "eslint **/*.ts",
     "pre-run:apply-seeds": "npm run seed:addSocialMedia && npm run seed:addRpgStyle && npm run seed:addPlayerProfile ",
     "pre-run:prepare-database": "npm run prisma:generate-client-definition && npm run prisma:apply-migration && npm run pre-run:apply-seeds",
     "docker:compose": "docker compose -f docker/docker-compose.dev.yaml",
