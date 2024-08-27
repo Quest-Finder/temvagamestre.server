@@ -2,15 +2,15 @@ import { UserWithEmail } from '@/entities/user-with-email/user-with-email'
 import type { SignUpWithEmailData, SignUpWithEmailResponse } from '@/entities/user-with-email/user-with-email-types'
 import { EmailInUseError } from '@/errors'
 import { left, right } from '@/shared/either'
-import { FindUserByEmailRepo } from '@/usecases/contracts/db/user'
-import { SignUpWithEmailRepo } from '@/usecases/contracts/db/user/sign-up-with-email-repo'
+import { FindUserSignUpEmailRepo } from '@/usecases/contracts/db/user/find-user-sign-up-email-repo'
+import { SaveWithEmailRepo } from '@/usecases/contracts/db/user/save-with-email-repo'
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class SignUpWithEmailUseCase {
   constructor (
-    private readonly findUserByEmailRepo: FindUserByEmailRepo,
-    private readonly signUpWithEmailRepo: SignUpWithEmailRepo
+    private readonly findUserByEmailRepo: FindUserSignUpEmailRepo,
+    private readonly saveWithEmailRepo: SaveWithEmailRepo
   ) { }
 
   async perform (data: SignUpWithEmailData): Promise<SignUpWithEmailResponse> {
@@ -23,7 +23,7 @@ export class SignUpWithEmailUseCase {
       return left(signUpWithEmailResult.value)
     }
 
-    await this.signUpWithEmailRepo.execute(data)
+    await this.saveWithEmailRepo.execute(data)
 
     return right(signUpWithEmailResult.value)
   }

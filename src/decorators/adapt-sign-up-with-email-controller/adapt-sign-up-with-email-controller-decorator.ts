@@ -6,7 +6,7 @@ export class AdaptSignUpWithEmailControllerDecorator {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const signUpWithEmailData = httpRequest.body
-    const { email, password } = signUpWithEmailData.data
+    const { email, password } = signUpWithEmailData
     const formattedRequest = {
       email,
       password

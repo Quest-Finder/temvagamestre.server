@@ -3,9 +3,10 @@ import { type MiddlewareConsumer, Module, type NestModule, RequestMethod } from 
 import { FakeUserRoutes } from './fake-user/fake-user-routes'
 import { SignUpRoutes } from './signup/signup-routes'
 import { UserRoutes } from './user-routes'
+import { SignUpWithEmailRoutes } from './sign-up-with-email/sign-up-with-email-routes'
 
 @Module({
-  controllers: [UserRoutes, SignUpRoutes, FakeUserRoutes]
+  controllers: [UserRoutes, SignUpRoutes, FakeUserRoutes, SignUpWithEmailRoutes]
 })
 export class UserRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
