@@ -82,7 +82,7 @@ describe('RegisterUserController', () => {
 
   it('Should return 400 if user already exits', async () => {
     const { sut, checkUserByIdUseCase } = makeSut()
-    jest.spyOn(checkUserByIdUseCase, 'perform').mockResolvedValue(right({ id: 'valid_id', name: 'John doe', email: 'valid@email.com' }))
+    jest.spyOn(checkUserByIdUseCase, 'perform').mockResolvedValue(right({ id: 'valid_id', name: 'John doe', email: 'valid@email.com', username: 'valid_username' }))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error('User already exits')))
   })

@@ -23,7 +23,7 @@ export class RegisterUserController implements Controller {
 
       const checkUserById = await this.checkUserById.perform(httpRequest.headers.userId)
 
-      if (checkUserById.isRight()) {
+      if (checkUserById.isRight() && checkUserById.value.username) {
         return badRequest(new Error('User already exits'))
       }
 

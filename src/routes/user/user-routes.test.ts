@@ -2,10 +2,10 @@
  * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
 */
 
-import type { ExternalAuthMappingModel, PlayerProfileModel } from '@/models'
-import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { AppModule } from '@/app.module'
 import env from '@/configs/env'
+import { PrismaHelper } from '@/infra/database/prisma/helpers'
+import type { ExternalAuthMappingModel, PlayerProfileModel } from '@/models'
 import { type INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import type { PrismaClient } from '@prisma/client'
@@ -42,6 +42,7 @@ const makeFakeToken = async (): Promise<string> => {
   const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
   return token
 }
+
 const makeFakePlayerProfile = (): PlayerProfileModel => ({
   id: '9228a9a0-c7e0-4d62-80bb-458dd772c4f9',
   name: 'any_player_profile_name',
