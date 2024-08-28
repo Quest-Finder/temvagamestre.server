@@ -1,12 +1,14 @@
-import { type RegisterUser } from '@/contracts/user'
 import type { Controller, Validation } from '@/contracts'
+import { type RegisterUser } from '@/contracts/user'
+import { type CheckUserById } from '@/contracts/user/check-by-id'
 import { badRequest, noContent, serverError } from '@/helpers/http/http-helpers'
 import type { HttpRequest, HttpResponse } from '@/types/http'
 
 export class RegisterUserController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly registerUser: RegisterUser
+    private readonly registerUser: RegisterUser,
+    private readonly checkUserById: CheckUserById
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -17,6 +19,12 @@ export class RegisterUserController implements Controller {
         console.log(validationResult.value)
 
         return badRequest(validationResult.value)
+      }
+
+      const checkUserById = await this.checkUserById.perform(httpRequest.headers.userId)
+
+      if (checkUserById.isRight() && checkUserById.value.username) {
+        return badRequest(new Error('User already exits'))
       }
 
       const registerUserResult = await this.registerUser.perform({

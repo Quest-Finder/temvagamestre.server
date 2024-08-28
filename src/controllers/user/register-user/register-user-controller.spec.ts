@@ -1,9 +1,10 @@
-import type { RegisterUser, RegisterUserResponse } from '@/contracts/user'
-import { type RegisterUserData } from '@/entities/user'
 import type { Validation } from '@/contracts'
+import type { RegisterUser, RegisterUserResponse } from '@/contracts/user'
+import { type CheckUserById, type CheckUserByIdResponse } from '@/contracts/user/check-by-id'
+import { type RegisterUserData } from '@/entities/user'
 import { badRequest, noContent, serverError } from '@/helpers/http/http-helpers'
-import type { HttpRequest } from '@/types/http'
 import { left, right, type Either } from '@/shared/either'
+import type { HttpRequest } from '@/types/http'
 import { RegisterUserController } from './register-user-controller'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -38,17 +39,28 @@ const makeFakeRegisterUser = (): RegisterUser => {
   return new RegisterUserStub()
 }
 
+const makeCheckUserByIdUseCase = (): CheckUserById => {
+  class FakeCheckUserById implements CheckUserById {
+    async perform (id: string): Promise<CheckUserByIdResponse> {
+      return await Promise.resolve(left(new Error('User')))
+    }
+  }
+  return new FakeCheckUserById()
+}
+
 type SutTypes = {
   sut: RegisterUserController
   validationStub: Validation
   registerUserStub: RegisterUser
+  checkUserByIdUseCase: CheckUserById
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
   const registerUserStub = makeFakeRegisterUser()
-  const sut = new RegisterUserController(validationStub, registerUserStub)
-  return { sut, validationStub, registerUserStub }
+  const checkUserByIdUseCase = makeCheckUserByIdUseCase()
+  const sut = new RegisterUserController(validationStub, registerUserStub, checkUserByIdUseCase)
+  return { sut, validationStub, registerUserStub, checkUserByIdUseCase }
 }
 
 describe('RegisterUserController', () => {
@@ -66,6 +78,13 @@ describe('RegisterUserController', () => {
     )
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error('any_message')))
+  })
+
+  it('Should return 400 if user already exits', async () => {
+    const { sut, checkUserByIdUseCase } = makeSut()
+    jest.spyOn(checkUserByIdUseCase, 'perform').mockResolvedValue(right({ id: 'valid_id', name: 'John doe', email: 'valid@email.com', username: 'valid_username' }))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new Error('User already exits')))
   })
 
   it('Should return 500 if Validation throws', async () => {
