@@ -1,7 +1,8 @@
-import type { UserModel } from '@/models'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
+import type { UserModel } from '@/models'
+import { FindUserByEmailRepo } from '@/usecases/contracts/db/user'
 
-export class FindUserByEmailPrismaRepo {
+export class FindUserByEmailPrismaRepo implements FindUserByEmailRepo {
   async execute (email: string): Promise<UserModel | null> {
     const prisma = await PrismaHelper.getPrisma()
     const userOrNull = await prisma.user.findUnique({ where: { email } })
