@@ -1,6 +1,5 @@
 import { adaptRoute } from '@/factories/adapters'
 import { makeAddFakeUserController } from '@/factories/controllers/user/add-fake-user-controller-factory'
-import { SignUpWithEmailZodValidation } from '@/validators/user/sign-up-with-email/sign-up-with-email-zod-validation'
 import { Controller, Post, Req, Res } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
@@ -20,8 +19,6 @@ export class SignUpWithEmailRoutes {
     description: 'Cria um novo usuário a partir de email e senha'
   })
   async signUpWithEmail (@Req() req: Request, @Res() res: Response): Promise<void> {
-    const validation = new SignUpWithEmailZodValidation()
-
     const adaptNest = adaptRoute(
       makeAddFakeUserController()
     )

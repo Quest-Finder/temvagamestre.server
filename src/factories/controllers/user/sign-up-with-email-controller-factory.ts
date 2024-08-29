@@ -9,8 +9,7 @@ export const makeSignUpWithEmailController = (): Controller => {
 
   const controller = new SignUpWithEmailController(
     validation,
-    makeAddUserWithEmailUseCase(),
-    
+    makeAddUserWithEmailUseCase()
   )
   return makeLogControllerDecorator(controller)
 }

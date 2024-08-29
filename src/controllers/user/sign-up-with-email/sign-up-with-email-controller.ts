@@ -6,16 +6,11 @@ import type { HttpRequest, HttpResponse } from '@/types/http'
 export class SignUpWithEmailController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly signUpWithEmail: SignUpWithEmail,
+    private readonly signUpWithEmail: SignUpWithEmail
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { email } = httpRequest.body
-      //const userOrNull = await this.findUserSignUpEmailRepo.execute(email)
-      //if (userOrNull) {
-      //  return badRequest(new EmailInUseError(email))
-     // }
       const validationResult = this.validation.validate(httpRequest.body)
       if (validationResult.isLeft()) {
         return badRequest(validationResult.value)

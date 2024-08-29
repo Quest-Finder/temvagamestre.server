@@ -9,7 +9,6 @@ import { UserRoutesModule } from './routes/user/user-routes.module'
 import { SharedModule } from './shared/shared.module'
 import { UsersModule } from './users/users.module'
 
-
 @Module({
   imports: [
     UserRoutesModule,
@@ -20,7 +19,7 @@ import { UsersModule } from './users/users.module'
     CityStateRoutesModule,
     PlayerProfileRoutesModule,
     UsersModule,
-    SharedModule,
-  ],
+    SharedModule
+  ]
 })
 export class AppModule {}
