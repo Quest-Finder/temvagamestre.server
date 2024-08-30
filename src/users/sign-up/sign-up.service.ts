@@ -1,3 +1,5 @@
+import env from '@/configs/env'
+import { JwtSignAdapter } from '@/infra/cryptography/jwt-sign-adapter'
 import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
@@ -22,6 +24,11 @@ export class SignUpService {
           id: uuidAdapter.build()
         }
       })
+
+      const jwtSignAdapter = new JwtSignAdapter(env.jwtSecretKey)
+      const token = jwtSignAdapter.execute(email)
+
+      return token
     } catch (error) {
       console.log(error)
     }
