@@ -3,7 +3,7 @@ import { makeAddFakeUserController } from '@/factories/controllers/user/add-fake
 import { Controller, Post, Req, Res } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
-import { SignUpWithEmailDto } from '../dtos/sign-up-with-email-dto'
+import { SignUpWithEmailDto } from '../../../users/sign-up/sign-up-with-email-dto'
 
 @ApiTags('SignUp-With-Email')
 @Controller('/user/signup')
