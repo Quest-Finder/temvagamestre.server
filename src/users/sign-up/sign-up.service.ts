@@ -15,31 +15,27 @@ export class SignUpService {
   async create ({ email, password }: SignUpWithEmailDto): Promise<{ token: string } | undefined> {
     console.log('Aqui')
 
-    try {
-      const signUpData = new SignUpWithEmailDto(email, password)
+    const signUpData = new SignUpWithEmailDto(email, password)
 
-      const user = await this.prismaService.userWithEmail.findUnique({ where: { email } })
+    const user = await this.prismaService.userWithEmail.findUnique({ where: { email } })
 
-      if (user) {
-        throw new Error('User already exists')
-      }
-
-      const uuidAdapter = new UuidAdapter()
-      const hashedPassword = await bcrypt.hashSync(password, SALT_ROUNDS)
-      await this.prismaService.userWithEmail.create({
-        data: {
-          id: uuidAdapter.build(),
-          email: signUpData.email,
-          password: hashedPassword
-        }
-      })
-
-      const jwtSignAdapter = new JwtSignAdapter(env.jwtSecretKey)
-      const token = jwtSignAdapter.execute(email)
-
-      return token
-    } catch (error) {
-      console.log(error)
+    if (user) {
+      return undefined
     }
+
+    const uuidAdapter = new UuidAdapter()
+    const hashedPassword = await bcrypt.hashSync(password, SALT_ROUNDS)
+    await this.prismaService.userWithEmail.create({
+      data: {
+        id: uuidAdapter.build(),
+        email: signUpData.email,
+        password: hashedPassword
+      }
+    })
+
+    const jwtSignAdapter = new JwtSignAdapter(env.jwtSecretKey)
+    const token = jwtSignAdapter.execute(email)
+
+    return token
   }
 }
