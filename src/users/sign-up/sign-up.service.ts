@@ -13,8 +13,6 @@ export class SignUpService {
   constructor (private readonly prismaService: PrismaService) {}
 
   async create ({ email, password }: SignUpWithEmailDto): Promise<{ token: string }> {
-    console.log('Aqui')
-
     const signUpData = new SignUpWithEmailDto(email, password)
 
     const user = await this.prismaService.userWithEmail.findUnique({ where: { email } })

@@ -1,5 +1,6 @@
 import type { Either } from '@/shared/either'
 import { SignUpWithEmailZodValidation } from '@/validators/user/sign-up-with-email/sign-up-with-email-zod-validation'
+import { BadRequestException } from '@nestjs/common'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class SignUpWithEmailDto {
@@ -14,7 +15,7 @@ export class SignUpWithEmailDto {
     const validationResult: Either<Error, void> = validation.validate({ email, password })
 
     if (validationResult.isLeft()) {
-      throw validationResult.value
+      throw new BadRequestException(validationResult.value.message)
     }
 
     this.email = email
