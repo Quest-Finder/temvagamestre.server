@@ -12,7 +12,6 @@ export const swaggerSetup = (app: INestApplication<any>): void => {
     })
     .addTag('Fake-User')
     .addTag('SignUp-With-Email')
-    .addTag('SignUp-With-Email-v2')
     .addTag('SignUp-With-Clerk')
     .addTag('User')
     .addTag('User-Preference')
