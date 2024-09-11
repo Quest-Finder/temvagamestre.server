@@ -2,8 +2,11 @@ import { Test, type TestingModule } from '@nestjs/testing'
 import { SignUpController } from './sign-up-with-email.controller'
 import { SignUpService } from './sign-up-with-email.service'
 import { SharedModule } from '@/shared/shared.module'
+import type { INestApplication } from '@nestjs/common'
+import request from 'supertest'
 
 describe('SignUpController', () => {
+  let app: INestApplication
   let controller: SignUpController
   let service: SignUpService
 
@@ -14,19 +17,23 @@ describe('SignUpController', () => {
       imports: [SharedModule]
     }).compile()
 
+    app = module.createNestApplication()
+    await app.init()
+
     controller = module.get<SignUpController>(SignUpController)
     service = module.get<SignUpService>(SignUpService)
   })
 
-  afterEach(() => {
+  afterEach(async () => {
     jest.clearAllMocks()
+    await app.close()
   })
 
   it('should be defined', () => {
     expect(controller).toBeDefined()
   })
 
-  it('/POST /user/signup/email', async () => {
+  it('should return status 201 and a token when a new user is created', async () => {
     const signUpWithEmailDto = {
       email: 'test@example.com',
       password: 'test123'
@@ -36,9 +43,22 @@ describe('SignUpController', () => {
 
     jest.spyOn(service, 'create').mockResolvedValueOnce({ token })
 
-    const result = await controller.create(signUpWithEmailDto)
-    expect(result).toBeInstanceOf(Promise)
+    await request(app.getHttpServer())
+      .post('/user/signup/email')
+      .send(signUpWithEmailDto)
+      .expect(201)
+      .expect({ token })
+  })
 
-    await expect(result).resolves.toEqual({ token })
+  it('should return status 400 when the email or password is invalid', async () => {
+    const signUpWithEmailDto = {
+      email: 'test@.com',
+      password: 'asdf'
+    }
+
+    await request(app.getHttpServer())
+      .post('/user/signup/email')
+      .send(signUpWithEmailDto)
+      .expect(400)
   })
 })
