@@ -1,8 +1,9 @@
+import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
-import { PrismaService } from './prisma/prisma.service'
+import { IbgeService } from './integration/ibge/ibge.service'
 
 @Module({
-  providers: [PrismaService],
-  exports: [PrismaService]
+  imports: [HttpModule],
+  providers: [IbgeService]
 })
 export class SharedModule {}
