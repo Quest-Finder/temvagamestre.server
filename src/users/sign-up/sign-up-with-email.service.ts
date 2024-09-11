@@ -10,6 +10,7 @@ const SALT_ROUNDS = 10
 
 @Injectable()
 export class SignUpService {
+  PrismaService: any
   constructor (private readonly prismaService: PrismaService) {}
 
   async create ({ email, password }: SignUpWithEmailDto): Promise<{ token: string }> {

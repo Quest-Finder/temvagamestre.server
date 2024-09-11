@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { SignUpService } from './sign-up.service'
+import { SignUpService } from './sign-up-with-email.service'
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { SignUpWithEmailDto } from './sign-up-with-email-dto'
 

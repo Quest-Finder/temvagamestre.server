@@ -1,20 +1,22 @@
 import { Test, type TestingModule } from '@nestjs/testing'
-import { SignUpService } from './sign-up.service'
+import { SignUpController } from './sign-up-with-email.controller'
+import { SignUpService } from './sign-up-with-email.service'
 import { SharedModule } from '@/shared/shared.module'
 
-describe('SignUpService', () => {
-  let service: SignUpService
+describe('SignUpController', () => {
+  let controller: SignUpController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [SignUpController],
       providers: [SignUpService],
       imports: [SharedModule]
     }).compile()
 
-    service = module.get<SignUpService>(SignUpService)
+    controller = module.get<SignUpController>(SignUpController)
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(controller).toBeDefined()
   })
 })
