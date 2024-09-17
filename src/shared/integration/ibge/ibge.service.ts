@@ -2,9 +2,14 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { lastValueFrom } from 'rxjs'
 
-export type City = {
-  id: number
-  name: string
+export type IbgeCityServiceReponse = {
+  cities: string[]
+  cityFounded: boolean
+}
+
+export type FindCitiesByState = {
+  uf: string
+  city: string
 }
 
 @Injectable()
@@ -13,9 +18,13 @@ export class IbgeService {
 
   constructor (private readonly http: HttpService) {}
 
-  async findCitiesByState (state: string): Promise<City[]> {
-    const response = await lastValueFrom(this.http.get(`${this.BASE_URL}/estados/${state}/municipios`))
-    const cities: City[] = response.data.map(data => ({ id: data.id, name: data.nome }))
-    return cities
+  async findCitiesByState ({ uf, city }: FindCitiesByState): Promise<IbgeCityServiceReponse> {
+    const response = await lastValueFrom(this.http.get(`${this.BASE_URL}/estados/${uf}/municipios`))
+    const cities: string[] = await response.data.map(data => data.nome)
+    const cityFounded = city && cities.find(
+      c => c.toLowerCase().localeCompare(
+        city.toLowerCase(), 'pt-BR', { sensitivity: 'base' }) === 0
+    )
+    return { cities, cityFounded: !!cityFounded }
   }
 }

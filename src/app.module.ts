@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common'
 import { APP_FILTER } from '@nestjs/core'
-import { CityStateController } from './city-state/city-state-controller/city-state.controller'
 import { CityStateModule } from './city-state/city-state.module'
-import { CityStateRoutesModule } from './routes/city-state/city-state-routes.module'
 import { PlayerProfileRoutesModule } from './routes/player-profile/player-profile-routes.module'
 import { RpgStyleRoutesModule } from './routes/rpg-style/rpg-style-routes.module'
 import { SocialMediaRoutesModule } from './routes/social-media/social-media-routes.module'
@@ -19,7 +17,6 @@ import { SharedModule } from './shared/shared.module'
     UserSocialMediaRoutesModule,
     UserPreferenceRoutesModule,
     RpgStyleRoutesModule,
-    CityStateRoutesModule,
     PlayerProfileRoutesModule,
     SharedModule,
     CityStateModule
@@ -29,7 +26,6 @@ import { SharedModule } from './shared/shared.module'
       provide: APP_FILTER,
       useClass: AppExceptionHandlerFilter
     }
-  ],
-  controllers: [CityStateController]
+  ]
 })
 export class AppModule {}

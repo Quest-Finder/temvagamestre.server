@@ -1,4 +1,6 @@
-import { type ArgumentsHost, Catch, type ExceptionFilter, HttpException } from '@nestjs/common'
+import { Catch, HttpException, HttpStatus, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common'
+import { type Response } from 'express'
+import { ValidationException } from '../exceptions/validation-execption'
 
 const httpStatusDescription = {
   100: 'Continue',
@@ -68,6 +70,7 @@ export class AppExceptionHandlerFilter implements ExceptionFilter {
     let bodyError = {} as ErrorBody
     const response = ctx.getResponse<Response>()
     const request = ctx.getRequest<Request>()
+    console.error(exception)
     if (exception instanceof HttpException) {
       bodyError = {
         detail: exception.message,
@@ -75,6 +78,17 @@ export class AppExceptionHandlerFilter implements ExceptionFilter {
         statusCode: exception.getStatus(),
         timestamp: new Date().getTime(),
         path: request.url
+      }
+    }
+
+    if (exception instanceof ValidationException) {
+      bodyError = {
+        detail: 'Erro na validação de campos',
+        title: httpStatusDescription[HttpStatus.BAD_REQUEST],
+        statusCode: HttpStatus.BAD_REQUEST,
+        timestamp: new Date().getTime(),
+        path: request.url,
+        objects: exception.fieldsErrors
       }
     }
 

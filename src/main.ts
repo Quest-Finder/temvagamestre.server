@@ -23,6 +23,7 @@ async function bootstrap (): Promise<void> {
       }
     })
   )
+
   swaggerSetup(app)
   await app.listen(env.port)
   console.log(`Server running at: ${await app.getUrl()}`)
