@@ -4,7 +4,7 @@ export type FieldError = {
 }
 
 export class ValidationException extends Error {
-  private readonly fieldsErrors: FieldError[]
+  readonly fieldsErrors: FieldError[]
 
   constructor (fieldsErrors: FieldError[]) {
     super('ValidationError')
