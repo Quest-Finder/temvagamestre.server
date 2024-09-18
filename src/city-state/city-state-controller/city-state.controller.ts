@@ -16,7 +16,7 @@ export class CityStateController {
   @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
   @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
   @HttpCode(200)
-  async create (@Body(new ZodValidationPipePipe(createCityStateSchema)) createCityStateDto: CreateCityStateDto): Promise<unknown> {
-    return await this.cityStateService.create(createCityStateDto)
+  async create (@Body(new ZodValidationPipePipe(createCityStateSchema)) { uf, city }: CreateCityStateDto): Promise<unknown> {
+    return await this.cityStateService.create({ uf, city })
   }
 }
