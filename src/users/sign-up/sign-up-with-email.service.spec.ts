@@ -3,11 +3,11 @@ import { SignUpService } from './sign-up-with-email.service'
 import { ConflictException } from '@nestjs/common'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import bcrypt from 'bcrypt'
+import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
+import { JwtSignAdapter } from '@/infra/cryptography/jwt-sign-adapter'
 
 describe('SignUpService', () => {
   let service: SignUpService
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let prismaService: PrismaService
 
   const SALTED_ROUNDS = 10
 
@@ -35,15 +35,13 @@ describe('SignUpService', () => {
       providers: [
         SignUpService,
         { provide: PrismaService, useValue: mockPrismaService },
-        { provide: 'UuidAdapter', useValue: mockUuidAdapter },
+        { provide: UuidAdapter, useValue: mockUuidAdapter },
         { provide: 'HashAdapter', useValue: mockHashAdapter },
-        { provide: 'JwtSignAdapter', useValue: mockJwtSignAdapter }
+        { provide: JwtSignAdapter, useValue: mockJwtSignAdapter }
       ]
-      // imports: [SharedModule]
     }).compile()
 
     service = module.get<SignUpService>(SignUpService)
-    prismaService = module.get<PrismaService>(PrismaService)
   })
 
   afterEach(() => {
@@ -57,7 +55,7 @@ describe('SignUpService', () => {
   it('should create a new user and return a token', async () => {
     const bcryptHashSpy = jest.spyOn(bcrypt, 'hashSync').mockReturnValueOnce('hashed-password')
 
-    mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce(null) // Mock to ensure that the user does not exist
+    mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce(null)
     mockPrismaService.userWithEmail.create.mockResolvedValueOnce({ id: 'some-uuid' })
 
     const result = await service.create({ email: 'newuser@example.com', password: '123456' })
