@@ -9,7 +9,7 @@ export type IbgeCityServiceReponse = {
 
 export type FindCitiesByState = {
   uf: string
-  city: string
+  city?: string
 }
 
 @Injectable()

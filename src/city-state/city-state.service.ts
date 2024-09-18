@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 
 type InputCreateCityService = {
   uf: string
-  city: string
+  city?: string
 }
 
 @Injectable()
