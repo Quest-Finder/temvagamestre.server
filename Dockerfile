@@ -33,7 +33,6 @@ COPY  --from=build /home/node/app/dist /app
 RUN echo "npx prisma generate --schema /app/infra/database/prisma/schema/schema.prisma \
   && npx prisma migrate deploy --schema /app/infra/database/prisma/schema/schema.prisma \
   && node /app/seeds/player-profile/add-player-profile-seed.js \
-  && node /app/seeds/rpg-style/add-rpg-style-seed.js \
   && node /app/seeds/seed.js \
   && node /app/main.js" > run-server.sh
 
