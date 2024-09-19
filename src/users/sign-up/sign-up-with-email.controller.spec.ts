@@ -5,8 +5,8 @@ import { SharedModule } from '@/shared/shared.module'
 import type { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
-import { JwtSignAdapter } from '@/infra/cryptography/jwt-sign-adapter'
 import { PrismaService } from '@/shared/prisma/prisma.service'
+import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
 
 describe('SignUpController', () => {
   let app: INestApplication
@@ -19,7 +19,7 @@ describe('SignUpController', () => {
       providers: [
         SignUpService,
         UuidAdapter,
-        JwtSignAdapter,
+        JwtSignAdapterV2,
         PrismaService
       ],
       imports: [SharedModule]

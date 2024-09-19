@@ -27,7 +27,7 @@ describe('SignUpService', () => {
   }
 
   const mockJwtSignAdapter = {
-    sign: jest.fn().mockResolvedValue('some-token')
+    execute: jest.fn().mockResolvedValue({ token: 'some-token' })
   }
 
   beforeEach(async () => {
@@ -57,6 +57,7 @@ describe('SignUpService', () => {
 
     mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce(null)
     mockPrismaService.userWithEmail.create.mockResolvedValueOnce({ id: 'some-uuid' })
+    mockJwtSignAdapter.execute.mockResolvedValueOnce({ token: 'some-token' })
 
     const result = await service.create({ email: 'newuser@example.com', password: '123456' })
 
@@ -68,7 +69,7 @@ describe('SignUpService', () => {
         password: 'hashed-password'
       }
     })
-    expect(result).toEqual({ token: expect.any(String) })
+    expect(result).toEqual({ token: 'some-token' })
   })
 
   it('should throw ConflictException if user already exists', async () => {
