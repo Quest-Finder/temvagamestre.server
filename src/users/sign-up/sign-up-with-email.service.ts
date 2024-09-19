@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt'
-import { JwtSignAdapter } from '@/infra/cryptography/jwt-sign-adapter'
 import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { ConflictException, Injectable } from '@nestjs/common'
 import { SignUpWithEmailDto } from './sign-up-with-email-dto'
+import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
 
 const SALT_ROUNDS = 10
 
@@ -12,7 +12,7 @@ export class SignUpService {
   constructor (
     private readonly prismaService: PrismaService,
     private readonly uuidAdapter: UuidAdapter,
-    private readonly jwtSignAdapter: JwtSignAdapter
+    private readonly jwtSignAdapterV2: JwtSignAdapterV2
   ) {}
 
   async create ({ email, password }: SignUpWithEmailDto): Promise<{ token: string }> {
@@ -23,7 +23,7 @@ export class SignUpService {
       throw new ConflictException(`Já existe um email cadastrado com o ${email} informado`)
     }
 
-    const hashedPassword = await bcrypt.hashSync(password, SALT_ROUNDS)
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
     await this.prismaService.userWithEmail.create({
       data: {
         id: this.uuidAdapter.build(),
@@ -32,7 +32,7 @@ export class SignUpService {
       }
     })
 
-    const token = this.jwtSignAdapter.execute(email)
+    const token = this.jwtSignAdapterV2.execute(email)
 
     return token
   }

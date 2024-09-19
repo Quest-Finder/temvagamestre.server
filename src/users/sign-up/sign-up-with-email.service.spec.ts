@@ -4,7 +4,7 @@ import { ConflictException } from '@nestjs/common'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import bcrypt from 'bcrypt'
 import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
-import { JwtSignAdapter } from '@/infra/cryptography/jwt-sign-adapter'
+import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
 
 describe('SignUpService', () => {
   let service: SignUpService
@@ -37,7 +37,7 @@ describe('SignUpService', () => {
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: UuidAdapter, useValue: mockUuidAdapter },
         { provide: 'HashAdapter', useValue: mockHashAdapter },
-        { provide: JwtSignAdapter, useValue: mockJwtSignAdapter }
+        { provide: JwtSignAdapterV2, useValue: mockJwtSignAdapter }
       ]
     }).compile()
 
@@ -53,7 +53,7 @@ describe('SignUpService', () => {
   })
 
   it('should create a new user and return a token', async () => {
-    const bcryptHashSpy = jest.spyOn(bcrypt, 'hashSync').mockReturnValueOnce('hashed-password')
+    const bcryptHashSpy = jest.spyOn(bcrypt, 'hash').mockReturnValueOnce('hashed-password')
 
     mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce(null)
     mockPrismaService.userWithEmail.create.mockResolvedValueOnce({ id: 'some-uuid' })
