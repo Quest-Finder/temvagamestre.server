@@ -1,9 +1,10 @@
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
 import { Body, Controller, HttpCode, Post } from '@nestjs/common'
-import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CityStateService } from '../city-state.service'
 import { CreateCityStateDto, createCityStateSchema } from './dto/create-city-state.dto'
 
+@ApiTags('City-State')
 @Controller('/city-state')
 export class CityStateController {
   constructor (private readonly cityStateService: CityStateService) {}
