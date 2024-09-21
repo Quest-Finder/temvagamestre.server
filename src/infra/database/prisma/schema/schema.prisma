@@ -212,3 +212,11 @@ enum Frequency {
 
   @@map("frequency")
 }
+
+model UserWithEmail {
+  id       String @id @default(uuid()) @db.VarChar(36)
+  email    String @unique(map: "uq_user_with_email") @db.VarChar(256)
+  password String @db.VarChar(100)
+
+  @@map("user_with_email")
+}

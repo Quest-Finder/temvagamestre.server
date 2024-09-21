@@ -6,6 +6,8 @@ import { SocialMediaRoutesModule } from './routes/social-media/social-media-rout
 import { UserPreferenceRoutesModule } from './routes/user-preference/user-preference-routes.module'
 import { UserSocialMediaRoutesModule } from './routes/user-social-media/user-social-media-routes.module'
 import { UserRoutesModule } from './routes/user/user-routes.module'
+import { SharedModule } from './shared/shared.module'
+import { UsersModule } from './users/users.module'
 
 @Module({
   imports: [
@@ -15,7 +17,9 @@ import { UserRoutesModule } from './routes/user/user-routes.module'
     UserPreferenceRoutesModule,
     RpgStyleRoutesModule,
     CityStateRoutesModule,
-    PlayerProfileRoutesModule
+    PlayerProfileRoutesModule,
+    UsersModule,
+    SharedModule
   ]
 })
 export class AppModule {}

@@ -6,6 +6,9 @@ export default {
   webhookSecret: process.env.WEBHOOK_SECRET ?? 'any_webhook_secret',
   port: process.env.PORT ?? '5050',
   clerkJwtSecretKey: process.env.CLERK_JWT_SECRET_KEY ?? 'any_clerk_jwt_secret_key',
+  jwtSecretKey: process.env.JWT_SECRET_KEY ?? 'any_jwt_secret_key',
   mongoDbUri: process.env.MONGO_URI ?? 'mongodb://127.0.0.1:27017/rpg-log',
-  secretKeySession: process.env.SECRET_KEY_SESSION ?? 'any_secret_key_session'
+  secretKeySession: process.env.SECRET_KEY_SESSION ?? 'any_secret_key_session',
+  refreshTokenSecretKey: process.env.REFRESH_TOKEN_SECRET_KEY ?? 'any_refresh_token_secret_key',
+  refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN ?? '30d'
 }

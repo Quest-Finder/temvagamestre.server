@@ -11,9 +11,7 @@ export class UserRoutesModule implements NestModule {
   configure (consumer: MiddlewareConsumer): void {
     consumer
       .apply(AuthNestMiddleware)
-      .forRoutes(
-        { path: '/user', method: RequestMethod.POST }
-      )
+      .forRoutes({ path: '/user', method: RequestMethod.POST })
       .apply(WebhookValidatorNestMiddleware)
       .forRoutes({ path: '/user/signup/webhook', method: RequestMethod.POST })
   }
