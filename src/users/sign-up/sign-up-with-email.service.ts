@@ -17,18 +17,19 @@ export class SignUpService {
 
   async create ({ email, password }: SignUpWithEmailDto): Promise<{ token: string }> {
     const signUpData = new SignUpWithEmailDto(email, password)
-    const user = await this.prismaService.userWithEmail.findUnique({ where: { email } })
+    const user = await this.prismaService.auth.findUnique({ where: { email } })
 
     if (user) {
       throw new ConflictException(`Já existe um email cadastrado com o ${email} informado`)
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
-    await this.prismaService.userWithEmail.create({
+    await this.prismaService.auth.create({
       data: {
         id: this.uuidAdapter.build(),
         email: signUpData.email,
-        password: hashedPassword
+        password: hashedPassword,
+        onboarding: true
       }
     })
 

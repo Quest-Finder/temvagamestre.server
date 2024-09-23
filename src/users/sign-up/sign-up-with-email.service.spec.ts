@@ -12,7 +12,7 @@ describe('SignUpService', () => {
   const SALTED_ROUNDS = 10
 
   const mockPrismaService = {
-    userWithEmail: {
+    auth: {
       findUnique: jest.fn(),
       create: jest.fn()
     }
@@ -55,30 +55,31 @@ describe('SignUpService', () => {
   it('should create a new user and return a token', async () => {
     const bcryptHashSpy = jest.spyOn(bcrypt, 'hash').mockReturnValueOnce('hashed-password')
 
-    mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce(null)
-    mockPrismaService.userWithEmail.create.mockResolvedValueOnce({ id: 'some-uuid' })
+    mockPrismaService.auth.findUnique.mockResolvedValueOnce(null)
+    mockPrismaService.auth.create.mockResolvedValueOnce({ id: 'some-uuid' })
     mockJwtSignAdapter.execute.mockResolvedValueOnce({ token: 'some-token' })
 
     const result = await service.create({ email: 'newuser@example.com', password: '123456' })
 
     expect(bcryptHashSpy).toHaveBeenCalledWith('123456', SALTED_ROUNDS)
-    expect(mockPrismaService.userWithEmail.create).toHaveBeenCalledWith({
+    expect(mockPrismaService.auth.create).toHaveBeenCalledWith({
       data: {
         id: expect.any(String),
         email: 'newuser@example.com',
-        password: 'hashed-password'
+        password: 'hashed-password',
+        onboarding: true
       }
     })
     expect(result).toEqual({ token: 'some-token' })
   })
 
   it('should throw ConflictException if user already exists', async () => {
-    mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce({ email: 'test@example.com' })
+    mockPrismaService.auth.findUnique.mockResolvedValueOnce({ email: 'test@example.com' })
 
     await expect(service.create({ email: 'test@example.com', password: 'whateverpassword123' }))
       .rejects.toThrow(new ConflictException('Já existe um email cadastrado com o test@example.com informado'))
 
-    expect(mockPrismaService.userWithEmail.findUnique).toHaveBeenCalledWith({
+    expect(mockPrismaService.auth.findUnique).toHaveBeenCalledWith({
       where: { email: 'test@example.com' }
     })
   })
