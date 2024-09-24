@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { APP_FILTER } from '@nestjs/core'
 import { CityStateModule } from './city-state/city-state.module'
-import { PlayerProfileRoutesModule } from './routes/player-profile/player-profile-routes.module'
+import { PlayerProfileModule } from './player-profile/player-profile.module'
 import { UserPreferenceRoutesModule } from './routes/user-preference/user-preference-routes.module'
 import { UserSocialMediaRoutesModule } from './routes/user-social-media/user-social-media-routes.module'
 import { UserRoutesModule } from './routes/user/user-routes.module'
@@ -15,11 +15,11 @@ import { SocialMediaModule } from './social-media/social-media.module'
     UserRoutesModule,
     UserSocialMediaRoutesModule,
     UserPreferenceRoutesModule,
-    PlayerProfileRoutesModule,
     SharedModule,
     CityStateModule,
     RpgStylesModule,
-    SocialMediaModule
+    SocialMediaModule,
+    PlayerProfileModule
   ],
   providers: [
     {
