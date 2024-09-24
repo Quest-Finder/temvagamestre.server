@@ -1,25 +1,25 @@
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { Test, type TestingModule } from '@nestjs/testing'
-import { RpgStylesRepository } from './rpg-styles.repository'
+import { PlayersProfileRepository } from './player-profiles.repository'
 
 describe('RpgStylesRepository', () => {
-  let service: RpgStylesRepository
+  let service: PlayersProfileRepository
   let prismaService: PrismaService
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RpgStylesRepository, PrismaService]
+      providers: [PlayersProfileRepository, PrismaService]
     }).compile()
 
-    service = module.get<RpgStylesRepository>(RpgStylesRepository)
+    service = module.get<PlayersProfileRepository>(PlayersProfileRepository)
     prismaService = module.get<PrismaService>(PrismaService)
   })
 
   beforeEach(async () => {
-    await prismaService.rpgStyle.deleteMany()
+    await prismaService.playerProfile.deleteMany()
   })
 
   afterAll(async () => {
-    await prismaService.rpgStyle.deleteMany()
+    await prismaService.playerProfile.deleteMany()
     await prismaService.$disconnect()
   })
 
@@ -27,24 +27,24 @@ describe('RpgStylesRepository', () => {
     expect(service).toBeDefined()
   })
 
-  describe('Find All RgpStyles', () => {
+  describe('Find All PlayersProfile', () => {
     it('should return a empty list when not styles exists', async () => {
       const result = await service.findAll()
       expect(result.length).toBe(0)
     })
 
     it('should return a list with rpg styles', async () => {
-      await prismaService.rpgStyle.createMany({
+      await prismaService.playerProfile.createMany({
         data: [
-          { id: 'id-1', name: 'Rpg Style 1' },
-          { id: 'id-2', name: 'Rpg Style 2' }
+          { id: 'id-1', name: 'Player-Profile 1', description: 'Some description' },
+          { id: 'id-2', name: 'Player-Profile 2', description: 'Some description 2' }
         ]
       })
       const result = await service.findAll()
       expect(result.length).toBe(2)
       expect(result).toEqual(expect.arrayContaining([
-        expect.objectContaining({ name: 'Rpg Style 1' }),
-        expect.objectContaining({ name: 'Rpg Style 2' })
+        expect.objectContaining({ name: 'Player-Profile 1' }),
+        expect.objectContaining({ name: 'Player-Profile 2' })
       ]))
     })
   })
