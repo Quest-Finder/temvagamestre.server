@@ -121,6 +121,7 @@ model User {
   bio             String?   @map("bio") @db.VarChar(500)
   playerProfileId String?   @map("player_profile_id") @db.VarChar(50)
   cityStateId     String?   @map("city_state_id") @db.VarChar(50)
+  externalAuthId  String?   @unique @map("external_auth_id") @db.VarChar(50)
 
   userPreference      UserPreference?
   userConfig          UserConfig?
