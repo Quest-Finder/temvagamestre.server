@@ -4,14 +4,17 @@
 
 import { AppModule } from '@/app.module'
 import env from '@/configs/env'
+import { type Auth, type PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import type { ExternalAuthMappingModel, PlayerProfileModel } from '@/models'
 import { type INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
-import type { PrismaClient } from '@prisma/client'
 import session, { type SessionOptions } from 'express-session'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
+
+let prisma: PrismaClient
+let app: INestApplication
 
 const sessionConfig: SessionOptions = {
   secret: 'any_secret_key',
@@ -23,12 +26,14 @@ type PartialUser = {
   id: string
   name: string
   email: string
+  authId: string
 }
 
 const makeFakePartialUser = (): PartialUser => ({
   id: 'any_user_id',
   email: 'any_email@mail.com',
-  name: 'any_name'
+  name: 'any_name',
+  authId: makeFakeAuth().id
 })
 
 const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
@@ -36,7 +41,17 @@ const makeFakeExternalAuthMappingModel = (): ExternalAuthMappingModel => ({
   externalAuthUserId: 'any_external_auth_user_id'
 })
 
+const makeFakeAuth = (): Auth => ({
+  id: 'any_user_id',
+  email: 'email@email.com',
+  password: 'any_password',
+  onboarding: true,
+  refreshToken: null,
+  userId: null
+})
+
 const makeFakeToken = async (): Promise<string> => {
+  await prisma.auth.create({ data: makeFakeAuth() })
   await prisma.user.create({ data: makeFakePartialUser() })
   await prisma.externalAuthMapping.create({ data: makeFakeExternalAuthMappingModel() })
   const token = jwt.sign({ clerkUserId: 'any_external_auth_user_id' }, env.clerkJwtSecretKey)
@@ -48,9 +63,6 @@ const makeFakePlayerProfile = (): PlayerProfileModel => ({
   name: 'any_player_profile_name',
   description: 'any_player_profile_description'
 })
-
-let prisma: PrismaClient
-let app: INestApplication
 
 describe('User Routes', () => {
   beforeAll(async () => {

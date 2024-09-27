@@ -23,3 +23,5 @@ ADD COLUMN "onboarding" BOOLEAN NOT NULL DEFAULT TRUE;
 -- Add `refresh_token` column to `auth` table
 ALTER TABLE "auth"
 ADD COLUMN "refresh_token" VARCHAR(255) NOT NULL DEFAULT '';
+
+DROP TABLE "auth";
