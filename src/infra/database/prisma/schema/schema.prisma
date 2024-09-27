@@ -111,6 +111,7 @@ model SocialMedia {
 
 model User {
   id              String    @id(map: "pk_user") @unique(map: "uq_user_id") @db.VarChar(50)
+  authId          String    @unique(map: "uq_auth_id") @db.VarChar(36)
   name            String    @map("first_name") @db.VarChar(30)
   email           String    @unique(map: "uq_user_email") @db.VarChar(256)
   username        String?   @db.VarChar(25)
@@ -131,6 +132,7 @@ model User {
   address       Address?       @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_address_user")
   playerProfile PlayerProfile? @relation(fields: [playerProfileId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_player_profile_user")
   cityState     CityState?     @relation(fields: [cityStateId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_city_state_user")
+  auth          Auth           @relation(fields: [authId], references: [id], onDelete: Restrict, onUpdate: Cascade, map: "fk_user_auth")
 
   @@map("user")
 }
@@ -213,10 +215,15 @@ enum Frequency {
   @@map("frequency")
 }
 
-model UserWithEmail {
-  id       String @id @default(uuid()) @db.VarChar(36)
-  email    String @unique(map: "uq_user_with_email") @db.VarChar(256)
-  password String @db.VarChar(100)
+model Auth {
+  id           String  @id @default(uuid()) @db.VarChar(36)
+  email        String  @unique(map: "uq_auth_email") @db.VarChar(100)
+  password     String  @db.VarChar(100)
+  onboarding   Boolean @default(true)
+  refreshToken String? @map("refresh_token") @db.VarChar(255)
+  userId       String? @unique @map("user_id") @db.VarChar(50)
 
-  @@map("user_with_email")
+  user User?
+
+  @@map("auth")
 }

@@ -7,4 +7,5 @@ export type UserModel = {
   dateOfBirth?: Date | null
   addressId?: string | null
   playerProfileId?: string | null
+  authId?: string
 }
