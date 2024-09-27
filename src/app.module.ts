@@ -9,6 +9,7 @@ import { RpgStylesModule } from './rpg-styles/rpg-styles.module'
 import { AppExceptionHandlerFilter } from './shared/app-exception-handler/app-exception-handler.filter'
 import { SharedModule } from './shared/shared.module'
 import { SocialMediaModule } from './social-media/social-media.module'
+import { WebhookClerkModule } from './webhook-clerk/webhook-clerk.module'
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { SocialMediaModule } from './social-media/social-media.module'
     CityStateModule,
     RpgStylesModule,
     SocialMediaModule,
-    PlayerProfileModule
+    PlayerProfileModule,
+    WebhookClerkModule
   ],
   providers: [
     {
