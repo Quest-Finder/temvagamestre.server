@@ -75,7 +75,9 @@ describe('Webhook clerk auth', () => {
     prismaService = module.get<PrismaService>(PrismaService)
 
     app = module.createNestApplication()
-    await prismaService.user.deleteMany({})
+    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.externalAuthMapping.deleteMany()
+    await prismaService.user.deleteMany()
     await app.init()
   })
 
@@ -84,7 +86,7 @@ describe('Webhook clerk auth', () => {
   })
 
   afterAll(async () => {
-    await PrismaHelper.disconnect()
+    await app.close()
   })
 
   describe('POST /user/signup/webhook', () => {

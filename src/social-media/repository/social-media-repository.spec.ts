@@ -22,6 +22,9 @@ describe('SocialMediaRepository', () => {
 
     repository = module.get<SocialMediaRepository>(SocialMediaRepository)
     prismaService = module.get<PrismaService>(PrismaService)
+    await prismaService.$connect()
+    await prismaService.$disconnect()
+    await prismaService.userSocialMedia.deleteMany()
     await prismaService.socialMedia.deleteMany()
   })
 
@@ -35,21 +38,38 @@ describe('SocialMediaRepository', () => {
     expect(repository).toBeDefined()
   })
 
-  it('should be return a empty list with social medias', async () => {
-    const result = await repository.findAll()
-    expect(result.length).toBe(0)
+  describe('Find all Social media', () => {
+    it('should be return a empty list with social medias', async () => {
+      const result = await repository.findAll()
+      expect(result.length).toBe(0)
+    })
+    it('should be return a list with social medias', async () => {
+      await prismaService.socialMedia.createMany({
+        data: makeFakeSocialMediaData()
+      })
+      const result = await repository.findAll()
+      expect(result.length).toBe(3)
+      expect(result).toEqual(expect.arrayContaining([
+        expect.objectContaining({ name: 'Social Media 1', baseUri: 'base-url-social-media-1' }),
+        expect.objectContaining({ name: 'Social Media 2', baseUri: 'base-url-social-media-2' }),
+        expect.objectContaining({ name: 'Social Media 3', baseUri: 'base-url-social-media-3' })
+      ]))
+    })
   })
 
-  it('should be return a list with social medias', async () => {
-    await prismaService.socialMedia.createMany({
-      data: makeFakeSocialMediaData()
+  describe('Find Social Media By Id', () => {
+    it('should return a undefined value if social media id not exists', async () => {
+      const result = await repository.findById('invali-id')
+      expect(result).not.toBeTruthy()
     })
-    const result = await repository.findAll()
-    expect(result.length).toBe(3)
-    expect(result).toEqual(expect.arrayContaining([
-      expect.objectContaining({ name: 'Social Media 1', baseUri: 'base-url-social-media-1' }),
-      expect.objectContaining({ name: 'Social Media 2', baseUri: 'base-url-social-media-2' }),
-      expect.objectContaining({ name: 'Social Media 3', baseUri: 'base-url-social-media-3' })
-    ]))
+    it('should return a social media if social media id exists', async () => {
+      await prismaService.socialMedia.createMany({
+        data: makeFakeSocialMediaData()
+      })
+      const result = await repository.findById('fake-id-1')
+      expect(result).toEqual(expect.objectContaining(
+        { id: 'fake-id-1', name: 'Social Media 1', baseUri: 'base-url-social-media-1' }
+      ))
+    })
   })
 })

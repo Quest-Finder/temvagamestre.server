@@ -1,5 +1,5 @@
 import { type UserModel } from '@/users/repository/entity/user.model'
-import { type UserInputRepository, UserRepository } from '@/users/repository/user-repository'
+import { UserRepository, type UserInputRepository } from '@/users/repository/user/user-repository'
 import { Test, type TestingModule } from '@nestjs/testing'
 import { WebhookClerkService, type WebhookUserInput } from './webhook-clerk.service'
 

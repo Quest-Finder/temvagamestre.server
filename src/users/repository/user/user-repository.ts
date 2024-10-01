@@ -1,7 +1,7 @@
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
 import { v4 } from 'uuid'
-import { type UserModel } from './entity/user.model'
+import { type UserModel } from '../entity/user.model'
 
 export type UserInputRepository = {
   name: string
@@ -16,7 +16,12 @@ export type UserInputRepository = {
 
 @Injectable()
 export class UserRepository {
-  constructor (private readonly prismaService: PrismaService) {}
+  constructor (private readonly prismaService: PrismaService) { }
+
+  async findById (id: string): Promise<UserModel | undefined> {
+    const user = await this.prismaService.user.findUnique({ where: { id } })
+    return user ?? undefined
+  }
 
   async findByEmail (email: string): Promise<UserModel | undefined> {
     const user = await this.prismaService.user.findUnique({ where: { email } })

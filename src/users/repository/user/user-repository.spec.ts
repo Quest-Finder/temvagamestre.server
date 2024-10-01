@@ -1,6 +1,6 @@
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { Test, type TestingModule } from '@nestjs/testing'
-import { type UserModel } from './entity/user.model'
+import { type UserModel } from '../entity/user.model'
 import { UserRepository } from './user-repository'
 
 const makeFakeUserModel = (): UserModel => ({
@@ -21,11 +21,19 @@ describe('UserRepository', () => {
 
     repository = module.get<UserRepository>(UserRepository)
     prismaService = module.get<PrismaService>(PrismaService)
+    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.externalAuthMapping.deleteMany()
     await prismaService.user.deleteMany()
   })
 
   afterEach(async () => {
+    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.externalAuthMapping.deleteMany()
     await prismaService.user.deleteMany()
+  })
+
+  afterAll(async () => {
+    await prismaService.$disconnect()
   })
 
   it('should be defined', () => {
@@ -82,6 +90,26 @@ describe('UserRepository', () => {
       expect(user.id).toBeTruthy()
       expect(user.name).toBe('Valid name')
       expect(user.email).toBe('valid@email.com')
+    })
+  })
+
+  describe('Find User By Id', () => {
+    it('should return undefined if user id not exists', async () => {
+      const response = await repository.findById('invalid-id')
+      expect(response).not.toBeTruthy()
+    })
+    it('should return user if user exits', async () => {
+      await prismaService.user.create({
+        data: makeFakeUserModel()
+      })
+      const response = await repository.findById('any_user_id')
+      expect(response).toBeTruthy()
+      expect(response).toEqual(expect.objectContaining({
+        id: 'any_user_id',
+        email: 'any_email@mail.com',
+        name: 'John Doe',
+        externalAuthId: 'valid-external-auth-id'
+      }))
     })
   })
 })

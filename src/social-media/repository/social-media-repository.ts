@@ -9,4 +9,13 @@ export class SocialMediaRepository {
   async findAll (): Promise<SocialMediaModel[]> {
     return await this.prismaService.socialMedia.findMany()
   }
+
+  async findById (id: string): Promise<SocialMediaModel | undefined> {
+    const socialMedia = await this.prismaService.socialMedia.findUnique({
+      where: {
+        id
+      }
+    })
+    return socialMedia ?? undefined
+  }
 }
