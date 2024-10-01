@@ -2,12 +2,12 @@ import env from '@/configs/env'
 import { type ClerkSignUpEventData } from '@/types'
 import { type SvixHeaders } from '@/types/svix-headers'
 import { BadRequestException, Injectable, type NestMiddleware } from '@nestjs/common'
-import { type Request, type Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import { Webhook } from 'svix'
 
 @Injectable()
 export class WebhookAuthMiddleware implements NestMiddleware {
-  use (req: Request, res: Response, next: () => void): void {
+  use (req: Request, res: Response, next: NextFunction): void {
     const headers = req.headers as SvixHeaders
     const payload = JSON.stringify(req.body)
     if (!headers?.['svix-id'] || !headers['svix-signature'] || !headers['svix-timestamp']) {
