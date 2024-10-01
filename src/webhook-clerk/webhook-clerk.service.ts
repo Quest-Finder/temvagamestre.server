@@ -1,4 +1,4 @@
-import { UserRepository } from '@/users/repository/user-repository'
+import { UserRepository } from '@/users/repository/user/user-repository'
 import { Injectable } from '@nestjs/common'
 
 export type WebhookUserInput = {

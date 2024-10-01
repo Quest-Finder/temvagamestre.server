@@ -14,4 +14,6 @@ export class SocialMediaService {
   async findAll (): Promise<SocialMediaServiceModel[]> {
     return await this.socialMediaRepository.findAll()
   }
+
+  a
 }
