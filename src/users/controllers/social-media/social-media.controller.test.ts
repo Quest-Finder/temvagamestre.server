@@ -9,10 +9,10 @@ import env from '@/configs/env'
 import { type ExternalAuthMappingModel } from '@/models'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { type SocialMediaModel } from '@/social-media/repository/entities/social-media.model'
+import { type UserModel } from '@/users/repository/entity/user.model'
 import type { INestApplication } from '@nestjs/common'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
-import { type UserModel } from '../repository/entity/user.model'
 
 const makeFakeSocialMediaModel = (): SocialMediaModel => ({
   id: 'any_id',
