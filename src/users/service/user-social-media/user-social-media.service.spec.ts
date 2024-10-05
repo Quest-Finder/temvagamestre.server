@@ -1,10 +1,11 @@
 import { type SocialMediaModel } from '@/social-media/repository/entities/social-media.model'
 import { SocialMediaRepository } from '@/social-media/repository/social-media-repository'
 import { type UserSocialMediaModel } from '@/users/repository/entity/user-social-media.model'
-import { type CreateUserSocialMedia, UserSocialMediaRepository } from '@/users/repository/user-social-media/user-social-media-repository'
+import { type UserModel } from '@/users/repository/entity/user.model'
+import { UserSocialMediaRepository, type CreateUserSocialMedia } from '@/users/repository/user-social-media/user-social-media-repository'
 import { UserRepository } from '@/users/repository/user/user-repository'
 import { Test, type TestingModule } from '@nestjs/testing'
-import { type SaveUserSocialMediaInputService, UserSocialMediaService } from './user-social-media.service'
+import { UserSocialMediaService, type SaveUserSocialMediaInputService } from './user-social-media.service'
 
 class FakeUserSocialMediaRepository {
   async save (data: CreateUserSocialMedia): Promise<UserSocialMediaModel | undefined> {
@@ -25,11 +26,11 @@ class FakeSocialMediaRepository {
   }
 }
 class FakeUserRepository {
-  async findById (id: string): Promise<SocialMediaModel | undefined> {
+  async findById (id: string): Promise<UserModel | undefined> {
     return await Promise.resolve({
       id: 'valid-id',
       name: 'valid name',
-      baseUri: 'https://valid-url.com'
+      email: 'validemail@email.com'
     })
   }
 }
