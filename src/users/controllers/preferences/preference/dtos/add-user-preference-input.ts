@@ -1,7 +1,8 @@
-import { ActiveType, Frequency } from '@/models'
+import { ActiveType, Frequency } from '@/users/repository/entity/user-preference.model'
 import { ApiProperty } from '@nestjs/swagger'
+import { z } from 'zod'
 
-export class AddUserPreferenceRoutesDto {
+export class AddUserPreferenceInput {
   @ApiProperty({
     example: 'daily',
     enum: {
@@ -26,3 +27,10 @@ export class AddUserPreferenceRoutesDto {
     this.activeType = activeType
   }
 }
+
+export const userPreferenceSchema = z.object({
+  frequency: z.enum(['daily', 'weekly', 'monthly']),
+  activeType: z.enum(['player', 'gameMaster'])
+})
+
+export type UserPreferenceInput = z.infer<typeof userPreferenceSchema>
