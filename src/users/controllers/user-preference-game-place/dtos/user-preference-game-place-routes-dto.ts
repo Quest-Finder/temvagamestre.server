@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { z } from 'zod'
 
 export class SaveUserPreferenceGamePlaceRoutesDto {
   @ApiProperty({ example: true })
@@ -12,3 +13,10 @@ export class SaveUserPreferenceGamePlaceRoutesDto {
     this.inPerson = inPerson
   }
 }
+
+export const userPreferenceGamePlaceSchema = z.object({
+  online: z.boolean(),
+  inPerson: z.boolean()
+})
+
+export type UserPreferenceGamePlaceInput = z.infer<typeof userPreferenceGamePlaceSchema>
