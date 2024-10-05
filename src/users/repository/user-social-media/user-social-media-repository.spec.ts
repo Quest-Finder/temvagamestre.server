@@ -26,13 +26,16 @@ describe('UserSocialMediaRepository', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserSocialMediaRepository, PrismaService]
     }).compile()
-
     repository = module.get<UserSocialMediaRepository>(UserSocialMediaRepository)
     prismaService = module.get<PrismaService>(PrismaService)
-    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.userPreferenceRpgStyle.deleteMany()
+    await prismaService.userPreferenceDayPeriod.deleteMany()
+    await prismaService.userPreferenceGamePlace.deleteMany()
+    await prismaService.userPreferencePlayersRange.deleteMany()
     await prismaService.externalAuthMapping.deleteMany()
+    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.userPreference.deleteMany()
     await prismaService.user.deleteMany()
-    await prismaService.socialMedia.deleteMany()
   })
 
   afterAll(async () => {

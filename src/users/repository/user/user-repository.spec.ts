@@ -21,8 +21,13 @@ describe('UserRepository', () => {
 
     repository = module.get<UserRepository>(UserRepository)
     prismaService = module.get<PrismaService>(PrismaService)
-    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.userPreferenceRpgStyle.deleteMany()
+    await prismaService.userPreferenceDayPeriod.deleteMany()
+    await prismaService.userPreferenceGamePlace.deleteMany()
+    await prismaService.userPreferencePlayersRange.deleteMany()
     await prismaService.externalAuthMapping.deleteMany()
+    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.userPreference.deleteMany()
     await prismaService.user.deleteMany()
   })
 
