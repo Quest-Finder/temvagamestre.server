@@ -13,7 +13,13 @@ describe('FakeUserService', () => {
     service = module.get<FakeUserService>(FakeUserService)
     prismaService = module.get<PrismaService>(PrismaService)
     await prismaService.$connect()
+    await prismaService.userPreferenceRpgStyle.deleteMany()
+    await prismaService.userPreferenceDayPeriod.deleteMany()
+    await prismaService.userPreferenceGamePlace.deleteMany()
+    await prismaService.userPreferencePlayersRange.deleteMany()
     await prismaService.externalAuthMapping.deleteMany()
+    await prismaService.userPreference.deleteMany()
+    await prismaService.userSocialMedia.deleteMany()
     await prismaService.user.deleteMany()
   })
 

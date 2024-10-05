@@ -1,23 +1,18 @@
-import { Test } from '@nestjs/testing'
-
-/**
- * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
-*/
-
 import { AppModule } from '@/app.module'
 import env from '@/configs/env'
 import { type ExternalAuthMappingModel } from '@/models'
 import { PrismaService } from '@/shared/prisma/prisma.service'
-import { type SocialMediaModel } from '@/social-media/repository/entities/social-media.model'
+import { type UserPreferenceModel } from '@/users/repository/entity/user-preference.model'
 import { type UserModel } from '@/users/repository/entity/user.model'
-import type { INestApplication } from '@nestjs/common'
+import { type INestApplication } from '@nestjs/common'
+import { Test } from '@nestjs/testing'
 import jwt from 'jsonwebtoken'
 import request from 'supertest'
 
-const makeFakeSocialMediaModel = (): SocialMediaModel => ({
-  id: 'any_id',
-  name: 'any_name',
-  baseUri: 'socialmedia.com/'
+const makeFakeUserPreferenceModel = (): UserPreferenceModel => ({
+  id: 'any_user_id',
+  frequency: 'daily',
+  activeType: 'gameMaster'
 })
 
 const makeFakeUserModel = (): UserModel => ({
@@ -43,7 +38,7 @@ const makeFakeToken = async (): Promise<string> => {
 let prismaService: PrismaService
 let app: INestApplication
 
-describe('UserSocialMedia Routes', () => {
+describe('UserPreferenceDayPeriodController', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
@@ -67,18 +62,28 @@ describe('UserSocialMedia Routes', () => {
     await app.close()
   })
 
-  describe('POST /user/social-media', () => {
-    it('Should return 204 when adding a Social Media to the User', async () => {
-      await prismaService.socialMedia.create({ data: makeFakeSocialMediaModel() })
+  describe('POST /user/preference/day-period', () => {
+    it("Should return 204 when adding a period of the day to the user's preferences", async () => {
       const token = await makeFakeToken()
+      await prismaService.userPreference.create({ data: makeFakeUserPreferenceModel() })
       await request(app.getHttpServer())
-        .post('/user/social-media')
+        .post('/user/preference/day-period')
         .set({ 'x-access-token': token })
         .send({
-          socialMediaId: 'any_id',
-          link: 'any_link'
+          morning: true,
+          afternoon: false,
+          night: false
         })
         .expect(204)
+      const userPreferenceDayPeriod = await prismaService.userPreferenceDayPeriod.findUnique({
+        where: { id: makeFakeUserPreferenceModel().id }
+      })
+      expect(userPreferenceDayPeriod).toEqual(expect.objectContaining({
+        morning: true,
+        afternoon: false,
+        night: false,
+        id: makeFakeUserPreferenceModel().id
+      }))
     })
   })
 })
