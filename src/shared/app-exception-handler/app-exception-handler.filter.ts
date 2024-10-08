@@ -1,5 +1,6 @@
 import { Catch, HttpException, HttpStatus, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common'
 import { type Response } from 'express'
+import { AppException } from '../exceptions/app-exception'
 import { ValidationException } from '../exceptions/validation-execption'
 
 const httpStatusDescription = {
@@ -76,6 +77,16 @@ export class AppExceptionHandlerFilter implements ExceptionFilter {
         detail: exception.message,
         title: httpStatusDescription[exception.getStatus()],
         statusCode: exception.getStatus(),
+        timestamp: new Date().getTime(),
+        path: request.url
+      }
+    }
+
+    if (exception instanceof AppException) {
+      bodyError = {
+        detail: exception.message,
+        title: httpStatusDescription[400],
+        statusCode: 400,
         timestamp: new Date().getTime(),
         path: request.url
       }

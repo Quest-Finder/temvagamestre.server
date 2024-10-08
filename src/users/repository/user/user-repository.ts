@@ -33,6 +33,11 @@ export class UserRepository {
     return user ?? undefined
   }
 
+  async findByUsername (username: string): Promise<UserModel | undefined> {
+    const user = await this.prismaService.user.findFirst({ where: { username } })
+    return user ?? undefined
+  }
+
   async createUser (data: UserInputRepository): Promise<UserModel> {
     const id = v4()
     const user = await this.prismaService.user.create({
