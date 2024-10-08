@@ -17,6 +17,8 @@ import { UserPreferenceDayPeriodService } from './service/user-preference-day-pe
 import { UserPreferenceGamePlaceService } from './service/user-preference-game-place/user-preference-game-place.service'
 import { UserPreferenceService } from './service/user-preference/user-preference.service'
 import { UserSocialMediaService } from './service/user-social-media/user-social-media.service'
+import { UserService } from './service/user/user.service'
+import { UserController } from './controllers/user/user.controller'
 
 @Module({
   providers: [
@@ -31,14 +33,16 @@ import { UserSocialMediaService } from './service/user-social-media/user-social-
     UserPreferenceDayPeriodRepository,
     UserPreferenceDayPeriodService,
     UserPreferenceGamePlaceRepository,
-    UserPreferenceGamePlaceService
+    UserPreferenceGamePlaceService,
+    UserService
   ],
   controllers: [
     UserSocialMediaController,
     FakeUserController,
     UserPreferenceController,
     UserPreferenceDayPeriodController,
-    UserPreferenceGamePlaceController
+    UserPreferenceGamePlaceController,
+    UserController
   ]
 })
 export class UsersModule implements NestModule {

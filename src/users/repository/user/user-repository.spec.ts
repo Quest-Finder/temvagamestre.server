@@ -117,4 +117,28 @@ describe('UserRepository', () => {
       }))
     })
   })
+
+  describe('Find User By username', () => {
+    it('should return undefined if user id not exists', async () => {
+      const response = await repository.findByUsername('invalid-username')
+      expect(response).not.toBeTruthy()
+    })
+    it('should return user if user exits', async () => {
+      await prismaService.user.create({
+        data: {
+          ...makeFakeUserModel(),
+          username: 'valid-username'
+        }
+      })
+      const response = await repository.findByUsername('valid-username')
+      expect(response).toBeTruthy()
+      expect(response).toEqual(expect.objectContaining({
+        id: 'any_user_id',
+        email: 'any_email@mail.com',
+        name: 'John Doe',
+        externalAuthId: 'valid-external-auth-id',
+        username: 'valid-username'
+      }))
+    })
+  })
 })
