@@ -1,13 +1,11 @@
 import { AppModule } from '@/app.module'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { type INestApplication } from '@nestjs/common'
-import { getConnectionToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
-import { type Connection } from 'mongoose'
 import request from 'supertest'
 
 let prismaService: PrismaService
-let mongoDbConnection: Connection
+// let mongoDbConnection: Connection
 let app: INestApplication
 describe('FakeUserController', () => {
   beforeEach(async () => {
@@ -15,7 +13,7 @@ describe('FakeUserController', () => {
       imports: [AppModule]
     }).compile()
     prismaService = module.get<PrismaService>(PrismaService)
-    mongoDbConnection = module.get(getConnectionToken())
+    // mongoDbConnection = module.get(getConnectionToken())
     app = module.createNestApplication()
     await prismaService.$connect()
     await prismaService.userPreferenceRpgStyle.deleteMany()
@@ -31,7 +29,7 @@ describe('FakeUserController', () => {
 
   afterAll(async () => {
     await prismaService.$disconnect()
-    await mongoDbConnection.close(true)
+    // await mongoDbConnection.close(true)
     await app.close()
   })
 

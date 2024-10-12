@@ -10,9 +10,7 @@ import { PrismaService } from '@/shared/prisma/prisma.service'
 import { type SocialMediaModel } from '@/social-media/repository/entities/social-media.model'
 import { type UserModel } from '@/users/repository/entity/user.model'
 import type { INestApplication } from '@nestjs/common'
-import { getConnectionToken } from '@nestjs/mongoose'
 import jwt from 'jsonwebtoken'
-import { type Connection } from 'mongoose'
 import request from 'supertest'
 import { type ExternalAuthMappingModel } from '../user/user.controller.spec'
 
@@ -43,7 +41,7 @@ const makeFakeToken = async (): Promise<string> => {
 }
 
 let prismaService: PrismaService
-let mongoDbConnection: Connection
+// let mongoDbConnection: Connection
 let app: INestApplication
 
 describe('UserSocialMedia Routes', () => {
@@ -52,7 +50,7 @@ describe('UserSocialMedia Routes', () => {
       imports: [AppModule]
     }).compile()
     prismaService = module.get<PrismaService>(PrismaService)
-    mongoDbConnection = module.get(getConnectionToken())
+    // mongoDbConnection = module.get(getConnectionToken())
     app = module.createNestApplication()
     await prismaService.$connect()
     await prismaService.userPreferenceRpgStyle.deleteMany()
@@ -68,7 +66,7 @@ describe('UserSocialMedia Routes', () => {
 
   afterAll(async () => {
     await prismaService.$disconnect()
-    await mongoDbConnection.close(true)
+    // await mongoDbConnection.close(true)
     await app.close()
   })
 

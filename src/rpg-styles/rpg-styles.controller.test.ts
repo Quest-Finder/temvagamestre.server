@@ -1,9 +1,7 @@
 import { AppModule } from '@/app.module'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { type INestApplication } from '@nestjs/common'
-import { getConnectionToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
-import { type Connection } from 'mongoose'
 import request from 'supertest'
 import { type RpgStyleModel } from './repository/entities/rpg-style.entity'
 const makeFakeRpgStylesModel = (): RpgStyleModel[] => ([{
@@ -15,7 +13,7 @@ const makeFakeRpgStylesModel = (): RpgStyleModel[] => ([{
 }])
 
 let prismaService: PrismaService
-let mongoDbConnection: Connection
+// let mongoDbConnection: Connection
 let app: INestApplication
 
 describe('RpgStylesController', () => {
@@ -24,7 +22,7 @@ describe('RpgStylesController', () => {
       imports: [AppModule]
     }).compile()
     prismaService = module.get<PrismaService>(PrismaService)
-    mongoDbConnection = module.get(getConnectionToken())
+    // mongoDbConnection = module.get(getConnectionToken())
 
     app = module.createNestApplication()
     await prismaService.$connect()
@@ -43,7 +41,7 @@ describe('RpgStylesController', () => {
 
   afterAll(async () => {
     await prismaService.$disconnect()
-    await mongoDbConnection.close(true)
+    // await mongoDbConnection.close(true)
     await app.close()
   })
 
