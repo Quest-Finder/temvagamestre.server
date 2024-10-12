@@ -3,12 +3,16 @@ import { PlayerProfileService } from './player-profile.service'
 import { type PlayerProfileModel } from './repository/model/player-profile.model'
 import { PlayersProfileRepository } from './repository/player-profiles.repository'
 
-class MockPlayerProfileRepository {
+export class MockPlayerProfileRepository {
   async findAll (): Promise<PlayerProfileModel[]> {
     return await Promise.resolve([
       { id: 'id-1', name: 'Player-Profile 1', description: 'Some description' },
       { id: 'id-2', name: 'Player-Profile 2', description: 'Some description 2' }
     ])
+  }
+
+  async findById (id: string): Promise<PlayerProfileModel | undefined> {
+    return { id: 'id-1', name: 'Player-Profile 1', description: 'Some description' }
   }
 }
 

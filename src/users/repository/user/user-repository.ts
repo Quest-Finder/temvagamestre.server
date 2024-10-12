@@ -14,6 +14,25 @@ export type UserInputRepository = {
   externalAuthId?: string | null
 }
 
+export type UserRegisterRepositoryInput = {
+  id: string
+  name: string
+  username?: string
+  pronoun?: string
+  addressId?: string
+  dateOfBirth?: Date
+  title?: string
+  bio?: string
+  playerProfileId?: string
+  cityStateId?: string
+  externalAuthId?: string
+  rpgStyles: string[]
+  socialMedias: Array<{
+    socialMediaId: string
+    userLink: string
+  }>
+}
+
 @Injectable()
 export class UserRepository {
   constructor (private readonly prismaService: PrismaService) { }
@@ -47,5 +66,27 @@ export class UserRepository {
       }
     })
     return user
+  }
+
+  async register ({ id, rpgStyles, socialMedias, ...rest }: UserRegisterRepositoryInput): Promise<UserModel> {
+    return await this.prismaService.user.update({
+      where: {
+        id
+      },
+      data: {
+        ...rest,
+        userPreference: {
+          create: {
+            activeType: 'player',
+            userPreferenceRpgStyle: { createMany: { data: rpgStyles.map(rpgStyleId => ({ rpgStyleId })) } }
+          }
+        },
+        userSocialMedia: {
+          createMany: {
+            data: socialMedias.map(item => ({ link: item.userLink, socialMediaId: item.socialMediaId }))
+          }
+        }
+      }
+    })
   }
 }

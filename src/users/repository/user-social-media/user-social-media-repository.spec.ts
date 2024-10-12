@@ -35,6 +35,7 @@ describe('UserSocialMediaRepository', () => {
     await prismaService.externalAuthMapping.deleteMany()
     await prismaService.userSocialMedia.deleteMany()
     await prismaService.userPreference.deleteMany()
+    await prismaService.socialMedia.deleteMany()
     await prismaService.user.deleteMany()
   })
 

@@ -2,24 +2,30 @@
  * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
 */
 
+import { PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
-import { type PrismaClient } from '@prisma/client'
-import addPlayerProfileSeed from './add-player-profile-seed'
+import { addPlayerProfiles } from './add-player-profile-seed'
 
 let prisma: PrismaClient
 
 describe('addPlayerProfileSeed', () => {
   beforeAll(async () => {
-    await PrismaHelper.connect()
-    prisma = await PrismaHelper.getPrisma()
+    prisma = new PrismaClient()
+    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValueOnce(
+      Promise.resolve(prisma)
+    )
+  })
+
+  beforeEach(async () => {
+    await prisma.playerProfile.deleteMany()
   })
 
   afterAll(async () => {
-    await PrismaHelper.disconnect()
+    await prisma.$disconnect()
   })
 
   it('Should add all Player Profiles', async () => {
-    await addPlayerProfileSeed
+    await addPlayerProfiles()
     const playerProfile = await prisma.playerProfile.findMany()
     expect(playerProfile.length).toBe(3)
   })

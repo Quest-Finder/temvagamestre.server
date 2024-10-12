@@ -1,7 +1,7 @@
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { Test, type TestingModule } from '@nestjs/testing'
 import { type UserModel } from '../entity/user.model'
-import { UserRepository } from './user-repository'
+import { type UserRegisterRepositoryInput, UserRepository } from './user-repository'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -29,6 +29,9 @@ describe('UserRepository', () => {
     await prismaService.userSocialMedia.deleteMany()
     await prismaService.userPreference.deleteMany()
     await prismaService.user.deleteMany()
+    await prismaService.socialMedia.deleteMany()
+    await prismaService.rpgStyle.deleteMany()
+    await prismaService.cityState.deleteMany()
   })
 
   afterEach(async () => {
@@ -139,6 +142,68 @@ describe('UserRepository', () => {
         externalAuthId: 'valid-external-auth-id',
         username: 'valid-username'
       }))
+    })
+  })
+
+  describe('Update user by Id', () => {
+    it('should update user data', async () => {
+      await prismaService.socialMedia.create({
+        data: {
+          id: 'valid-social-media-id',
+          name: 'FakeSocialMedial',
+          baseUri: 'http://Fakeuir'
+        }
+      })
+      await prismaService.rpgStyle.create({
+        data: {
+          id: 'valid-rpg-style',
+          name: 'Fake RPG Style'
+        }
+      })
+      await prismaService.cityState.create({
+        data: {
+          id: 'valid-city-state-id',
+          city: 'Rio de janeiro',
+          uf: 'RJ',
+          lifeInBrazil: true
+        }
+      })
+      await prismaService.user.create({
+        data: makeFakeUserModel()
+      })
+
+      const inputData: UserRegisterRepositoryInput = {
+        id: makeFakeUserModel().id,
+        name: 'John Doe',
+        externalAuthId: 'valid-external-auth-id',
+        pronoun: 'I don\'t want to share any pronouns',
+        username: '',
+        socialMedias: [
+          { socialMediaId: 'valid-social-media-id', userLink: '/media' }
+        ],
+        rpgStyles: ['valid-rpg-style'],
+        cityStateId: 'valid-city-state-id',
+        dateOfBirth: new Date()
+      }
+
+      const result = await repository.register(inputData)
+      const userSocialMedial = await prismaService.userSocialMedia.findMany({
+        where: {
+          userId: makeFakeUserModel().id
+        }
+      })
+      const userRgpStyle = await prismaService.userPreferenceRpgStyle.findMany({
+        where: {
+          userPreferenceId: makeFakeUserModel().id
+        }
+      })
+      expect(result.pronoun).toEqual(inputData.pronoun)
+      expect(userSocialMedial.length).toBe(1)
+      expect(userSocialMedial[0]).toEqual(
+        expect.objectContaining({ userId: 'any_user_id', socialMediaId: 'valid-social-media-id', link: '/media' })
+      )
+      expect(userRgpStyle.length).toBe(1)
+      expect(userRgpStyle).toEqual(expect.arrayContaining([]))
     })
   })
 })

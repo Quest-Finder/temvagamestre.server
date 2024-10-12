@@ -1,8 +1,9 @@
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
 import { UserService } from '@/users/service/user/user.service'
-import { Controller, Get, Param } from '@nestjs/common'
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, Headers, HttpCode, Param, Post, Session } from '@nestjs/common'
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
+import { RegisterUserInput, RegisterUserRoutesDto, registerUserSchema } from './dtos/register-user-routes-dto'
 
 const schema = z.string().max(15)
 
@@ -30,5 +31,32 @@ export class UserController {
   @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
   async checkUserName (@Param('username', new ZodValidationPipePipe(schema)) username: string): Promise<void> {
     await this.userService.checkUsernameIsAvailable(username)
+  }
+
+  @Post()
+  @HttpCode(204)
+  @ApiOperation({
+    summary: 'Cadastrar um usuário',
+    description: 'Cadastra informações referente ao próprio usuário logado'
+  })
+  @ApiBearerAuth()
+  @ApiBody({ type: RegisterUserRoutesDto })
+  @ApiResponse({ status: 204, description: 'Sucesso: Usuário Cadastrado' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
+  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  async registerUser (
+    @Body(new ZodValidationPipePipe(registerUserSchema)) data: RegisterUserInput,
+      @Headers() headers,
+      @Session() session: Record<string, any>
+  ): Promise<void> {
+    const userId = headers.userId
+    await this.userService.registerUser({
+      id: userId,
+      user: {
+        socialMedias: data.socialMedias ? data.socialMedias : [],
+        ...data
+      }
+    }, session)
   }
 }

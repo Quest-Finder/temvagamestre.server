@@ -2,7 +2,7 @@ import { type IbgeCityServiceReponse, IbgeService } from '@/shared/integration/i
 import { Test, type TestingModule } from '@nestjs/testing'
 import { CityStateService } from './city-state.service'
 
-class MockIbgeService {
+export class MockIbgeService {
   async findCitiesByState (state: string): Promise<IbgeCityServiceReponse> {
     return {
       cities: ['Rio de Janeiro', 'Cabo Frio', 'Rio das Ostras'],
