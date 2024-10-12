@@ -9,4 +9,13 @@ export class PlayersProfileRepository {
   async findAll (): Promise<PlayerProfileModel[]> {
     return await this.prismaService.playerProfile.findMany()
   }
+
+  async findById (id: string): Promise<PlayerProfileModel | undefined> {
+    const result = await this.prismaService.playerProfile.findUnique({
+      where: {
+        id
+      }
+    })
+    return result ?? undefined
+  }
 }

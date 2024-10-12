@@ -1,31 +1,30 @@
-import { PrismaHelper } from '@/infra/database/prisma/helpers'
-import { makeUuidAdapter } from '@/factories/infra/id/uuid-adapter-factory'
-import { type SocialMedia } from '@/infra/database/prisma/client'
+import { PrismaClient, type SocialMedia } from '@/infra/database/prisma/client'
+import { v4 } from 'uuid'
 
 export const addSocialMediaSeed = async (): Promise<void> => {
   const socialMedia: SocialMedia[] = [{
-    id: makeUuidAdapter().build(),
+    id: v4(),
     name: 'Instagram',
     baseUri: 'instagram.com/'
   }, {
-    id: makeUuidAdapter().build(),
+    id: v4(),
     name: 'Discord',
     baseUri: 'discordapp.com/users/'
   }, {
-    id: makeUuidAdapter().build(),
+    id: v4(),
     name: 'X',
     baseUri: 'x.com/'
   }, {
-    id: makeUuidAdapter().build(),
+    id: v4(),
     name: 'Reddit',
     baseUri: 'reddit.com/user/'
   }, {
-    id: makeUuidAdapter().build(),
+    id: v4(),
     name: 'Facebook',
     baseUri: 'facebook.com/'
   }]
+  const prisma = new PrismaClient()
 
-  const prisma = await PrismaHelper.getPrisma()
   for (const sm of socialMedia) {
     await prisma.socialMedia.upsert({
       where: {

@@ -3,13 +3,17 @@ import { Test, type TestingModule } from '@nestjs/testing'
 import { SocialMediaRepository } from './repository/social-media-repository'
 import { SocialMediaService } from './social-media.service'
 
-class MockSocialMediaRepository {
+export class MockSocialMediaRepository {
   async findAll (): Promise<SocialMediaModel[]> {
     return [
       { id: 'fake-id-1', name: 'Social Media 1', baseUri: 'base-url-social-media-1' },
       { id: 'fake-id-2', name: 'Social Media 2', baseUri: 'base-url-social-media-2' },
       { id: 'fake-id-3', name: 'Social Media 3', baseUri: 'base-url-social-media-3' }
     ]
+  }
+
+  async findById (id: string): Promise<SocialMediaModel | undefined> {
+    return { id: 'fake-id-1', name: 'Social Media 1', baseUri: 'base-url-social-media-1' }
   }
 }
 

@@ -2,7 +2,7 @@
  * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
 */
 
-import { type PrismaClient } from '@/infra/database/prisma/client'
+import { PrismaClient } from '@/infra/database/prisma/client'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { rgpStyleSeed } from './add-rpg-style-seed'
 
@@ -10,13 +10,18 @@ let prisma: PrismaClient
 
 describe('addRpgStyleSeed', () => {
   beforeAll(async () => {
-    await PrismaHelper.connect()
-    prisma = await PrismaHelper.getPrisma()
+    prisma = new PrismaClient()
+    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValueOnce(
+      Promise.resolve(prisma)
+    )
+  })
+
+  beforeEach(async () => {
     await prisma.rpgStyle.deleteMany()
   })
 
   afterAll(async () => {
-    await PrismaHelper.disconnect()
+    await prisma.$disconnect()
   })
 
   it('Should add all RpgStyles', async () => {

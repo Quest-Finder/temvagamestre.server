@@ -3,12 +3,19 @@ import { type RpgStyleModel } from './repository/entities/rpg-style.entity'
 import { RpgStylesRepository } from './repository/rpg-styles.repository'
 import { RpgStylesService } from './rpg-styles.service'
 
-class MockRpgStyleRepository {
+export class MockRpgStyleRepository {
   async findAll (): Promise<RpgStyleModel[]> {
     return [
       { id: 'valid-id-1', name: 'Rpg Styles 1' },
       { id: 'valid-id-2', name: 'Rpg Styles 2' }
     ]
+  }
+
+  async findById (id: string): Promise<RpgStyleModel | undefined> {
+    return {
+      id: 'valid-id',
+      name: 'valid-name'
+    }
   }
 }
 

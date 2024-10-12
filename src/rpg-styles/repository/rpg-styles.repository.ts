@@ -9,4 +9,9 @@ export class RpgStylesRepository {
   async findAll (): Promise<RpgStyleModel[]> {
     return await this.prismaService.rpgStyle.findMany()
   }
+
+  async findById (id: string): Promise<RpgStyleModel | undefined> {
+    const result = await this.prismaService.rpgStyle.findUnique({ where: { id } })
+    return result ?? undefined
+  }
 }

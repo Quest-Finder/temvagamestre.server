@@ -1,12 +1,18 @@
+import { CityStateRepository } from '@/city-state/repository/city-state-repository'
+import { PlayersProfileRepository } from '@/player-profile/repository/player-profiles.repository'
+import { RpgStylesRepository } from '@/rpg-styles/repository/rpg-styles.repository'
 import { AuthMiddleware } from '@/shared/auth/auth.middleware'
+import { IbgeService } from '@/shared/integration/ibge/ibge.service'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { SocialMediaRepository } from '@/social-media/repository/social-media-repository'
+import { HttpModule } from '@nestjs/axios'
 import { Module, RequestMethod, type MiddlewareConsumer, type NestModule } from '@nestjs/common'
 import { FakeUserController } from './controllers/fake-user/fake-user.controller'
 import { UserSocialMediaController } from './controllers/social-media/social-media.controller'
 import { UserPreferenceDayPeriodController } from './controllers/user-preference-day-period/user-preference-day-period.controller'
 import { UserPreferenceGamePlaceController } from './controllers/user-preference-game-place/user-preference-game-place.controller'
 import { UserPreferenceController } from './controllers/user-preference/user-preference.controller'
+import { UserController } from './controllers/user/user.controller'
 import { UserPreferenceDayPeriodRepository } from './repository/user-preference-day-period/user-preference-day-period-repository'
 import { UserPreferenceGamePlaceRepository } from './repository/user-preference-game-place/user-preference-game-place-repository'
 import { UserPreferenceRepository } from './repository/user-preference/user-preference.repository'
@@ -18,7 +24,6 @@ import { UserPreferenceGamePlaceService } from './service/user-preference-game-p
 import { UserPreferenceService } from './service/user-preference/user-preference.service'
 import { UserSocialMediaService } from './service/user-social-media/user-social-media.service'
 import { UserService } from './service/user/user.service'
-import { UserController } from './controllers/user/user.controller'
 
 @Module({
   providers: [
@@ -34,7 +39,11 @@ import { UserController } from './controllers/user/user.controller'
     UserPreferenceDayPeriodService,
     UserPreferenceGamePlaceRepository,
     UserPreferenceGamePlaceService,
-    UserService
+    UserService,
+    IbgeService,
+    CityStateRepository,
+    RpgStylesRepository,
+    PlayersProfileRepository
   ],
   controllers: [
     UserSocialMediaController,
@@ -43,6 +52,9 @@ import { UserController } from './controllers/user/user.controller'
     UserPreferenceDayPeriodController,
     UserPreferenceGamePlaceController,
     UserController
+  ],
+  imports: [
+    HttpModule
   ]
 })
 export class UsersModule implements NestModule {
@@ -50,6 +62,7 @@ export class UsersModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .forRoutes(
+        { path: '/user', method: RequestMethod.POST },
         { path: '/user/social-media', method: RequestMethod.POST },
         { path: '/user/preference', method: RequestMethod.POST },
         { path: '/user/preference', method: RequestMethod.PATCH },

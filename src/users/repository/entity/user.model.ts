@@ -9,5 +9,5 @@ export type UserModel = {
   addressId?: string | null
   playerProfileId?: string | null
   externalAuthUserId?: string | null
-
+  bio?: string | null
 }

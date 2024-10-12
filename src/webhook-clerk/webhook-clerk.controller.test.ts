@@ -1,15 +1,15 @@
 import { AppModule } from '@/app.module'
 import env from '@/configs/env'
-import { makeUuidAdapter } from '@/factories/infra/id/uuid-adapter-factory'
 import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import type { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import * as crypto from 'crypto'
 import request from 'supertest'
+import { v4 } from 'uuid'
 
 const secret = env.webhookSecret
-const svixId = makeUuidAdapter().build()
+const svixId = v4()
 const timestamp = new Date()
 
 const bodyData = {
