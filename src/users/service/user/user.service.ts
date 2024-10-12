@@ -1,6 +1,5 @@
 import { CityStateRepository } from '@/city-state/repository/city-state-repository'
 import { type CityStateModel } from '@/city-state/repository/entity/city-state.model'
-import { CityStateError } from '@/errors'
 import { PlayersProfileRepository } from '@/player-profile/repository/player-profiles.repository'
 import { RpgStylesRepository } from '@/rpg-styles/repository/rpg-styles.repository'
 import { AppException } from '@/shared/exceptions/app-exception'
@@ -81,7 +80,7 @@ export class UserService {
 
     if (!session?.getCityValidationDone && cityStateValue) {
       const { cityFounded } = await this.ibgeService.findCitiesByState({ city: cityStateValue.city, uf: cityStateValue.uf })
-      if (!cityFounded) throw new CityStateError()
+      if (!cityFounded) throw new AppException('City not found')
       const city = cityStateValue.city ?? ''
       savedCity = await this.cityStateRepository.save({
         city,

@@ -1,7 +1,6 @@
 import { MockIbgeService } from '@/city-state/city-state.service.spec'
-import { type CityStateInput, CityStateRepository } from '@/city-state/repository/city-state-repository'
-import { CityStateError } from '@/errors'
-import { type CityStateModel } from '@/models/city-state'
+import { CityStateRepository, type CityStateInput } from '@/city-state/repository/city-state-repository'
+import { type CityStateModel } from '@/city-state/repository/entity/city-state.model'
 import { MockPlayerProfileRepository } from '@/player-profile/player-profile.service.spec'
 import { PlayersProfileRepository } from '@/player-profile/repository/player-profiles.repository'
 import { RpgStylesRepository } from '@/rpg-styles/repository/rpg-styles.repository'
@@ -11,9 +10,9 @@ import { IbgeService } from '@/shared/integration/ibge/ibge.service'
 import { SocialMediaRepository } from '@/social-media/repository/social-media-repository'
 import { MockSocialMediaRepository } from '@/social-media/social-media.service.spec'
 import { type UserModel } from '@/users/repository/entity/user.model'
-import { type UserRegisterRepositoryInput, UserRepository } from '@/users/repository/user/user-repository'
+import { UserRepository, type UserRegisterRepositoryInput } from '@/users/repository/user/user-repository'
 import { Test, type TestingModule } from '@nestjs/testing'
-import { type InputUserService, UserService } from './user.service'
+import { UserService, type InputUserService } from './user.service'
 
 const makeRegisterInput = (): InputUserService => {
   return {
@@ -139,7 +138,7 @@ describe('UserService', () => {
         cityFounded: false
       })
       const result = service.registerUser(makeRegisterInput(), makeSession())
-      await expect(result).rejects.toThrow(new CityStateError())
+      await expect(result).rejects.toThrow(new AppException('City not found'))
     })
 
     it('should throws if playerProfileId does not exits', async () => {

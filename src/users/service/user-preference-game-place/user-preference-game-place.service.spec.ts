@@ -1,9 +1,10 @@
+import { AppException } from '@/shared/exceptions/app-exception'
 import { type UserPreferenceGamePlaceModel } from '@/users/repository/entity/user-preference-game-place.model'
 import { type UserPreferenceModel } from '@/users/repository/entity/user-preference.model'
 import { UserPreferenceGamePlaceRepository } from '@/users/repository/user-preference-game-place/user-preference-game-place-repository'
 import { UserPreferenceRepository } from '@/users/repository/user-preference/user-preference.repository'
 import { Test, type TestingModule } from '@nestjs/testing'
-import { type SaveUserPreferenceGameServiceInput, UserPreferenceGamePlaceService } from './user-preference-game-place.service'
+import { UserPreferenceGamePlaceService, type SaveUserPreferenceGameServiceInput } from './user-preference-game-place.service'
 
 const makeFakeUsePreferenceModel = (): UserPreferenceModel => {
   return {
@@ -73,7 +74,7 @@ describe('UserPreferenceGamePlaceService', () => {
     it('should throws if user Preference not found', async () => {
       jest.spyOn(userPreferenceRepository, 'findById').mockResolvedValueOnce(undefined)
       const result = service.save(makeInput())
-      await expect(result).rejects.toThrow(new Error('User preference not found'))
+      await expect(result).rejects.toThrow(new AppException('User preference not found'))
     })
 
     it('should call user preference day period repository save with correct values', async () => {

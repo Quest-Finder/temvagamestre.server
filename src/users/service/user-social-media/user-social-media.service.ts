@@ -1,3 +1,4 @@
+import { AppException } from '@/shared/exceptions/app-exception'
 import { SocialMediaRepository } from '@/social-media/repository/social-media-repository'
 import { type UserSocialMediaModel } from '@/users/repository/entity/user-social-media.model'
 import { UserSocialMediaRepository } from '@/users/repository/user-social-media/user-social-media-repository'
@@ -21,11 +22,11 @@ export class UserSocialMediaService {
   async save ({ link, socialMediaId, userId }: SaveUserSocialMediaInputService): Promise<UserSocialMediaModel | undefined > {
     const socialMedia = await this.socialMediaRepository.findById(socialMediaId)
     if (!socialMedia) {
-      throw new Error('Social Media not found')
+      throw new AppException('Social Media not found')
     }
     const user = await this.userRepository.findById(userId)
     if (!user) {
-      throw new Error('User not found')
+      throw new AppException('User not found')
     }
     return await this.userSocialMediaRepository.save({ link, socialMediaId, userId })
   }

@@ -1,3 +1,7 @@
+/**
+ * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
+*/
+
 import { PrismaClient } from '@/infra/database/prisma/client'
 import { addSocialMediaSeed } from './add-social-media-seed'
 
