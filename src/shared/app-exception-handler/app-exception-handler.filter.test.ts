@@ -1,13 +1,11 @@
 import { AppModule } from '@/app.module'
 import { type INestApplication } from '@nestjs/common'
-import { getConnectionToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
-import { type Connection } from 'mongoose'
 import request from 'supertest'
 import { PrismaService } from '../prisma/prisma.service'
 
 let prismaService: PrismaService
-let mongoDbConnection: Connection
+// let mongoDbConnection: Connection
 let app: INestApplication
 
 describe('AppExceptionHandlerFilter', () => {
@@ -16,7 +14,7 @@ describe('AppExceptionHandlerFilter', () => {
       imports: [AppModule]
     }).compile()
     prismaService = module.get<PrismaService>(PrismaService)
-    mongoDbConnection = module.get(getConnectionToken())
+    // mongoDbConnection = module.get(getConnectionToken())
 
     app = module.createNestApplication()
     await prismaService.$connect()
@@ -35,7 +33,7 @@ describe('AppExceptionHandlerFilter', () => {
 
   afterAll(async () => {
     await prismaService.$disconnect()
-    await mongoDbConnection.close(true)
+    // await mongoDbConnection.close(true)
     await app.close()
   })
 
