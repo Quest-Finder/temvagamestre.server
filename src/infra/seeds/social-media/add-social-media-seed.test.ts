@@ -1,9 +1,4 @@
-/**
- * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
-*/
-
 import { PrismaClient } from '@/infra/database/prisma/client'
-import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { addSocialMediaSeed } from './add-social-media-seed'
 
 let prisma: PrismaClient
@@ -11,9 +6,6 @@ let prisma: PrismaClient
 describe('addSocialMediaSeed', () => {
   beforeAll(async () => {
     prisma = new PrismaClient()
-    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValueOnce(
-      Promise.resolve(prisma)
-    )
   })
 
   beforeEach(async () => {
