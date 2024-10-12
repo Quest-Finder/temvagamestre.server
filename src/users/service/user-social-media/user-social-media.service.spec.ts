@@ -1,3 +1,4 @@
+import { AppException } from '@/shared/exceptions/app-exception'
 import { type SocialMediaModel } from '@/social-media/repository/entities/social-media.model'
 import { SocialMediaRepository } from '@/social-media/repository/social-media-repository'
 import { type UserSocialMediaModel } from '@/users/repository/entity/user-social-media.model'
@@ -77,7 +78,7 @@ describe('UserSocialMediaService', () => {
       }
       jest.spyOn(socialMediaRepository, 'findById').mockResolvedValue(undefined)
       const result = service.save(fakeInput)
-      await expect(result).rejects.toEqual(new Error('Social Media not found'))
+      await expect(result).rejects.toEqual(new AppException('Social Media not found'))
     })
     it('should return a error if user not exits ', async () => {
       const fakeInput: SaveUserSocialMediaInputService = {
@@ -87,7 +88,7 @@ describe('UserSocialMediaService', () => {
       }
       jest.spyOn(userRepository, 'findById').mockResolvedValueOnce(undefined)
       const result = service.save(fakeInput)
-      await expect(result).rejects.toEqual(new Error('User not found'))
+      await expect(result).rejects.toEqual(new AppException('User not found'))
     })
     it('should return a userSocialMedia if create success', async () => {
       const userSocialMediaRepositorySpy = jest.spyOn(userSocialMediaRepository, 'save')

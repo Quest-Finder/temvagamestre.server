@@ -1,3 +1,4 @@
+import { AppException } from '@/shared/exceptions/app-exception'
 import { type UserPreferenceDayPeriodModel } from '@/users/repository/entity/user-preference-day-period.model'
 import { type UserPreferenceModel } from '@/users/repository/entity/user-preference.model'
 import { UserPreferenceDayPeriodRepository } from '@/users/repository/user-preference-day-period/user-preference-day-period-repository'
@@ -75,7 +76,7 @@ describe('UserPreferenceDayPeriodService', () => {
     it('should throws if user Preference not found', async () => {
       jest.spyOn(userPreferenceRepository, 'findById').mockResolvedValueOnce(undefined)
       const result = service.save(makeInput())
-      await expect(result).rejects.toThrow(new Error('User preference not found'))
+      await expect(result).rejects.toThrow(new AppException('User preference not found'))
     })
 
     it('should call user preference day period repository save with correct values', async () => {

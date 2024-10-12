@@ -1,6 +1,5 @@
 import { AppModule } from '@/app.module'
 import env from '@/configs/env'
-import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import type { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
@@ -64,10 +63,6 @@ const signature = crypto
 let app: INestApplication
 let prismaService: PrismaService
 describe('Webhook clerk auth', () => {
-  beforeAll(async () => {
-    await PrismaHelper.connect()
-  })
-
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]

@@ -1,6 +1,7 @@
 import { UserPreferenceRepository } from '@/users/repository/user-preference/user-preference.repository'
 import { Injectable } from '@nestjs/common'
 import { UserPreferenceDayPeriodRepository } from './../../repository/user-preference-day-period/user-preference-day-period-repository'
+import { AppException } from '@/shared/exceptions/app-exception'
 
 export type SaveUserPreferenceDayPeriodServiceInput = {
   userId: string
@@ -19,7 +20,7 @@ export class UserPreferenceDayPeriodService {
   async save ({ userId, afternoon, morning, night }: SaveUserPreferenceDayPeriodServiceInput): Promise<void> {
     const userPreference = await this.userPreferenceRepository.findById(userId)
     if (!userPreference) {
-      throw new Error('User preference not found')
+      throw new AppException('User preference not found')
     }
     await this.userPreferenceDayPeriodRepository.save({
       id: userId, afternoon, morning, night

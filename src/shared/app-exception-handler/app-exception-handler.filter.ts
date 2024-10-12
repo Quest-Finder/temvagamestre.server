@@ -1,6 +1,7 @@
 import { Catch, HttpException, HttpStatus, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common'
 import { type Response } from 'express'
 import { AppException } from '../exceptions/app-exception'
+import { EntityNotFoundException } from '../exceptions/entity-not-found-error'
 import { ValidationException } from '../exceptions/validation-execption'
 
 const httpStatusDescription = {
@@ -72,6 +73,7 @@ export class AppExceptionHandlerFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>()
     const request = ctx.getRequest<Request>()
     console.error(exception)
+
     if (exception instanceof HttpException) {
       bodyError = {
         detail: exception.message,
@@ -82,11 +84,11 @@ export class AppExceptionHandlerFilter implements ExceptionFilter {
       }
     }
 
-    if (exception instanceof AppException) {
+    if (exception instanceof EntityNotFoundException) {
       bodyError = {
         detail: exception.message,
-        title: httpStatusDescription[400],
-        statusCode: 400,
+        title: httpStatusDescription[HttpStatus.NOT_FOUND],
+        statusCode: HttpStatus.NOT_FOUND,
         timestamp: new Date().getTime(),
         path: request.url
       }
@@ -100,6 +102,16 @@ export class AppExceptionHandlerFilter implements ExceptionFilter {
         timestamp: new Date().getTime(),
         path: request.url,
         objects: exception.fieldsErrors
+      }
+    }
+
+    if (exception instanceof AppException) {
+      bodyError = {
+        detail: exception.message,
+        title: httpStatusDescription[HttpStatus.BAD_REQUEST],
+        statusCode: HttpStatus.BAD_REQUEST,
+        timestamp: new Date().getTime(),
+        path: request.url
       }
     }
 
