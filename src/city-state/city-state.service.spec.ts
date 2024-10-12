@@ -25,7 +25,6 @@ describe('CityStateService', () => {
 
       ]
     }).compile()
-
     service = module.get<CityStateService>(CityStateService)
     ibgeService = module.get<IbgeService>(IbgeService)
   })
