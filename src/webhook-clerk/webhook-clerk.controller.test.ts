@@ -2,8 +2,10 @@ import { AppModule } from '@/app.module'
 import env from '@/configs/env'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import type { INestApplication } from '@nestjs/common'
+import { getConnectionToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
 import * as crypto from 'crypto'
+import { type Connection } from 'mongoose'
 import request from 'supertest'
 import { v4 } from 'uuid'
 
@@ -62,13 +64,14 @@ const signature = crypto
 
 let app: INestApplication
 let prismaService: PrismaService
+let mongoDbConnection: Connection
 describe('Webhook clerk auth', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
     prismaService = module.get<PrismaService>(PrismaService)
-
+    mongoDbConnection = module.get(getConnectionToken())
     app = module.createNestApplication()
     await prismaService.$connect()
     await prismaService.userPreferenceRpgStyle.deleteMany()
@@ -82,11 +85,9 @@ describe('Webhook clerk auth', () => {
     await app.init()
   })
 
-  afterEach(async () => {
-    await app.close()
-  })
-
   afterAll(async () => {
+    await prismaService.$disconnect()
+    await mongoDbConnection.close(true)
     await app.close()
   })
 

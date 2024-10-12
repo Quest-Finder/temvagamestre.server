@@ -1,10 +1,13 @@
 import { AppModule } from '@/app.module'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { type INestApplication } from '@nestjs/common'
+import { getConnectionToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
+import { type Connection } from 'mongoose'
 import request from 'supertest'
 import { type SocialMediaModel } from './repository/entities/social-media.model'
 let prismaService: PrismaService
+let mongoDbConnection: Connection
 let app: INestApplication
 
 const makeFakeSocialMediasModel = (): SocialMediaModel[] => ([{
@@ -22,8 +25,10 @@ describe('SocialMediaController', () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
-    app = module.createNestApplication()
     prismaService = module.get<PrismaService>(PrismaService)
+    mongoDbConnection = module.get(getConnectionToken())
+
+    app = module.createNestApplication()
     await prismaService.$connect()
     await prismaService.userPreferenceRpgStyle.deleteMany()
     await prismaService.userPreferenceDayPeriod.deleteMany()
@@ -32,13 +37,15 @@ describe('SocialMediaController', () => {
     await prismaService.externalAuthMapping.deleteMany()
     await prismaService.userPreference.deleteMany()
     await prismaService.userSocialMedia.deleteMany()
-    await prismaService.socialMedia.deleteMany()
     await prismaService.user.deleteMany()
+    await prismaService.playerProfile.deleteMany()
+    await prismaService.rpgStyle.deleteMany()
     await app.init()
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await prismaService.$disconnect()
+    await mongoDbConnection.close(true)
     await app.close()
   })
 

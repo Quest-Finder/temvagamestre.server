@@ -3,17 +3,15 @@
 */
 
 import { AppModule } from '@/app.module'
+import { PrismaService } from '@/shared/prisma/prisma.service'
 import { type INestApplication } from '@nestjs/common'
+import { getConnectionToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
-import session, { type SessionOptions } from 'express-session'
+import { type Connection } from 'mongoose'
 import request from 'supertest'
 
-const sessionConfig: SessionOptions = {
-  secret: 'any_secret_key',
-  resave: false,
-  saveUninitialized: false
-}
-
+let prismaService: PrismaService
+let mongoDbConnection: Connection
 let app: INestApplication
 
 describe('City State Routes', () => {
@@ -21,12 +19,27 @@ describe('City State Routes', () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
+    prismaService = module.get<PrismaService>(PrismaService)
+    mongoDbConnection = module.get(getConnectionToken())
+
     app = module.createNestApplication()
-    app.use(session(sessionConfig))
+    await prismaService.$connect()
+    await prismaService.userPreferenceRpgStyle.deleteMany()
+    await prismaService.userPreferenceDayPeriod.deleteMany()
+    await prismaService.userPreferenceGamePlace.deleteMany()
+    await prismaService.userPreferencePlayersRange.deleteMany()
+    await prismaService.externalAuthMapping.deleteMany()
+    await prismaService.userPreference.deleteMany()
+    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.user.deleteMany()
+    await prismaService.playerProfile.deleteMany()
+    await prismaService.rpgStyle.deleteMany()
     await app.init()
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
+    await prismaService.$disconnect()
+    await mongoDbConnection.close(true)
     await app.close()
   })
 

@@ -34,6 +34,7 @@ describe('UserPreferenceRepository', () => {
   afterAll(async () => {
     await prismaService.$disconnect()
   })
+
   it('should be defined', () => {
     expect(repository).toBeDefined()
   })

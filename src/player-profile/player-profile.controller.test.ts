@@ -1,18 +1,25 @@
 import { AppModule } from '@/app.module'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { type INestApplication } from '@nestjs/common'
+import { getConnectionToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
+import { type Connection } from 'mongoose'
 import request from 'supertest'
 
-let app: INestApplication
 let prismaService: PrismaService
+let mongoDbConnection: Connection
+let app: INestApplication
+
 describe('PlayerProfileController', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
-    app = module.createNestApplication()
     prismaService = module.get<PrismaService>(PrismaService)
+    mongoDbConnection = module.get(getConnectionToken())
+
+    app = module.createNestApplication()
+    await prismaService.$connect()
     await prismaService.userPreferenceRpgStyle.deleteMany()
     await prismaService.userPreferenceDayPeriod.deleteMany()
     await prismaService.userPreferenceGamePlace.deleteMany()
@@ -26,11 +33,12 @@ describe('PlayerProfileController', () => {
     await app.init()
   })
 
-  afterEach(async () => {
-    await prismaService.playerProfile.deleteMany()
+  afterAll(async () => {
     await prismaService.$disconnect()
+    await mongoDbConnection.close(true)
     await app.close()
   })
+
   describe('GET /player-profile', () => {
     it('Should return 200 with a empty player profile list', async () => {
       await request(app.getHttpServer())
