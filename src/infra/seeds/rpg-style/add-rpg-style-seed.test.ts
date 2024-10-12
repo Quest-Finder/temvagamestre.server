@@ -3,7 +3,6 @@
 */
 
 import { PrismaClient } from '@/infra/database/prisma/client'
-import { PrismaHelper } from '@/infra/database/prisma/helpers'
 import { rgpStyleSeed } from './add-rpg-style-seed'
 
 let prisma: PrismaClient
@@ -11,9 +10,6 @@ let prisma: PrismaClient
 describe('addRpgStyleSeed', () => {
   beforeAll(async () => {
     prisma = new PrismaClient()
-    jest.spyOn(PrismaHelper, 'getPrisma').mockReturnValueOnce(
-      Promise.resolve(prisma)
-    )
   })
 
   beforeEach(async () => {
