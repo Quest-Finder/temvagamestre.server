@@ -9,7 +9,6 @@ describe('CityStateService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [CityStateRepository, PrismaService]
     }).compile()
-
     repository = module.get<CityStateRepository>(CityStateRepository)
     prismaService = module.get<PrismaService>(PrismaService)
     await prismaService.userPreferenceRpgStyle.deleteMany()
@@ -19,12 +18,6 @@ describe('CityStateService', () => {
     await prismaService.externalAuthMapping.deleteMany()
     await prismaService.userSocialMedia.deleteMany()
     await prismaService.userPreference.deleteMany()
-    await prismaService.user.deleteMany()
-  })
-
-  afterEach(async () => {
-    await prismaService.userSocialMedia.deleteMany()
-    await prismaService.externalAuthMapping.deleteMany()
     await prismaService.user.deleteMany()
   })
 

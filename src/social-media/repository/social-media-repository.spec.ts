@@ -29,7 +29,6 @@ describe('SocialMediaRepository', () => {
   })
 
   afterAll(async () => {
-    await prismaService.socialMedia.deleteMany()
     await prismaService.$disconnect()
   })
 

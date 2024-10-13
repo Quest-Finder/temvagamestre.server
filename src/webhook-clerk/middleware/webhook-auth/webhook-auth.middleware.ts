@@ -1,9 +1,9 @@
 import env from '@/configs/env'
-import { type ClerkSignUpEventData } from '@/types'
-import { type SvixHeaders } from '@/types/svix-headers'
 import { BadRequestException, Injectable, type NestMiddleware } from '@nestjs/common'
 import { type NextFunction, type Request, type Response } from 'express'
 import { Webhook } from 'svix'
+import { type ClerkSignUpEventData } from './dtos/clerk.dto'
+import { type SvixHeaders } from './dtos/svix-headers.dto'
 
 @Injectable()
 export class WebhookAuthMiddleware implements NestMiddleware {

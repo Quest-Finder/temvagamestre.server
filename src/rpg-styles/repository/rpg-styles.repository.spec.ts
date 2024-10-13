@@ -12,14 +12,10 @@ describe('RpgStylesRepository', () => {
 
     repository = module.get<RpgStylesRepository>(RpgStylesRepository)
     prismaService = module.get<PrismaService>(PrismaService)
-  })
-
-  beforeEach(async () => {
     await prismaService.rpgStyle.deleteMany()
   })
 
   afterAll(async () => {
-    await prismaService.rpgStyle.deleteMany()
     await prismaService.$disconnect()
   })
 

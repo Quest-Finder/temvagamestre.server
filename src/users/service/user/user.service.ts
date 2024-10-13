@@ -56,8 +56,6 @@ export class UserService {
     if (user) {
       throw new AppException('Username already exists')
     }
-
-    await Promise.resolve()
   }
 
   async registerUser ({ id, user }: InputUserService, session: any): Promise<void> {

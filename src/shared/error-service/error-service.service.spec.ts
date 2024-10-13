@@ -18,7 +18,7 @@ describe('ErrorService', () => {
     }).compile()
 
     service = module.get<ErrorService>(ErrorService)
-    connection = module.get(getConnectionToken())
+    connection = await module.get(getConnectionToken())
   })
 
   afterAll(async () => {
