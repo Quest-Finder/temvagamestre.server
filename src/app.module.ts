@@ -8,10 +8,12 @@ import { SharedModule } from './shared/shared.module'
 import { SocialMediaModule } from './social-media/social-media.module'
 import { UsersModule } from './users/users.module'
 import { WebhookClerkModule } from './webhook-clerk/webhook-clerk.module'
+import { MongooseModule } from '@nestjs/mongoose'
+import env from './configs/env'
 
 @Module({
   imports: [
-    // MongooseModule.forRoot(env.mongoDbUri),
+    MongooseModule.forRoot(env.mongoDbUri),
     SharedModule,
     CityStateModule,
     RpgStylesModule,

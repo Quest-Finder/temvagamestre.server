@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken'
 import request from 'supertest'
 
 let prismaService: PrismaService
-// let mongoDbConnection: Connection
 let app: INestApplication
 
 export type ExternalAuthMappingModel = {
@@ -44,15 +43,18 @@ const makeUserModel = (): UserModel => ({
 })
 
 describe('UserController', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
     prismaService = module.get<PrismaService>(PrismaService)
-    // mongoDbConnection = module.get(getConnectionToken())
-
     app = module.createNestApplication()
-    await prismaService.$connect()
+    await app.init()
+  })
+
+  beforeEach(async () => {
+    await prismaService.address.deleteMany()
+    await prismaService.cityState.deleteMany()
     await prismaService.userPreferenceRpgStyle.deleteMany()
     await prismaService.userPreferenceDayPeriod.deleteMany()
     await prismaService.userPreferenceGamePlace.deleteMany()
@@ -60,15 +62,16 @@ describe('UserController', () => {
     await prismaService.externalAuthMapping.deleteMany()
     await prismaService.userPreference.deleteMany()
     await prismaService.userSocialMedia.deleteMany()
+    await prismaService.userConfig.deleteMany()
+    await prismaService.userBadge.deleteMany()
     await prismaService.user.deleteMany()
     await prismaService.playerProfile.deleteMany()
     await prismaService.rpgStyle.deleteMany()
-    await app.init()
+    await prismaService.badge.deleteMany()
+    await prismaService.socialMedia.deleteMany()
   })
 
   afterAll(async () => {
-    await prismaService.$disconnect()
-    // await mongoDbConnection.close(true)
     await app.close()
   })
 
@@ -76,6 +79,7 @@ describe('UserController', () => {
     it('Should return 400 when check-username and validation fails', async () => {
       const response = await request(app.getHttpServer())
         .get('/user/check-username/valid-username-valid-username')
+
       expect(response.statusCode).toBe(400)
       expect(response.body).toEqual(expect.objectContaining({
         detail: 'Erro na validação de campos',
@@ -89,10 +93,8 @@ describe('UserController', () => {
     })
 
     it('Should return 200 when check-username username not exits', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/user/check-username/free-username')
-
-      expect(response.statusCode).toBe(200)
+      await request(app.getHttpServer())
+        .get('/user/check-username/free-username').expect(200)
     })
 
     it('Should return 400 when check-username is bad word', async () => {
@@ -111,12 +113,14 @@ describe('UserController', () => {
       })
       const response = await request(app.getHttpServer())
         .get('/user/check-username/valid-username')
+        .expect(400)
       expect(response.statusCode).toBe(400)
       expect(response.body).toEqual(expect.objectContaining({
         detail: 'Username already exists'
       }))
     })
   })
+
   describe('POST /user', () => {
     it('Should return 204 when register an user', async () => {
       await prismaService.playerProfile.create({

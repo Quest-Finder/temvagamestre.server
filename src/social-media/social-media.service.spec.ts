@@ -1,5 +1,5 @@
-import { type SocialMediaModel } from '@/models'
 import { Test, type TestingModule } from '@nestjs/testing'
+import { type SocialMediaModel } from './repository/entities/social-media.model'
 import { SocialMediaRepository } from './repository/social-media-repository'
 import { SocialMediaService } from './social-media.service'
 

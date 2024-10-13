@@ -1,7 +1,7 @@
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { Test, type TestingModule } from '@nestjs/testing'
 import { type UserModel } from '../entity/user.model'
-import { type UserRegisterRepositoryInput, UserRepository } from './user-repository'
+import { UserRepository, type UserRegisterRepositoryInput } from './user-repository'
 
 const makeFakeUserModel = (): UserModel => ({
   id: 'any_user_id',
@@ -32,11 +32,6 @@ describe('UserRepository', () => {
     await prismaService.socialMedia.deleteMany()
     await prismaService.rpgStyle.deleteMany()
     await prismaService.cityState.deleteMany()
-  })
-
-  afterEach(async () => {
-    await prismaService.userSocialMedia.deleteMany()
-    await prismaService.externalAuthMapping.deleteMany()
     await prismaService.user.deleteMany()
   })
 

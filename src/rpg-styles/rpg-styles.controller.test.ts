@@ -13,19 +13,21 @@ const makeFakeRpgStylesModel = (): RpgStyleModel[] => ([{
 }])
 
 let prismaService: PrismaService
-// let mongoDbConnection: Connection
 let app: INestApplication
 
 describe('RpgStylesController', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
     prismaService = module.get<PrismaService>(PrismaService)
-    // mongoDbConnection = module.get(getConnectionToken())
-
     app = module.createNestApplication()
-    await prismaService.$connect()
+    await app.init()
+  })
+
+  beforeEach(async () => {
+    await prismaService.address.deleteMany()
+    await prismaService.cityState.deleteMany()
     await prismaService.userPreferenceRpgStyle.deleteMany()
     await prismaService.userPreferenceDayPeriod.deleteMany()
     await prismaService.userPreferenceGamePlace.deleteMany()
@@ -33,15 +35,16 @@ describe('RpgStylesController', () => {
     await prismaService.externalAuthMapping.deleteMany()
     await prismaService.userPreference.deleteMany()
     await prismaService.userSocialMedia.deleteMany()
+    await prismaService.userConfig.deleteMany()
+    await prismaService.userBadge.deleteMany()
     await prismaService.user.deleteMany()
     await prismaService.playerProfile.deleteMany()
     await prismaService.rpgStyle.deleteMany()
-    await app.init()
+    await prismaService.badge.deleteMany()
+    await prismaService.socialMedia.deleteMany()
   })
 
   afterAll(async () => {
-    await prismaService.$disconnect()
-    // await mongoDbConnection.close(true)
     await app.close()
   })
 
