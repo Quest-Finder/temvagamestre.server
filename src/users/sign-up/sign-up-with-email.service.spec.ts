@@ -1,10 +1,9 @@
-import { Test, type TestingModule } from '@nestjs/testing'
-import { SignUpService } from './sign-up-with-email.service'
-import { ConflictException } from '@nestjs/common'
-import { PrismaService } from '@/shared/prisma/prisma.service'
-import bcrypt from 'bcrypt'
-import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
 import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
+import { PrismaService } from '@/shared/prisma/prisma.service'
+import { ConflictException } from '@nestjs/common'
+import { Test, type TestingModule } from '@nestjs/testing'
+import bcrypt from 'bcrypt'
+import { SignUpService } from './sign-up-with-email.service'
 
 describe('SignUpService', () => {
   let service: SignUpService
@@ -16,10 +15,6 @@ describe('SignUpService', () => {
       findUnique: jest.fn(),
       create: jest.fn()
     }
-  }
-
-  const mockUuidAdapter = {
-    build: jest.fn().mockReturnValue('some-uuid')
   }
 
   const mockHashAdapter = {
@@ -35,7 +30,6 @@ describe('SignUpService', () => {
       providers: [
         SignUpService,
         { provide: PrismaService, useValue: mockPrismaService },
-        { provide: UuidAdapter, useValue: mockUuidAdapter },
         { provide: 'HashAdapter', useValue: mockHashAdapter },
         { provide: JwtSignAdapterV2, useValue: mockJwtSignAdapter }
       ]
@@ -53,6 +47,7 @@ describe('SignUpService', () => {
   })
 
   it('should create a new user and return a token', async () => {
+    jest.spyOn(bcrypt, 'hash').mockReturnValueOnce('hashed-password')
     const bcryptHashSpy = jest.spyOn(bcrypt, 'hash').mockReturnValueOnce('hashed-password')
 
     mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce(null)

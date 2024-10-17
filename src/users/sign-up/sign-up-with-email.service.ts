@@ -1,9 +1,9 @@
-import bcrypt from 'bcrypt'
-import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
+import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { ConflictException, Injectable } from '@nestjs/common'
+import bcrypt from 'bcrypt'
+import { v4 } from 'uuid'
 import { SignUpWithEmailDto } from './sign-up-with-email-dto'
-import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
 
 const SALT_ROUNDS = 10
 
@@ -11,7 +11,6 @@ const SALT_ROUNDS = 10
 export class SignUpService {
   constructor (
     private readonly prismaService: PrismaService,
-    private readonly uuidAdapter: UuidAdapter,
     private readonly jwtSignAdapterV2: JwtSignAdapterV2
   ) {}
 
@@ -26,7 +25,7 @@ export class SignUpService {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
     await this.prismaService.userWithEmail.create({
       data: {
-        id: this.uuidAdapter.build(),
+        id: v4(),
         email: signUpData.email,
         password: hashedPassword
       }

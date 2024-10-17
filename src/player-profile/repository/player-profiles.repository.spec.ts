@@ -5,14 +5,33 @@ import { PlayersProfileRepository } from './player-profiles.repository'
 describe('RpgStylesRepository', () => {
   let repository: PlayersProfileRepository
   let prismaService: PrismaService
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [PlayersProfileRepository, PrismaService]
     }).compile()
 
     repository = module.get<PlayersProfileRepository>(PlayersProfileRepository)
     prismaService = module.get<PrismaService>(PrismaService)
+  })
+
+  beforeEach(async () => {
+    await prismaService.userPreferenceRpgStyle.deleteMany()
+    await prismaService.userPreferenceDayPeriod.deleteMany()
+    await prismaService.userPreferenceGamePlace.deleteMany()
+    await prismaService.userPreferencePlayersRange.deleteMany()
+    await prismaService.externalAuthMapping.deleteMany()
+    await prismaService.userPreference.deleteMany()
+    await prismaService.userSocialMedia.deleteMany()
+    await prismaService.userConfig.deleteMany()
+    await prismaService.userBadge.deleteMany()
+    await prismaService.user.deleteMany()
+    await prismaService.address.deleteMany()
+    await prismaService.cityState.deleteMany()
+    await prismaService.userWithEmail.deleteMany()
     await prismaService.playerProfile.deleteMany()
+    await prismaService.rpgStyle.deleteMany()
+    await prismaService.badge.deleteMany()
+    await prismaService.socialMedia.deleteMany()
   })
 
   afterAll(async () => {

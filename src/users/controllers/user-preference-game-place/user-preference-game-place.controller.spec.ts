@@ -49,8 +49,6 @@ describe('UserPreferenceGamePlaceController', () => {
   })
 
   beforeEach(async () => {
-    await prismaService.address.deleteMany()
-    await prismaService.cityState.deleteMany()
     await prismaService.userPreferenceRpgStyle.deleteMany()
     await prismaService.userPreferenceDayPeriod.deleteMany()
     await prismaService.userPreferenceGamePlace.deleteMany()
@@ -61,6 +59,9 @@ describe('UserPreferenceGamePlaceController', () => {
     await prismaService.userConfig.deleteMany()
     await prismaService.userBadge.deleteMany()
     await prismaService.user.deleteMany()
+    await prismaService.address.deleteMany()
+    await prismaService.cityState.deleteMany()
+    await prismaService.userWithEmail.deleteMany()
     await prismaService.playerProfile.deleteMany()
     await prismaService.rpgStyle.deleteMany()
     await prismaService.badge.deleteMany()
