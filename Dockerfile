@@ -26,7 +26,7 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install --ignore-scripts
+RUN npm install --omit=dev
 
 COPY  --from=build /home/node/app/dist /app
 
