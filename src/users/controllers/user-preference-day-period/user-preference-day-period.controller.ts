@@ -1,3 +1,4 @@
+import { ErrorDetail, ErrorDetailField } from '@/shared/dtos/error-details.dto'
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
 import { UserPreferenceDayPeriodService } from '@/users/service/user-preference-day-period/user-preference-day-period.service'
 import { Body, Controller, Headers, HttpCode, Post } from '@nestjs/common'
@@ -21,9 +22,9 @@ export class UserPreferenceDayPeriodController {
   @ApiBearerAuth()
   @ApiBody({ type: AddUserPreferenceDayPeriodInput })
   @ApiResponse({ status: 204, description: 'Sucesso: Usuário atualizado' })
-  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
-  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida', type: ErrorDetailField })
+  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado', type: ErrorDetail })
+  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor', type: ErrorDetail })
   async save (
     @Body(new ZodValidationPipePipe(userPreferenceDayPeriodSchema)) data: UserPreferenceDayPeriodInput,
       @Headers() headers

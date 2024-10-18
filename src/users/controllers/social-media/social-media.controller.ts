@@ -1,8 +1,9 @@
+import { ErrorDetail, ErrorDetailField } from '@/shared/dtos/error-details.dto'
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
+import { UserSocialMediaService } from '@/users/service/user-social-media/user-social-media.service'
 import { Body, Controller, Headers, HttpCode, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UserSocialMediaInput, userSocialMediaInputSchema } from './dto/input-user-social-media-dto'
-import { UserSocialMediaService } from '@/users/service/user-social-media/user-social-media.service'
 
 @ApiTags('User-Social-Media')
 @Controller('/user/social-media')
@@ -16,9 +17,9 @@ export class UserSocialMediaController {
   })
   @ApiBearerAuth()
   @ApiResponse({ status: 204, description: 'Sucesso: Rede social salva para o usuário' })
-  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
-  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida', type: ErrorDetailField })
+  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado', type: ErrorDetail })
+  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor', type: ErrorDetail })
   @HttpCode(204)
   async saveUserSocialMedia (
     @Body(new ZodValidationPipePipe(userSocialMediaInputSchema)) data: UserSocialMediaInput,

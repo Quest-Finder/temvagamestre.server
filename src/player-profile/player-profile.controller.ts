@@ -1,3 +1,4 @@
+import { ErrorDetail } from '@/shared/dtos/error-details.dto'
 import { Controller, Get } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { PlayerProfileDTO } from './dto/players-profile.dto'
@@ -19,7 +20,11 @@ export class PlayerProfileController {
     type: PlayerProfileDTO,
     isArray: true
   })
-  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error: Erro interno do servidor',
+    type: ErrorDetail
+  })
   async findAll (): Promise<PlayerProfileDTO[]> {
     return await this.playerProfileService.findAll()
   }
