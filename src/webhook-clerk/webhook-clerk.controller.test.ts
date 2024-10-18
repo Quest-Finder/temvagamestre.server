@@ -99,7 +99,7 @@ describe('Webhook clerk auth', () => {
   describe('POST /user/signup/webhook', () => {
     it('Should return 204 when signup a user', async () => {
       await request(app.getHttpServer())
-        .post('/user/signup/webhook-dev')
+        .post('/user/signup/webhook')
         .set({
           'svix-id': svixId,
           'svix-timestamp': time.toString(),
