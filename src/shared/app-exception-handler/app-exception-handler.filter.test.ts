@@ -17,10 +17,7 @@ describe('AppExceptionHandlerFilter', () => {
     await app.init()
   })
 
-  afterEach(async () => {
-    await prismaService.address.deleteMany()
-    await prismaService.cityState.deleteMany()
-    await prismaService.playerProfile.deleteMany()
+  beforeEach(async () => {
     await prismaService.userPreferenceRpgStyle.deleteMany()
     await prismaService.userPreferenceDayPeriod.deleteMany()
     await prismaService.userPreferenceGamePlace.deleteMany()
@@ -31,9 +28,13 @@ describe('AppExceptionHandlerFilter', () => {
     await prismaService.userConfig.deleteMany()
     await prismaService.userBadge.deleteMany()
     await prismaService.user.deleteMany()
+    await prismaService.address.deleteMany()
+    await prismaService.cityState.deleteMany()
+    await prismaService.userWithEmail.deleteMany()
     await prismaService.playerProfile.deleteMany()
     await prismaService.rpgStyle.deleteMany()
     await prismaService.badge.deleteMany()
+    await prismaService.socialMedia.deleteMany()
   })
 
   afterAll(async () => {

@@ -1,3 +1,4 @@
+import { ErrorDetail, ErrorDetailField } from '@/shared/dtos/error-details.dto'
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
 import { UserService } from '@/users/service/user/user.service'
 import { Body, Controller, Get, Headers, HttpCode, Param, Post, Session } from '@nestjs/common'
@@ -25,10 +26,10 @@ export class UserController {
     required: true
   })
   @ApiResponse({ status: 200, description: 'Sucesso: Username esta disponivel' })
-  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida, username sendo utilizado' })
-  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
-  @ApiResponse({ status: 404, description: 'Not Found: Username não foi encontrado' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida', type: ErrorDetailField })
+  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado', type: ErrorDetail })
+  @ApiResponse({ status: 404, description: 'Not Found: Username não foi encontrado', type: ErrorDetail })
+  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor', type: ErrorDetail })
   async checkUserName (@Param('username', new ZodValidationPipePipe(schema)) username: string): Promise<void> {
     await this.userService.checkUsernameIsAvailable(username)
   }
@@ -41,10 +42,10 @@ export class UserController {
   })
   @ApiBearerAuth()
   @ApiBody({ type: RegisterUserRoutesDto })
-  @ApiResponse({ status: 204, description: 'Sucesso: Usuário Cadastrado' })
-  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida', type: ErrorDetailField })
+  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado', type: ErrorDetail })
   @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor', type: ErrorDetail })
   async registerUser (
     @Body(new ZodValidationPipePipe(registerUserSchema)) data: RegisterUserInput,
       @Headers() headers,

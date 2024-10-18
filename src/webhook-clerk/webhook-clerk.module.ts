@@ -13,6 +13,6 @@ export class WebhookClerkModule implements NestModule {
   async configure (consumer: MiddlewareConsumer): Promise<void> {
     consumer
       .apply(WebhookAuthMiddleware)
-      .forRoutes({ path: '/user/signup/webhook-dev', method: RequestMethod.POST })
+      .forRoutes({ path: '/user/signup/webhook', method: RequestMethod.POST })
   }
 }

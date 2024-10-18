@@ -1,4 +1,5 @@
 import { CityStateRepository } from '@/city-state/repository/city-state-repository'
+import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
 import { PlayersProfileRepository } from '@/player-profile/repository/player-profiles.repository'
 import { RpgStylesRepository } from '@/rpg-styles/repository/rpg-styles.repository'
 import { AuthMiddleware } from '@/shared/auth/auth.middleware'
@@ -24,6 +25,8 @@ import { UserPreferenceGamePlaceService } from './service/user-preference-game-p
 import { UserPreferenceService } from './service/user-preference/user-preference.service'
 import { UserSocialMediaService } from './service/user-social-media/user-social-media.service'
 import { UserService } from './service/user/user.service'
+import { SignUpController } from './sign-up/sign-up-with-email.controller'
+import { SignUpService } from './sign-up/sign-up-with-email.service'
 
 @Module({
   providers: [
@@ -43,7 +46,9 @@ import { UserService } from './service/user/user.service'
     IbgeService,
     CityStateRepository,
     RpgStylesRepository,
-    PlayersProfileRepository
+    PlayersProfileRepository,
+    SignUpService,
+    JwtSignAdapterV2
   ],
   controllers: [
     UserSocialMediaController,
@@ -51,7 +56,8 @@ import { UserService } from './service/user/user.service'
     UserPreferenceController,
     UserPreferenceDayPeriodController,
     UserPreferenceGamePlaceController,
-    UserController
+    UserController,
+    SignUpController
   ],
   imports: [
     HttpModule

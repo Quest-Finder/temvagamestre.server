@@ -1,3 +1,4 @@
+import { ErrorDetail, ErrorDetailField } from '@/shared/dtos/error-details.dto'
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
 import { UserPreferenceService } from '@/users/service/user-preference/user-preference.service'
 import { Body, Controller, Headers, HttpCode, Patch, Post } from '@nestjs/common'
@@ -41,9 +42,9 @@ export class UserPreferenceController {
   @ApiBearerAuth()
   @ApiBody({ type: UserPreferenceUpdateInput })
   @ApiResponse({ status: 204, description: 'Sucesso: Preferência do usuário atualizada' })
-  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
-  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida', type: ErrorDetailField })
+  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado', type: ErrorDetail })
+  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor', type: ErrorDetail })
   async updateUserPreference (
     @Body(new ZodValidationPipePipe(updatePreferenceSchema)) data: UpdatePreferenceInput,
       @Headers() headers): Promise<void> {

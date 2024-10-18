@@ -1,3 +1,4 @@
+import { ErrorDetail, ErrorDetailField } from '@/shared/dtos/error-details.dto'
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
 import { Body, Controller, Headers, HttpCode, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
@@ -20,9 +21,9 @@ export class UserPreferenceGamePlaceController {
   @ApiBearerAuth()
   @ApiBody({ type: SaveUserPreferenceGamePlaceRoutesDto })
   @ApiResponse({ status: 204, description: 'Sucesso: Preferência do usuário atualizada' })
-  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida' })
-  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor' })
+  @ApiResponse({ status: 400, description: 'Bad Request: Requisição inválida', type: ErrorDetailField })
+  @ApiResponse({ status: 401, description: 'Unauthorized: Não autorizado', type: ErrorDetail })
+  @ApiResponse({ status: 500, description: 'Internal Server Error: Erro interno do servidor', type: ErrorDetail })
   async saveGamePlace (
     @Body(new ZodValidationPipePipe(userPreferenceGamePlaceSchema)) data: UserPreferenceGamePlaceInput,
       @Headers() headers

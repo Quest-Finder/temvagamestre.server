@@ -9,10 +9,16 @@ export class ErrorLog {
     stack: string
 
   @Prop()
-    date: number
+    date: Date
 
   @Prop()
     origin: string
+
+  constructor (stack: string, date: Date, origin: string) {
+    this.date = date
+    this.origin = origin
+    this.stack = stack
+  }
 }
 
 export const ErrorLogSchema = SchemaFactory.createForClass(ErrorLog)
