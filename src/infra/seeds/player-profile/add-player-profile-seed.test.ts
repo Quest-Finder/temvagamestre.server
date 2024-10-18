@@ -1,3 +1,7 @@
+/**
+ * @jest-environment ./src/infra/database/prisma/schema/custom-environment-jest.ts
+*/
+
 import { PrismaClient } from '@/infra/database/prisma/client'
 import { addPlayerProfiles } from './add-player-profile-seed'
 
@@ -9,23 +13,7 @@ describe('addPlayerProfileSeed', () => {
   })
 
   beforeEach(async () => {
-    await prisma.userPreferenceRpgStyle.deleteMany()
-    await prisma.userPreferenceDayPeriod.deleteMany()
-    await prisma.userPreferenceGamePlace.deleteMany()
-    await prisma.userPreferencePlayersRange.deleteMany()
-    await prisma.externalAuthMapping.deleteMany()
-    await prisma.userPreference.deleteMany()
-    await prisma.userSocialMedia.deleteMany()
-    await prisma.userConfig.deleteMany()
-    await prisma.userBadge.deleteMany()
-    await prisma.user.deleteMany()
-    await prisma.address.deleteMany()
-    await prisma.cityState.deleteMany()
-    await prisma.userWithEmail.deleteMany()
     await prisma.playerProfile.deleteMany()
-    await prisma.rpgStyle.deleteMany()
-    await prisma.badge.deleteMany()
-    await prisma.socialMedia.deleteMany()
   })
 
   afterAll(async () => {
