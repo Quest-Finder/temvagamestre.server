@@ -21,8 +21,7 @@ export class IbgeService {
   async findCitiesByState ({ uf, city }: FindCitiesByState): Promise<IbgeCityServiceReponse> {
     try {
       const response = await this.http.axiosRef.get(`${this.BASE_URL}/estados/${uf}/municipios`)
-      console.log(response)
-      const cities: string[] = await response.data.map(data => data.nome)
+      const cities: string[] = response.data.map(data => data.nome)
       const cityFounded = city && cities.find(
         c => c.toLowerCase().localeCompare(
           city.toLowerCase(), 'pt-BR', { sensitivity: 'base' }) === 0
