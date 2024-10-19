@@ -1,21 +1,19 @@
 import { AppModule } from '@/app.module'
-import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import type { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 import request from 'supertest'
 
 describe('SignUpController', () => {
   let app: INestApplication
   let prismaService: PrismaService
-  let jwtSignAdapterV2: JwtSignAdapterV2
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule]
     }).compile()
     app = module.createNestApplication()
     prismaService = module.get<PrismaService>(PrismaService)
-    jwtSignAdapterV2 = module.get<JwtSignAdapterV2>(JwtSignAdapterV2)
     await app.init()
   })
 
@@ -48,13 +46,14 @@ describe('SignUpController', () => {
       email: 'test@example.com',
       password: 'test123'
     }
-    const token = jwtSignAdapterV2.execute(signUpWithEmailDto.email)
 
     const response = await request(app.getHttpServer())
       .post('/user/signup/email')
       .send(signUpWithEmailDto)
     expect(response.statusCode).toBe(201)
-    expect(response.body).toEqual(token)
+    expect(response.body).toBeTruthy()
+    const decodeToken = jwt.decode(response.body.token) as JwtPayload
+    expect(decodeToken.payload).toEqual(signUpWithEmailDto.email)
   })
 
   it('should return status 400 when the email or password is invalid', async () => {
