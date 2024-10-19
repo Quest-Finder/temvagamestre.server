@@ -1,6 +1,7 @@
 import { AppException } from '@/shared/exceptions/app-exception'
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
+import { lastValueFrom } from 'rxjs'
 
 export type IbgeCityServiceReponse = {
   cities: string[]
@@ -20,8 +21,8 @@ export class IbgeService {
 
   async findCitiesByState ({ uf, city }: FindCitiesByState): Promise<IbgeCityServiceReponse> {
     try {
-      const response = await this.http.axiosRef.get(`${this.BASE_URL}/estados/${uf}/municipios`)
-      const cities: string[] = response.data.map(data => data.nome)
+      const response = await lastValueFrom(this.http.get(`${this.BASE_URL}/estados/${uf}/municipios`))
+      const cities: string[] = await response.data.map(data => data.nome)
       const cityFounded = city && cities.find(
         c => c.toLowerCase().localeCompare(
           city.toLowerCase(), 'pt-BR', { sensitivity: 'base' }) === 0
