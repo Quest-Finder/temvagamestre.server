@@ -21,7 +21,7 @@
     "test:verbose-integration": "jest --passWithNoTests --runInBand --watch -c jest-integration-config.js",
     "test:ci": "npm test -- --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "prepare": "husky || true",
+    "prepare": "husky install || true",
     "prisma:generate-client-definition": "npx prisma generate",
     "prisma:apply-migration": "npx prisma migrate deploy",
     "seed:addSocialMedia": "ts-node -r tsconfig-paths/register src/infra/seeds/social-media/add-social-media-seed.ts",
