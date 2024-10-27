@@ -9,6 +9,7 @@ import { SocialMediaRepository } from '@/social-media/repository/social-media-re
 import { HttpModule } from '@nestjs/axios'
 import { Module, RequestMethod, type MiddlewareConsumer, type NestModule } from '@nestjs/common'
 import { FakeUserController } from './controllers/fake-user/fake-user.controller'
+import { SignUpController } from './controllers/sign-up-with-email/sign-up-with-email.controller'
 import { UserSocialMediaController } from './controllers/social-media/social-media.controller'
 import { UserPreferenceDayPeriodController } from './controllers/user-preference-day-period/user-preference-day-period.controller'
 import { UserPreferenceGamePlaceController } from './controllers/user-preference-game-place/user-preference-game-place.controller'
@@ -18,15 +19,15 @@ import { UserPreferenceDayPeriodRepository } from './repository/user-preference-
 import { UserPreferenceGamePlaceRepository } from './repository/user-preference-game-place/user-preference-game-place-repository'
 import { UserPreferenceRepository } from './repository/user-preference/user-preference.repository'
 import { UserSocialMediaRepository } from './repository/user-social-media/user-social-media-repository'
+import { UserWithEmailRepository } from './repository/user-with-email/user-with-email-repository'
 import { UserRepository } from './repository/user/user-repository'
 import { FakeUserService } from './service/fake-user/fake-user.service'
+import { SignUpService } from './service/sign-up-with-email/sign-up-with-email.service'
 import { UserPreferenceDayPeriodService } from './service/user-preference-day-period/user-preference-day-period.service'
 import { UserPreferenceGamePlaceService } from './service/user-preference-game-place/user-preference-game-place.service'
 import { UserPreferenceService } from './service/user-preference/user-preference.service'
 import { UserSocialMediaService } from './service/user-social-media/user-social-media.service'
 import { UserService } from './service/user/user.service'
-import { SignUpController } from './sign-up/sign-up-with-email.controller'
-import { SignUpService } from './sign-up/sign-up-with-email.service'
 
 @Module({
   providers: [
@@ -48,7 +49,8 @@ import { SignUpService } from './sign-up/sign-up-with-email.service'
     RpgStylesRepository,
     PlayersProfileRepository,
     SignUpService,
-    JwtSignAdapterV2
+    JwtSignAdapterV2,
+    UserWithEmailRepository
   ],
   controllers: [
     UserSocialMediaController,
