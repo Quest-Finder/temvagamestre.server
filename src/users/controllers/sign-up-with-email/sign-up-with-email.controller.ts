@@ -2,8 +2,8 @@ import { ErrorDetail, ErrorDetailField } from '@/shared/dtos/error-details.dto'
 import { ZodValidationPipePipe } from '@/shared/zod-validation-pipe/zod-validation-pipe.pipe'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { SignUpWithEmailDto, inputSignUpData } from './sign-up-with-email-dto'
-import { SignUpService } from './sign-up-with-email.service'
+import { SignUpService } from '../../service/sign-up-with-email/sign-up-with-email.service'
+import { SignUpWithEmailDto, inputSignUpData } from './dto/sign-up-with-email-dto'
 
 @ApiTags('SignUp-With-Email')
 @Controller('/user/signup')

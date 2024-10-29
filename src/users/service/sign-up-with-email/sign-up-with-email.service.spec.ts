@@ -1,21 +1,32 @@
 import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
-import { PrismaService } from '@/shared/prisma/prisma.service'
+import { type UserWithEmailModel } from '@/users/repository/entity/user-with-email.model'
+import { type UserWithEmailData, UserWithEmailRepository } from '@/users/repository/user-with-email/user-with-email-repository'
 import { ConflictException } from '@nestjs/common'
 import { Test, type TestingModule } from '@nestjs/testing'
 import bcrypt from 'bcrypt'
 import { SignUpService } from './sign-up-with-email.service'
 
+const makeUserWithEmail = (): UserWithEmailModel => {
+  return {
+    email: 'valid@email.com',
+    id: 'valid-id',
+    password: 'encoded_password'
+  }
+}
+class MockUserWithEmailRepository {
+  async findByEmail (email: string): Promise<UserWithEmailModel | undefined> {
+    return makeUserWithEmail()
+  }
+
+  async save (data: UserWithEmailData): Promise<UserWithEmailModel> {
+    return makeUserWithEmail()
+  }
+}
+
 describe('SignUpService', () => {
   let service: SignUpService
-
+  let repository: UserWithEmailRepository
   const SALTED_ROUNDS = 10
-
-  const mockPrismaService = {
-    userWithEmail: {
-      findUnique: jest.fn(),
-      create: jest.fn()
-    }
-  }
 
   const mockHashAdapter = {
     hash: jest.fn().mockResolvedValue('hashed-password')
@@ -29,13 +40,13 @@ describe('SignUpService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SignUpService,
-        { provide: PrismaService, useValue: mockPrismaService },
         { provide: 'HashAdapter', useValue: mockHashAdapter },
-        { provide: JwtSignAdapterV2, useValue: mockJwtSignAdapter }
+        { provide: JwtSignAdapterV2, useValue: mockJwtSignAdapter },
+        { provide: UserWithEmailRepository, useClass: MockUserWithEmailRepository }
       ]
     }).compile()
-
     service = module.get<SignUpService>(SignUpService)
+    repository = module.get<UserWithEmailRepository>(UserWithEmailRepository)
   })
 
   afterEach(() => {
@@ -49,32 +60,26 @@ describe('SignUpService', () => {
   it('should create a new user and return a token', async () => {
     jest.spyOn(bcrypt, 'hash').mockReturnValueOnce('hashed-password')
     const bcryptHashSpy = jest.spyOn(bcrypt, 'hash').mockReturnValueOnce('hashed-password')
-
-    mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce(null)
-    mockPrismaService.userWithEmail.create.mockResolvedValueOnce({ id: 'some-uuid' })
+    const repositorySaveSpy = jest.spyOn(repository, 'save')
+    jest.spyOn(repository, 'findByEmail').mockResolvedValueOnce(undefined)
     mockJwtSignAdapter.execute.mockResolvedValueOnce({ token: 'some-token' })
 
     const result = await service.create({ email: 'newuser@example.com', password: '123456' })
 
     expect(bcryptHashSpy).toHaveBeenCalledWith('123456', SALTED_ROUNDS)
-    expect(mockPrismaService.userWithEmail.create).toHaveBeenCalledWith({
-      data: {
-        id: expect.any(String),
-        email: 'newuser@example.com',
-        password: 'hashed-password'
-      }
+    expect(repositorySaveSpy).toHaveBeenCalledWith({
+      email: 'newuser@example.com',
+      password: 'hashed-password'
     })
     expect(result).toEqual({ token: 'some-token' })
   })
 
   it('should throw ConflictException if user already exists', async () => {
-    mockPrismaService.userWithEmail.findUnique.mockResolvedValueOnce({ email: 'test@example.com' })
+    const repositoryFindByEmailSpy = jest.spyOn(repository, 'findByEmail')
 
     await expect(service.create({ email: 'test@example.com', password: 'whateverpassword123' }))
       .rejects.toThrow(new ConflictException('Já existe um email cadastrado com o test@example.com informado'))
 
-    expect(mockPrismaService.userWithEmail.findUnique).toHaveBeenCalledWith({
-      where: { email: 'test@example.com' }
-    })
+    expect(repositoryFindByEmailSpy).toHaveBeenCalledWith('test@example.com')
   })
 })
