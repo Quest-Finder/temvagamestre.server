@@ -53,7 +53,7 @@ describe('SignUpController', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body).toBeTruthy()
     const decodeToken = jwt.decode(response.body.token) as JwtPayload
-    expect(decodeToken.payload).toEqual(signUpWithEmailDto.email)
+    expect(decodeToken.payload.email).toEqual(signUpWithEmailDto.email)
   })
 
   it('should return status 400 when the email or password is invalid', async () => {

@@ -5,6 +5,7 @@ import { RpgStylesRepository } from '@/rpg-styles/repository/rpg-styles.reposito
 import { AuthMiddleware } from '@/shared/auth/auth.middleware'
 import { IbgeService } from '@/shared/integration/ibge/ibge.service'
 import { PrismaService } from '@/shared/prisma/prisma.service'
+import { SharedModule } from '@/shared/shared.module'
 import { SocialMediaRepository } from '@/social-media/repository/social-media-repository'
 import { HttpModule } from '@nestjs/axios'
 import { Module, RequestMethod, type MiddlewareConsumer, type NestModule } from '@nestjs/common'
@@ -51,6 +52,7 @@ import { UserService } from './service/user/user.service'
     SignUpService,
     JwtSignAdapterV2,
     UserWithEmailRepository
+
   ],
   controllers: [
     UserSocialMediaController,
@@ -62,7 +64,8 @@ import { UserService } from './service/user/user.service'
     SignUpController
   ],
   imports: [
-    HttpModule
+    HttpModule,
+    SharedModule
   ]
 })
 export class UsersModule implements NestModule {

@@ -1,20 +1,36 @@
+import { type TokenPayload, type TokenValidation } from '@/shared/token-validations/token-validation'
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 
 import { type UserModel } from '@/users/repository/entity/user.model'
 import { type UserRepository } from '@/users/repository/user/user-repository'
 import { type NextFunction, type Request, type Response } from 'express'
-import jwt from 'jsonwebtoken'
 import { AuthMiddleware } from './auth.middleware'
 
 type MakeSutType = {
-  jwtSpy: jest.SpyInstance
   repository: UserRepository
   sut: AuthMiddleware
+  firstValidation: TokenValidation
+  secondValidation: TokenValidation
 }
 
 type FakeRequest = Request & {
   headers: {
     'x-access-token': string
+  }
+}
+
+class MockFirstTokenValidation implements TokenValidation {
+  verify (token: any): TokenPayload | undefined {
+    return {
+      externalUserId: 'clerk-valid-id'
+    }
+  }
+}
+class MockSecondTokenValidation implements TokenValidation {
+  verify (token: any): TokenPayload | undefined {
+    return {
+      externalUserId: 'app-valid-id'
+    }
   }
 }
 
@@ -32,12 +48,12 @@ const makeFakeUserRepository = (): UserRepository => {
 }
 
 const makeSut = (): MakeSutType => {
-  const jwtSpy = jest.spyOn(jwt, 'verify' as any)
-
+  const firstValidation = new MockFirstTokenValidation()
+  const secondValidation = new MockSecondTokenValidation()
   const repository = makeFakeUserRepository()
-  const sut = new AuthMiddleware(repository)
+  const sut = new AuthMiddleware(repository, [firstValidation, secondValidation])
   return {
-    sut, repository, jwtSpy
+    sut, repository, firstValidation, secondValidation
   }
 }
 const fakeNextFunction = (): NextFunction => {
@@ -54,6 +70,21 @@ describe('AuthMiddleware', () => {
     expect(sut).toBeDefined()
   })
 
+  it('should call all token validations ', async () => {
+    const { sut, firstValidation, secondValidation } = makeSut()
+    jest.spyOn(firstValidation, 'verify').mockReturnValue(undefined)
+    const firstValidationSpy = jest.spyOn(firstValidation, 'verify')
+    const secondValidationSpy = jest.spyOn(secondValidation, 'verify')
+    const request = {
+      headers: {
+        'x-access-token': 'any-valid-token'
+      }
+    } as FakeRequest
+    await sut.use(request, fakeResponse(), fakeNextFunction())
+    expect(firstValidationSpy).toHaveBeenCalled()
+    expect(secondValidationSpy).toHaveBeenCalled()
+  })
+
   it('should throws if x-access-token not has provided', async () => {
     const { sut } = makeSut()
     const request = { body: {} } as FakeRequest
@@ -63,6 +94,7 @@ describe('AuthMiddleware', () => {
       expect(error.response.message).toEqual('Token not provided')
     }
   })
+
   it('should throws if x-access-token not valid', async () => {
     const { sut } = makeSut()
     const request = {
@@ -76,9 +108,10 @@ describe('AuthMiddleware', () => {
       expect(error.response.message).toEqual('Invalid token')
     }
   })
+
   it('should throws if x-access-token not valid', async () => {
-    const { sut, jwtSpy } = makeSut()
-    jwtSpy.mockReturnValue(new Error())
+    const { sut, firstValidation } = makeSut()
+    jest.spyOn(firstValidation, 'verify').mockReturnValue(undefined)
     const request = {
       headers: {
         'x-access-token': 'any-valid-token'
@@ -92,10 +125,7 @@ describe('AuthMiddleware', () => {
   })
 
   it('should throws if external user id not found', async () => {
-    const { sut, repository, jwtSpy } = makeSut()
-    jwtSpy.mockReturnValue({
-      clerkUserId: 'external-user-id'
-    })
+    const { sut, repository } = makeSut()
     jest.spyOn(repository, 'findByExternalAuthId').mockResolvedValueOnce(undefined)
     const request = {
       headers: {
@@ -110,10 +140,8 @@ describe('AuthMiddleware', () => {
   })
 
   it('should throws if external user id not found', async () => {
-    const { sut, jwtSpy, repository } = makeSut()
-    jwtSpy.mockReturnValue({
-      clerkUserId: 'external-user-id'
-    })
+    const { sut, repository } = makeSut()
+
     jest.spyOn(repository, 'findByExternalAuthId').mockResolvedValueOnce(undefined)
     const request = {
       headers: {
@@ -128,10 +156,8 @@ describe('AuthMiddleware', () => {
   })
 
   it('should call return void if success', async () => {
-    const { sut, jwtSpy } = makeSut()
-    jwtSpy.mockReturnValue({
-      clerkUserId: 'external-user-id'
-    })
+    const { sut } = makeSut()
+
     const request = {
       headers: {
         'x-access-token': 'any-valid-token'
