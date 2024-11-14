@@ -1,21 +1,84 @@
-import { SharedModule } from '@/shared/shared.module'
-import { Module } from '@nestjs/common'
-import { SignUpController } from './sign-up/sign-up-with-email.controller'
-import { SignUpService } from './sign-up/sign-up-with-email.service'
-import { PrismaService } from '@/shared/prisma/prisma.service'
-import { UuidAdapter } from '@/infra/uuid-adapter/uuid-adapter'
+import { CityStateRepository } from '@/city-state/repository/city-state-repository'
 import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
-import { JwtSignAdapter } from '@/infra/cryptography/jwt-sign-adapter'
+import { PlayersProfileRepository } from '@/player-profile/repository/player-profiles.repository'
+import { RpgStylesRepository } from '@/rpg-styles/repository/rpg-styles.repository'
+import { AuthMiddleware } from '@/shared/auth/auth.middleware'
+import { IbgeService } from '@/shared/integration/ibge/ibge.service'
+import { PrismaService } from '@/shared/prisma/prisma.service'
+import { SharedModule } from '@/shared/shared.module'
+import { SocialMediaRepository } from '@/social-media/repository/social-media-repository'
+import { HttpModule } from '@nestjs/axios'
+import { Module, RequestMethod, type MiddlewareConsumer, type NestModule } from '@nestjs/common'
+import { FakeUserController } from './controllers/fake-user/fake-user.controller'
+import { SignUpController } from './controllers/sign-up-with-email/sign-up-with-email.controller'
+import { UserSocialMediaController } from './controllers/social-media/social-media.controller'
+import { UserPreferenceDayPeriodController } from './controllers/user-preference-day-period/user-preference-day-period.controller'
+import { UserPreferenceGamePlaceController } from './controllers/user-preference-game-place/user-preference-game-place.controller'
+import { UserPreferenceController } from './controllers/user-preference/user-preference.controller'
+import { UserController } from './controllers/user/user.controller'
+import { UserPreferenceDayPeriodRepository } from './repository/user-preference-day-period/user-preference-day-period-repository'
+import { UserPreferenceGamePlaceRepository } from './repository/user-preference-game-place/user-preference-game-place-repository'
+import { UserPreferenceRepository } from './repository/user-preference/user-preference.repository'
+import { UserSocialMediaRepository } from './repository/user-social-media/user-social-media-repository'
+import { UserWithEmailRepository } from './repository/user-with-email/user-with-email-repository'
+import { UserRepository } from './repository/user/user-repository'
+import { FakeUserService } from './service/fake-user/fake-user.service'
+import { SignUpService } from './service/sign-up-with-email/sign-up-with-email.service'
+import { UserPreferenceDayPeriodService } from './service/user-preference-day-period/user-preference-day-period.service'
+import { UserPreferenceGamePlaceService } from './service/user-preference-game-place/user-preference-game-place.service'
+import { UserPreferenceService } from './service/user-preference/user-preference.service'
+import { UserSocialMediaService } from './service/user-social-media/user-social-media.service'
+import { UserService } from './service/user/user.service'
 
 @Module({
-  controllers: [SignUpController],
   providers: [
-    SignUpService,
+    UserRepository,
     PrismaService,
-    UuidAdapter,
-    JwtSignAdapter,
-    JwtSignAdapterV2
+    UserSocialMediaService,
+    SocialMediaRepository,
+    UserSocialMediaRepository,
+    FakeUserService,
+    UserPreferenceRepository,
+    UserPreferenceService,
+    UserPreferenceDayPeriodRepository,
+    UserPreferenceDayPeriodService,
+    UserPreferenceGamePlaceRepository,
+    UserPreferenceGamePlaceService,
+    UserService,
+    IbgeService,
+    CityStateRepository,
+    RpgStylesRepository,
+    PlayersProfileRepository,
+    SignUpService,
+    JwtSignAdapterV2,
+    UserWithEmailRepository
+
   ],
-  imports: [SharedModule]
+  controllers: [
+    UserSocialMediaController,
+    FakeUserController,
+    UserPreferenceController,
+    UserPreferenceDayPeriodController,
+    UserPreferenceGamePlaceController,
+    UserController,
+    SignUpController
+  ],
+  imports: [
+    HttpModule,
+    SharedModule
+  ]
 })
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  configure (consumer: MiddlewareConsumer): void {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(
+        { path: '/user', method: RequestMethod.POST },
+        { path: '/user/social-media', method: RequestMethod.POST },
+        { path: '/user/preference', method: RequestMethod.POST },
+        { path: '/user/preference', method: RequestMethod.PATCH },
+        { path: '/user/preference/day-period', method: RequestMethod.POST },
+        { path: '/user/preference/game-place', method: RequestMethod.POST }
+      )
+  }
+}

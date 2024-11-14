@@ -12,6 +12,10 @@ describe('PrismaService', () => {
     service = module.get<PrismaService>(PrismaService)
   })
 
+  afterAll(async () => {
+    await service.$disconnect()
+  })
+
   it('should be defined', () => {
     expect(service).toBeDefined()
   })

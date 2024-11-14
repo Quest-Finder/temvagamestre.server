@@ -22,11 +22,15 @@ module.exports =  {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/index.ts',
+    '!<rootDir>/src/**/*.model.ts',
+    '!<rootDir>/src/**/*.dto.ts',
     '!<rootDir>/src/shared/either.ts',
     '!<rootDir>/src/{configs,adapters}/**/*.ts',
     '!<rootDir>/src/main.ts',
     '!<rootDir>/src/validators/**/*.ts',
-    '!<rootDir>/src/**/contracts/**'
+    '!<rootDir>/src/**/contracts/**',
+    '!<rootDir>/src/infra/database/prisma/client/**',
+    '!<rootDir>/src/infra/database/prisma/schema/**'
   ],
   preset: '@shelf/jest-mongodb',
   moduleNameMapper: {
