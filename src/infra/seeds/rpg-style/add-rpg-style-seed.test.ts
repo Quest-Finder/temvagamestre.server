@@ -21,7 +21,7 @@ describe('addRpgStyleSeed', () => {
     await prisma.user.deleteMany()
     await prisma.address.deleteMany()
     await prisma.cityState.deleteMany()
-    await prisma.userWithEmail.deleteMany()
+    await prisma.auth.deleteMany()
     await prisma.playerProfile.deleteMany()
     await prisma.rpgStyle.deleteMany()
     await prisma.badge.deleteMany()

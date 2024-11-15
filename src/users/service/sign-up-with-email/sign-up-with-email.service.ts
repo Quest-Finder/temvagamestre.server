@@ -1,5 +1,5 @@
 import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
-import { UserWithEmailRepository } from '@/users/repository/user-with-email/user-with-email-repository'
+import { AuthRepository } from '@/users/repository/auth/auth-repository'
 import { UserRepository } from '@/users/repository/user/user-repository'
 import { ConflictException, Injectable } from '@nestjs/common'
 import bcrypt from 'bcrypt'
@@ -10,7 +10,7 @@ const SALT_ROUNDS = 10
 @Injectable()
 export class SignUpService {
   constructor (
-    private readonly repository: UserWithEmailRepository,
+    private readonly repository: AuthRepository,
     private readonly userRepository: UserRepository,
     private readonly jwtSignAdapterV2: JwtSignAdapterV2
   ) {}
