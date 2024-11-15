@@ -1,24 +1,25 @@
 import { PrismaService } from '@/shared/prisma/prisma.service'
 import { Test, type TestingModule } from '@nestjs/testing'
-import { type UserWithEmailModel } from '../entity/user-with-email.model'
-import { UserWithEmailRepository } from './user-with-email-repository'
+import { type AuthModel } from '../entity/auth.model'
+import { AuthRepository } from './auth-repository'
 
-const makeUserWithEmail = (): UserWithEmailModel => {
+const makeUserWithEmail = (): AuthModel => {
   return {
     email: 'valid@email.com',
     id: 'valid-id',
-    password: 'encoded_password'
+    password: 'encoded_password',
+    onboarding: true
   }
 }
 
-describe('UserWithEmailRepository', () => {
-  let repository: UserWithEmailRepository
+describe('AuthRepository', () => {
+  let repository: AuthRepository
   let prismaService: PrismaService
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserWithEmailRepository, PrismaService]
+      providers: [AuthRepository, PrismaService]
     }).compile()
-    repository = module.get<UserWithEmailRepository>(UserWithEmailRepository)
+    repository = module.get<AuthRepository>(AuthRepository)
     prismaService = module.get<PrismaService>(PrismaService)
   })
 
@@ -35,7 +36,7 @@ describe('UserWithEmailRepository', () => {
     await prismaService.user.deleteMany()
     await prismaService.address.deleteMany()
     await prismaService.cityState.deleteMany()
-    await prismaService.userWithEmail.deleteMany()
+    await prismaService.auth.deleteMany()
     await prismaService.playerProfile.deleteMany()
     await prismaService.rpgStyle.deleteMany()
     await prismaService.badge.deleteMany()
@@ -57,7 +58,7 @@ describe('UserWithEmailRepository', () => {
     })
 
     it('should return a valid user', async () => {
-      await prismaService.userWithEmail.create({
+      await prismaService.auth.create({
         data: makeUserWithEmail()
       })
       const result = await repository.findByEmail(makeUserWithEmail().email)

@@ -16,11 +16,11 @@ import { UserPreferenceDayPeriodController } from './controllers/user-preference
 import { UserPreferenceGamePlaceController } from './controllers/user-preference-game-place/user-preference-game-place.controller'
 import { UserPreferenceController } from './controllers/user-preference/user-preference.controller'
 import { UserController } from './controllers/user/user.controller'
+import { AuthRepository } from './repository/auth/auth-repository'
 import { UserPreferenceDayPeriodRepository } from './repository/user-preference-day-period/user-preference-day-period-repository'
 import { UserPreferenceGamePlaceRepository } from './repository/user-preference-game-place/user-preference-game-place-repository'
 import { UserPreferenceRepository } from './repository/user-preference/user-preference.repository'
 import { UserSocialMediaRepository } from './repository/user-social-media/user-social-media-repository'
-import { UserWithEmailRepository } from './repository/user-with-email/user-with-email-repository'
 import { UserRepository } from './repository/user/user-repository'
 import { FakeUserService } from './service/fake-user/fake-user.service'
 import { SignUpService } from './service/sign-up-with-email/sign-up-with-email.service'
@@ -51,7 +51,7 @@ import { UserService } from './service/user/user.service'
     PlayersProfileRepository,
     SignUpService,
     JwtSignAdapterV2,
-    UserWithEmailRepository
+    AuthRepository
 
   ],
   controllers: [

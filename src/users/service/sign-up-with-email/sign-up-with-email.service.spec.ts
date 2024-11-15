@@ -1,26 +1,27 @@
 import { JwtSignAdapterV2 } from '@/infra/cryptography/jwt-sign-adapter-v2'
-import { type UserWithEmailModel } from '@/users/repository/entity/user-with-email.model'
+import { AuthRepository, type AuthData } from '@/users/repository/auth/auth-repository'
+import { type AuthModel } from '@/users/repository/entity/auth.model'
 import { type UserModel } from '@/users/repository/entity/user.model'
-import { UserWithEmailRepository, type UserWithEmailData } from '@/users/repository/user-with-email/user-with-email-repository'
-import { type UserInputRepository, UserRepository } from '@/users/repository/user/user-repository'
+import { UserRepository, type UserInputRepository } from '@/users/repository/user/user-repository'
 import { ConflictException } from '@nestjs/common'
 import { Test, type TestingModule } from '@nestjs/testing'
 import bcrypt from 'bcrypt'
 import { SignUpService } from './sign-up-with-email.service'
 
-const makeUserWithEmail = (): UserWithEmailModel => {
+const makeUserWithEmail = (): AuthModel => {
   return {
     email: 'valid@email.com',
     id: 'valid-id',
-    password: 'encoded_password'
+    password: 'encoded_password',
+    onboarding: true
   }
 }
 class MockUserWithEmailRepository {
-  async findByEmail (email: string): Promise<UserWithEmailModel | undefined> {
+  async findByEmail (email: string): Promise<AuthModel | undefined> {
     return makeUserWithEmail()
   }
 
-  async save (data: UserWithEmailData): Promise<UserWithEmailModel> {
+  async save (data: AuthData): Promise<AuthModel> {
     return makeUserWithEmail()
   }
 }
@@ -56,7 +57,7 @@ class MockUserRepository {
 
 describe('SignUpService', () => {
   let service: SignUpService
-  let repository: UserWithEmailRepository
+  let repository: AuthRepository
   let userRepository: UserRepository
   const SALTED_ROUNDS = 10
 
@@ -74,12 +75,12 @@ describe('SignUpService', () => {
         SignUpService,
         { provide: 'HashAdapter', useValue: mockHashAdapter },
         { provide: JwtSignAdapterV2, useValue: mockJwtSignAdapter },
-        { provide: UserWithEmailRepository, useClass: MockUserWithEmailRepository },
+        { provide: AuthRepository, useClass: MockUserWithEmailRepository },
         { provide: UserRepository, useClass: MockUserRepository }
       ]
     }).compile()
     service = module.get<SignUpService>(SignUpService)
-    repository = module.get<UserWithEmailRepository>(UserWithEmailRepository)
+    repository = module.get<AuthRepository>(AuthRepository)
     userRepository = module.get<UserRepository>(UserRepository)
   })
 

@@ -36,7 +36,7 @@ describe('UserRepository', () => {
     await prismaService.user.deleteMany()
     await prismaService.address.deleteMany()
     await prismaService.cityState.deleteMany()
-    await prismaService.userWithEmail.deleteMany()
+    await prismaService.auth.deleteMany()
     await prismaService.playerProfile.deleteMany()
     await prismaService.rpgStyle.deleteMany()
     await prismaService.badge.deleteMany()
